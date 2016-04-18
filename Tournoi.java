@@ -19,7 +19,7 @@ public class Tournoi{
 	}
 
 	public Liste getNewJoueur() {
-		return this.newJoueur;
+		return this.nouveauxJoueurs;
 	}
 
 	public void ajouterJoueur(Joueur joueur) {
@@ -27,7 +27,7 @@ public class Tournoi{
 	}
 
 	public Liste getAncienJoueur() {
-		return this.ancienJoueur;
+		return this.anciensJoueurs;
 	}
 
 	public Liste getTerrain() {
