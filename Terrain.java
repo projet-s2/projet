@@ -1,10 +1,12 @@
+package tournoi;
+
 public class Terrain{
   private int numero;
   private Match match;
 
   public Terrain(int numero, Match match){
     this.numero=numero;
-    this.match.match;
+    this.match=match;
   }
 
   public Terrain(int numero){

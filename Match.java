@@ -10,7 +10,6 @@ public class Match {
 		this.paire1 = laPaire1;
 		this.paire2 = laPaire2;
 		this.id = id;
-		this.setScore(0,0);
 	}
 
 	public Paire getPaire1(){
@@ -23,6 +22,10 @@ public class Match {
 
 	public int getId(){
 		return this.id;
+	}
+
+	public Paire getVainqueur(){
+		return this.vainqueur;
 	}
 
 	public void setPaire1(Paire p1){
@@ -39,10 +42,5 @@ public class Match {
 
 	public void setVainqueur(Paire leGagnant){
 		this.vainqueur = leGagnant;
-	}
-
-	public void setScore(int leScore1, int leScore2){
-		this.score1 = leScore1;
-		this.score2 = leScore2;
 	}
 }
