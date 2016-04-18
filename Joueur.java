@@ -63,4 +63,21 @@ public class Joueur {
 	public String toString(){
 		return (""+this.id+" "+this.prenom+" "+this.nom);
 	}
+	
+	public void setJoue(boolean bool){
+		this.joue=bool;
+	}
+	
+	public void setScore(int score){
+		this.score=score;
+	}
+	
+	public boolean equals(Object o){
+		if (o instanceof Joueur){
+			return (this.id==((Joueur)o).id
+					&& this.nom.equals(((Joueur)o).nom)
+					&& this.prenom.equals(((Joueur)o).prenom));		
+		}
+		else return false;
+	}
 }

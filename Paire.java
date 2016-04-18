@@ -54,5 +54,14 @@ public class Paire {
 		this.score = score;
 	}
 
+	public boolean equals(Object o){
+		if (o instanceof Paire){
+			return (this.joueur1.equals(((Paire)o).joueur1)
+					&& this.joueur2.equals(((Paire)o).joueur2));		
+		}
+		else {
+			return false;
+		}
+	}
 
 }

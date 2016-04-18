@@ -29,9 +29,4 @@ public class Terrain{
   public Match getMatch(){
     return this.match;
   }
- 
-  //Attribue un nouveau match à un terrain	
-  public void nouveauMatch(Paire laPaire1, Paire laPaire2){
-	this.match = new Match(this.numero, laPaire1, laPaire2);
-  }
 }

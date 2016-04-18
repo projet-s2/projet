@@ -10,6 +10,7 @@ public class Match {
 		this.paire1 = laPaire1;
 		this.paire2 = laPaire2;
 		this.id = id;
+		this.vainqueur=null;
 	}
 
 	public Paire getPaire1(){
@@ -40,11 +41,37 @@ public class Match {
 		this.vainqueur = leGagnant;
 	}
 	
-	public void determinerVainqueur(){
+	public Paire determinerVainqueur(){
 		if(this.paire1.getScore()>this.paire2.getScore()){
-			this.vainqueur=paire1;
+			return(this.paire1);
 		}else if (this.paire1.getScore()<this.paire2.getScore()){
-			this.vainqueur=paire1;
+			return(this.paire2);
+		}
+		else{
+			return null;
+		}
+	}
+	
+	public void modifierScores(){
+		if (this.determinerVainqueur().equals(this.paire2)){
+			this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+1);
+			this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+1);
+			this.paire2.getJoueur1().setScore(this.paire2.getJoueur1().getScore()+3);
+			this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+3);
+		}
+		else{
+			if (this.determinerVainqueur().equals(this.paire1)){
+				this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+3);
+				this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+3);
+				this.paire2.getJoueur1().setScore(this.paire2.getJoueur1().getScore()+1);
+				this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+1);
+			}
+			else {
+				this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+2);
+				this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+2);
+				this.paire2.getJoueur1().setScore(this.paire2.getJoueur1().getScore()+2);
+				this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+2);
+			}
 		}
 	}
 
