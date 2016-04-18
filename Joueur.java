@@ -10,7 +10,7 @@ public class Joueur {
 	private int score;
 	private boolean joue;
 	private String niveau;
-	
+
 	public Joueur(int id, String nom, String prenom, int age, char sexe,
 			boolean nouveau, String niveau){
 		this.id = id;
@@ -23,40 +23,44 @@ public class Joueur {
 		this.joue = false;
 		this.niveau = niveau;
 	}
-	
+
 	public int getId(){
 		return this.id;
 	}
-	
+
 	public String getNom(){
 		return this.nom;
 	}
-	
+
 	public String getPrenom(){
 		return this.prenom;
 	}
-	
+
 	public int getAge(){
 		return this.age;
 	}
-	
+
 	public char getSexe(){
 		return this.sexe;
 	}
-	
+
 	public int getScore(){
 		return this.score;
 	}
-	
+
 	public boolean getNouveau(){
 		return this.nouveau;
 	}
-	
+
 	public boolean getJoue(){
 		return this.joue;
 	}
-	
+
 	public String getNiveau(){
 		return this.niveau;
+	}
+
+	public String toString(){
+		return (""+this.id+" "+this.prenom+" "+this.nom);
 	}
 }
