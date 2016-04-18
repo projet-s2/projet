@@ -24,10 +24,6 @@ public class Match {
 		return this.id;
 	}
 
-	public Paire getVainqueur(){
-		return this.vainqueur;
-	}
-
 	public void setPaire1(Paire p1){
 		this.paire1 = p1;
 	}
@@ -43,4 +39,13 @@ public class Match {
 	public void setVainqueur(Paire leGagnant){
 		this.vainqueur = leGagnant;
 	}
+	
+	public void determinerVainqueur(){
+		if(this.paire1.getScore()>this.paire2.getScore()){
+			this.vainqueur=paire1;
+		}else if (this.paire1.getScore()<this.paire2.getScore()){
+			this.vainqueur=paire1;
+		}
+	}
+
 }

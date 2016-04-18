@@ -5,6 +5,7 @@ public class Paire {
 	private Joueur joueur2;
 	private int id;
 	private int tour;
+	private int score;
 
 	public Paire(Joueur j1, Joueur j2, int id, int tour){
 		this.joueur1 = j1;
@@ -45,6 +46,13 @@ public class Paire {
 		return this.joueur1.toString() + " " + this.joueur2.toString();
 	}
 
+	public int getScore() {
+		return this.score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
 
 
 }
