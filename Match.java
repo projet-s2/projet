@@ -9,7 +9,7 @@ public class Match {
 	public Match(int id, Paire laPaire1, Paire laPaire2){
 		this.paire1 = laPaire1;
 		this.paire2 = laPaire2;
-		this.id = id
+		this.id = id;
 		this.setScore(0,0);
 	}
 
