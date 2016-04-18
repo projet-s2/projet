@@ -74,6 +74,8 @@ public class Tournoi{
 	
 	public void finirTour(){
 		//On demande le score des équipes pour chaque terrain
+		//On détermine les vainqueurs de chaque match
+		//On modifie le score des joueurs en conséquence
 	}
 	
 }
