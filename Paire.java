@@ -6,7 +6,7 @@ public class Paire {
 	private int id;
 	private int tour;
 
-	public Paire newPaire(Joueur j1, Joueur j2, int id, int tour){
+	public Paire(Joueur j1, Joueur j2, int id, int tour){
 		this.joueur1 = j1;
 		this.joueur2 = j2;
 		this.id = id;
