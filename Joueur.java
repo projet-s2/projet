@@ -9,7 +9,14 @@ public class Joueur {
 	private boolean nouveau;
 	private int score;
 	private boolean joue;
+	private int perf;
+	/*
+		Débutant
+		Intermédiaire
+		Confirmé
+	 */
 	private String niveau;
+	private Liste anciensPart;
 
 	public Joueur(int id, String nom, String prenom, int age, char sexe,
 			boolean nouveau, String niveau){
@@ -63,20 +70,41 @@ public class Joueur {
 	public String toString(){
 		return (""+this.id+" "+this.prenom+" "+this.nom);
 	}
-	
+
 	public void setJoue(boolean bool){
 		this.joue=bool;
 	}
-	
+
 	public void setScore(int score){
 		this.score=score;
 	}
-	
+
+	public Liste getAnciensPart(){
+		return this.anciensPart;
+	}
+
+	public boolean aJoueAvec(Joueur j1){
+		boolean res = false;
+		for (int i=0;i<this.getAnciensPart().size() ; i++) {
+			if(((Joueur) this.getAnciensPart().get(i)).equals(Joueur j1)) {
+				res =true;
+			}
+		}
+		return res;
+	}
+	public boolean estCompatibleAvec(Joueur joueur){
+		boolean res =false;
+		if(!this.aJoueAvec(joueur)){
+			res = true;
+		}
+		return res;
+	}
+
 	public boolean equals(Object o){
 		if (o instanceof Joueur){
 			return (this.id==((Joueur)o).id
 					&& this.nom.equals(((Joueur)o).nom)
-					&& this.prenom.equals(((Joueur)o).prenom));		
+					&& this.prenom.equals(((Joueur)o).prenom));
 		}
 		else return false;
 	}
