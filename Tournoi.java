@@ -53,7 +53,7 @@ public class Tournoi{
 		this.attribuerMatchs();
 	}
 	
-	public void creerPaires(){
+	private void creerPaires(){
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
 		for (int i=0; i<Math.min(this.anciensJoueurs.size(),this.nouveauxJoueurs.size()); i++){
 				this.paires.add(new Paire(((Joueur)this.anciensJoueurs.get(i)),((Joueur)this.nouveauxJoueurs.get(i)),i,i));
@@ -62,7 +62,7 @@ public class Tournoi{
 		}
 	}
 	
-	public void attribuerMatchs(){
+	private void attribuerMatchs(){
 		Paire paire1,paire2;
 		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paires
 		for (int i=0; i<this.nbrTerrains; i++){
