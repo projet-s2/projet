@@ -144,7 +144,7 @@ public class Joueur {
 		this.joue=bool;
 	}
 
-	/** Redéfinit l'attribut score
+	/** Redéfinit l'attribut "score"
 		*
 		* @param score le score d'un joueur
 		*/
