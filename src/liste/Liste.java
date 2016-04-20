@@ -38,6 +38,9 @@ public class Liste
     return this.liste.size();
   }
   
+  public void set(int i, Object o){
+	  this.liste.set(i, o);
+  }
   public String toString()
   {
     return this.liste.toString();
