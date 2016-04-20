@@ -162,6 +162,20 @@ public class Tournoi{
 		*
 		*
 		*/
+	private void trierPaires(){
+		int gauche = 0;
+		int droite = this.paires.size();
+		int pivot;
+		Paire tmp;
+		if(droite > gauche){
+			pivot = (gauche+droite)/2;
+			tmp = ((Paire) this.paires.get(gauche));
+			this.paires.set(gauche, ((Paire) this.paires.get(pivot))) ;
+			this.paires.set(pivot, tmp) ;
+			pivot = gauche;
+			
+		}
+	}
 	private void attribuerMatchs(){
 		Paire paire1,paire2;
 		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paires

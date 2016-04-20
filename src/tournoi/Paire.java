@@ -1,3 +1,4 @@
+
 package tournoi;
 
 /**Paire est la classe représentant une paire de joueurs.
@@ -12,6 +13,7 @@ public class Paire {
 	private int id;
 	private int tour;
 	private int score;
+	private int perf;
 
 	/** Constructeur de la classe Paire
 		*
@@ -26,8 +28,20 @@ public class Paire {
 		this.joueur2 = j2;
 		this.id = id;
 		this.tour = tour;
+		this.perf = j1.getPerf()+j2.getPerf();
+	}
+	public Paire(Joueur j1, Joueur j2){
+		this(j1, j2, 0, 0);
 	}
 
+	/** Retourne la performance de la paire (celles des joueurs additionnées)
+		*
+		* @return La performance de la paire
+		*/
+	public int getPerf(){
+		return this.perf;
+	}
+	
 	/** Retourne le premier joueur de la paire
 		*
 		* @return joueur1 le premier joueur de la paire
@@ -123,5 +137,4 @@ public class Paire {
 			return false;
 		}
 	}
-
 }
