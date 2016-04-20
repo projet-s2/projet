@@ -52,6 +52,9 @@ public class Joueur {
 	public int getAge(){
 		return this.age;
 	}
+	public int getPerf(){
+		return this.perf;
+	}
 
 	public char getSexe(){
 		return this.sexe;

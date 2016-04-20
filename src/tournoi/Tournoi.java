@@ -1,5 +1,5 @@
 package tournoi;
-import java.math.*;
+
 import liste.Liste;
 
 /**Tournoi est la classe représentant un Tournoi.

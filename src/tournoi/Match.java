@@ -41,6 +41,9 @@ public class Match {
 		this.vainqueur = leGagnant;
 	}
 	
+	public Paire getVainqueur(){
+		return this.vainqueur;
+	}
 	public Paire determinerVainqueur(){
 		if(this.paire1.getScore()>this.paire2.getScore()){
 			return(this.paire1);
