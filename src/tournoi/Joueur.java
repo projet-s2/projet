@@ -130,7 +130,14 @@ public class Joueur {
 	public int getNiveau(){
 		return this.niveau;
 	}
-
+	
+	/** Retourne l'indice de performance du joueur
+	 * @return l'indice de performance du joueur
+	 */
+	public int getPerf(){
+		return this.perf;
+	}
+	
 	/** Redéfinition de la méthode toString()
 		*
 		* @return txt l'affichage d'un joueur
