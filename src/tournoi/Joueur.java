@@ -1,6 +1,12 @@
 package tournoi;
 import liste.Liste;
 
+/**Joueur est la classe représentant un joueur du tournoi.
+ *
+ * @author OUAKRIM Yanis, RICHARD Nicolas, ORHON Paul, RIALET Yohann, NIVELAIS Quentin
+ *
+ * @version 0.1
+ */
 public class Joueur {
 	private int id;
 	private String nom;
@@ -19,6 +25,18 @@ public class Joueur {
 	private int niveau;
 	private Liste anciensPart;
 
+
+	/** Constructeur de la classe Joueur
+		*
+		* @param id l'id du joueur
+		* @param nom le nom du joueur
+		* @param prenom le prénom du joueur
+		* @param age l'âge du joueur
+		* @param sexe le sexe du joueur
+		* @param nouveau 0 : joueur ancien / 1 : joueur nouveau
+		* @param niveau le niveau du joueur ()
+		*
+		*/
 	public Joueur(int id, String nom, String prenom, int age, char sexe,
 			boolean nouveau, int niveau){
 		this.id = id;
@@ -36,65 +54,117 @@ public class Joueur {
 		this.perf+= niveau*10;
 		this.anciensPart = new Liste();
 	}
-	// Tests
-	public Joueur(int id, boolean nouv){
-		this(id, "Bon", "Jean", (20+id), 'M', nouv, (id%3));
-	}
 
+	/** Retourne l'id d'un joueur
+		*
+		* @return id l'id du joueur
+		*/
 	public int getId(){
 		return this.id;
 	}
 
+	/** Retourne le nom d'un joueur
+		*
+		* @return nom le nom du joueur
+		*/
 	public String getNom(){
 		return this.nom;
 	}
 
+	/** Retourne le prénom d'un joueur
+		*
+		* @return prenom le prénom du joueur
+		*/
 	public String getPrenom(){
 		return this.prenom;
 	}
 
+	/** Retourne l'âge d'un joueur
+		*
+		* @return age l'âge du joueur
+		*/
 	public int getAge(){
 		return this.age;
 	}
-	public int getPerf(){
-		return this.perf;
-	}
 
+	/** Retourne le sexe d'un joueur
+		*
+		* @return sexe le sexe du joueur
+		*/
 	public char getSexe(){
 		return this.sexe;
 	}
 
+	/** Retourne le score d'un joueur
+		*
+		* @return score le score du joueur
+		*/
 	public int getScore(){
 		return this.score;
 	}
 
+	/** Retourne l'ancienneté d'un joueur
+		*
+		* @return nouveau 0 : joueur ancien / 1 : joueur nouveau
+		*/
 	public boolean getNouveau(){
 		return this.nouveau;
 	}
 
+	/** Retourne si le joueur joue ou non
+		*
+		* @return joue 0 : ne joue pas / 1 : joue
+		*/
 	public boolean getJoue(){
 		return this.joue;
 	}
 
+	/** Retourne le niveau d'un joueur
+		*
+		* @return niveau le niveau du joueur
+		*/
 	public int getNiveau(){
 		return this.niveau;
 	}
 
+	/** Redéfinition de la méthode toString()
+		*
+		* @return txt l'affichage d'un joueur
+		*/
 	public String toString(){
-		return (""+this.id+" "+this.prenom+" "+this.nom);
+		String txt = ""+this.id+" "+this.prenom+" "+this.nom;
+		return txt;
 	}
 
+	/** Redéfinit l'attribut "joue"
+		*
+		* @param bool 0 : le joueur ne joue pas / 1 : le joueur joue
+		*/
 	public void setJoue(boolean bool){
 		this.joue=bool;
 	}
 
+	/** Redéfinit l'attribut score
+		*
+		* @param score le score d'un joueur
+		*/
 	public void setScore(int score){
 		this.score=score;
 	}
 
+	/** Retourne tous les anciens partenaires d'un joueur
+		*
+		* @return anciensPart la liste de tous les anciens partenaires d'un joueur
+		*/
 	public Liste getAnciensPart(){
 		return this.anciensPart;
 	}
+
+	/** Retourne si le joueur a déjà joué avec un autre (en paramètre)
+		*
+		* @param j1 le joueur à tester
+		* @return res 0 : ils n'ont jamais joué ensemble / 1 : ils ont joué ensemble
+		*/
 	private boolean aJoueAvec(Joueur j1){
 		boolean res = false;
 		for (int i=0;i<this.getAnciensPart().size() ; i++) {
@@ -104,6 +174,12 @@ public class Joueur {
 		}
 		return res;
 	}
+
+	/** Retourne si le joueur est compatible avec un autre (en paramètre)
+		*
+		* @param joueur le joueur à tester
+		* @return booléen 0 : n'est pas compatible / 1 : est compatible
+		*/
 	public boolean estCompatibleAvec(Joueur joueur){
 		//On vérifie si les joueurs ont déjà joué ensemble
 		if(this.aJoueAvec(joueur)){
@@ -112,6 +188,11 @@ public class Joueur {
 		return true;
 	}
 
+	/** Redéfinition de la méthode equals()
+		*
+		* @param o l'objet à comparer
+		* @return booléen 0 : ils ne sont pas égaux / 1 : ils sont égaux
+		*/
 	public boolean equals(Object o){
 		if (o instanceof Joueur){
 			return (this.id==((Joueur)o).id
