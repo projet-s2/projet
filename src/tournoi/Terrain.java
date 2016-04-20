@@ -15,7 +15,6 @@ public class Terrain{
    * @param numero le numero du terrain
    * @param match le match associé au terrain
    *
-   * @version 0.1
    */
   public Terrain(int numero, Match match){
     this.numero=numero;
