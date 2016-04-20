@@ -70,7 +70,7 @@ public class Tournoi{
 			{
 				joueur = ((Joueur)this.anciensJoueurs.get(j));
 				for (int i=0; i<tailleMin; i++){
-					if (joueur.estCompatible(((Joueur)this.nouveauxJoueurs.get(i))){
+					if (joueur.estCompatible(((Joueur)this.nouveauxJoueurs.get(i)))){
 						this.paires.add(new Paire(joueur,((Joueur)this.nouveauxJoueurs.get(i)),i,i));
 						joueur.setJoue(true);
 						((Joueur)this.nouveauxJoueurs.get(i)).setJoue(true);
@@ -85,7 +85,7 @@ public class Tournoi{
 			{
 				joueur = ((Joueur)this.nouveauxJoueurs.get(j));
 				for (int i=0; i<tailleMin; i++){
-					if (joueur.estCompatible(((Joueur)this.anciensJoueurs.get(i))){
+					if (joueur.estCompatible(((Joueur)this.anciensJoueurs.get(i)))){
 						this.paires.add(new Paire(joueur,((Joueur)this.anciensJoueurs.get(i)),i,i));
 						joueur.setJoue(true);
 						((Joueur)this.anciensJoueurs.get(i)).setJoue(true);
