@@ -78,5 +78,9 @@ public class Match {
 			}
 		}
 	}
+	
+	public String toString(){
+		return this.paire1.toString() + " jouent contre "+this.paire2.toString();
+	}
 
 }

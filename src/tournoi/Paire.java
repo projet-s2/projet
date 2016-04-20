@@ -103,7 +103,7 @@ public class Paire {
 		* @return txt l'affichage d'une paire
 		*/
 	public String toString(){
-		String txt = this.joueur1.toString() + " " + this.joueur2.toString();
+		String txt = this.joueur1.toString() + " et " + this.joueur2.toString() + " Perf : " + this.perf;
 		return txt;
 	}
 

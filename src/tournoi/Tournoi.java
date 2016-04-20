@@ -162,10 +162,10 @@ public class Tournoi{
 		*
 		*
 		*/
-	private void trierPaires(){
-		int gauche = 0;
-		int droite = this.paires.size();
-		int pivot;
+	private void trierPaires(int gauche, int droite){
+		//Algorithme de tri rapide adapté pour ranger les performances des paires
+		droite = droite-1;
+		int pivot = 0;
 		Paire tmp;
 		if(droite > gauche){
 			pivot = (gauche+droite)/2;
@@ -173,17 +173,38 @@ public class Tournoi{
 			this.paires.set(gauche, ((Paire) this.paires.get(pivot))) ;
 			this.paires.set(pivot, tmp) ;
 			pivot = gauche;
-			
+			for(int i = gauche; i<droite;i++){
+				if(((Paire)this.paires.get(i)).getPerf() < ((Paire)this.paires.get(gauche)).getPerf()){
+					pivot++;
+					tmp = (Paire) this.paires.get(i);
+					this.paires.set(i, ((Paire) this.paires.get(pivot)) );
+					this.paires.set(pivot, tmp);
+				}
+			}
+			tmp = (Paire) this.paires.get(pivot);
+			this.paires.set(pivot, ((Paire) this.paires.get(gauche)));
+			this.paires.set(gauche, tmp);
+			trierPaires(gauche, pivot-1);
+			trierPaires(pivot+1, droite);
 		}
 	}
 	private void attribuerMatchs(){
 		Paire paire1,paire2;
+		trierPaires(0, this.paires.size());
+		for(int i=0;i<this.paires.size();i++){
+			System.out.println(((Paire) this.paires.get(i)).toString());
+		}
 		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paires
 		for (int i=0; i<Math.floor(Math.min(this.nbrTerrains,this.paires.size()/2)); i++){
 			paire1=((Paire)this.paires.get(2*i));
 			paire2=((Paire)this.paires.get(2*i+1));
 			((Terrain)this.terrains.get(i)).setMatch(new Match(i+1, paire1, paire2));
 		}
+		String res= "";
+		for(int i=0; i<Math.floor(Math.min(this.nbrTerrains,this.paires.size()/2));i++){
+			res +=((Terrain)this.terrains.get(i)).getMatch().toString()+"\n";
+		}
+		System.out.println(res);
 	}
 
 	/** Appelée pour finir un tour du tournoi
