@@ -36,6 +36,10 @@ public class Joueur {
 		this.perf+= niveau*10;
 		this.anciensPart = new Liste();
 	}
+	// Tests
+	public Joueur(int id, boolean nouv){
+		this(id, "Bon", "Jean", (20+id), 'M', nouv, (id%3));
+	}
 
 	public int getId(){
 		return this.id;
