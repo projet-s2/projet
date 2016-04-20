@@ -93,9 +93,10 @@ public class Joueur {
 		return res;
 	}
 	public boolean estCompatibleAvec(Joueur joueur){
-		boolean res =false;
+		boolean res =true;
+		//On vérifie si les joueurs ont déjà joué ensemble
 		if(!this.aJoueAvec(joueur)){
-			res = true;
+			res = false;
 		}
 		return res;
 	}
