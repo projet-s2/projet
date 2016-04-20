@@ -56,11 +56,12 @@ public class Match {
 	}
 	
 	public void modifierScores(){
-		if (this.determinerVainqueur().equals(this.paire2)){
-			this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+1);
-			this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+1);
-			this.paire2.getJoueur1().setScore(this.paire2.getJoueur1().getScore()+3);
-			this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+3);
+		if (this.determinerVainqueur()==null){
+			this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+2);
+			this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+2);
+			this.paire2.getJoueur1().setScore(this.paire2.getJoueur1().getScore()+2);
+			this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+2);
+
 		}
 		else{
 			if (this.determinerVainqueur().equals(this.paire1)){
@@ -70,10 +71,10 @@ public class Match {
 				this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+1);
 			}
 			else {
-				this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+2);
-				this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+2);
-				this.paire2.getJoueur1().setScore(this.paire2.getJoueur1().getScore()+2);
-				this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+2);
+				this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+1);
+				this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+1);
+				this.paire2.getJoueur1().setScore(this.paire2.getJoueur1().getScore()+3);
+				this.paire2.getJoueur2().setScore(this.paire2.getJoueur2().getScore()+3);
 			}
 		}
 	}

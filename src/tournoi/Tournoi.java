@@ -96,6 +96,9 @@ public class Tournoi{
 		*/
 	public void demarrerTour(){
 		this.creerPaires();
+		for (int i=0; i<this.nbrTerrains; i++){
+			((Terrain)this.terrains.get(i)).setMatch(null);
+		}
 		this.attribuerMatchs();
 		//On remet tous les joueurs en attente d'une paire
 		for (int i=0; i<this.anciensJoueurs.size(); i++){
@@ -113,18 +116,24 @@ public class Tournoi{
 		*/
 	private void creerPaires(){
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
-		int tailleMin;
+		int tailleMin, tailleMax;
 		Joueur joueur;
+		//On vérifie si le nombre d'anciens est supérieur au nombre de nouveaux
 		if ( this.anciensJoueurs.size()>=this.nouveauxJoueurs.size() ){
 			tailleMin=this.nouveauxJoueurs.size();
-			for (int j=0; j<this.anciensJoueurs.size(); j++)
+			tailleMax=this.anciensJoueurs.size();
+			//On cherche à créer le maximum de paires ancien/nouveau
+			for (int j=0; j<tailleMin; j++)
+			// On parcourt les nouveaux joueurs
 			{
-				joueur = ((Joueur)this.anciensJoueurs.get(j));
-				for (int i=0; i<tailleMin; i++){
-					if (joueur.estCompatibleAvec(((Joueur)this.nouveauxJoueurs.get(i)))){
-						this.paires.add(new Paire(joueur,((Joueur)this.nouveauxJoueurs.get(i)),i,i));
+				joueur = ((Joueur)this.nouveauxJoueurs.get(j));
+				for (int i=0; i<tailleMax; i++){
+					//On cherche un ancien joueur compatible qui ne joue pas
+					if (joueur.estCompatibleAvec(((Joueur)this.anciensJoueurs.get(i))) && (!((Joueur)this.anciensJoueurs.get(i)).getJoue())){
+						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
+						this.paires.add(new Paire(joueur,((Joueur)this.anciensJoueurs.get(i)),i,i));
 						joueur.setJoue(true);
-						((Joueur)this.nouveauxJoueurs.get(i)).setJoue(true);
+						((Joueur)this.anciensJoueurs.get(i)).setJoue(true);
 						break;
 					}
 				}
@@ -132,14 +141,15 @@ public class Tournoi{
 		}
 		else{
 			tailleMin=this.anciensJoueurs.size();
-			for (int j=0; j<this.nouveauxJoueurs.size(); j++)
+			tailleMax=this.nouveauxJoueurs.size();
+			for (int j=0; j<tailleMin; j++)
 			{
-				joueur = ((Joueur)this.nouveauxJoueurs.get(j));
-				for (int i=0; i<tailleMin; i++){
-					if (joueur.estCompatibleAvec(((Joueur)this.anciensJoueurs.get(i)))){
-						this.paires.add(new Paire(joueur,((Joueur)this.anciensJoueurs.get(i)),i,i));
+				joueur = ((Joueur)this.anciensJoueurs.get(j));
+				for (int i=0; i<tailleMax; i++){
+					if (joueur.estCompatibleAvec(((Joueur)this.nouveauxJoueurs.get(i))) && (!((Joueur) this.nouveauxJoueurs.get(i)).getJoue())){
+						this.paires.add(new Paire(joueur,((Joueur)this.nouveauxJoueurs.get(i)),i,i));
 						joueur.setJoue(true);
-						((Joueur)this.anciensJoueurs.get(i)).setJoue(true);
+						((Joueur)this.nouveauxJoueurs.get(i)).setJoue(true);
 						break;
 					}
 				}
@@ -155,7 +165,7 @@ public class Tournoi{
 	private void attribuerMatchs(){
 		Paire paire1,paire2;
 		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paires
-		for (int i=0; i<this.nbrTerrains; i++){
+		for (int i=0; i<Math.floor(Math.min(this.nbrTerrains,this.paires.size()/2)); i++){
 			paire1=((Paire)this.paires.get(2*i));
 			paire2=((Paire)this.paires.get(2*i+1));
 			((Terrain)this.terrains.get(i)).setMatch(new Match(i+1, paire1, paire2));
@@ -170,15 +180,23 @@ public class Tournoi{
 	public void finirTour(){
 		//On demande le score des équipes pour chaque terrain
 		for (int i=0; i<this.nbrTerrains; i++){
-			((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(0);
-			((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(0);
-			//On détermine les vainqueurs de chaque match
-			((Terrain)this.terrains.get(i)).getMatch().setVainqueur(((Terrain)this.terrains.get(i)).getMatch().determinerVainqueur());
-			//On modifie le score des joueurs en conséquence
-			((Terrain)this.terrains.get(i)).getMatch().modifierScores();
-
+			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
+				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(0);
+				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(0);
+				//On détermine les vainqueurs de chaque match
+				((Terrain)this.terrains.get(i)).getMatch().setVainqueur(((Terrain)this.terrains.get(i)).getMatch().determinerVainqueur());
+				//On modifie le score des joueurs en conséquence
+				((Terrain)this.terrains.get(i)).getMatch().modifierScores();
+			}
 
 			}
+	}
+	public String toString(){
+		String res= "";
+		for(int i=0; i<this.paires.size();i++){
+			res +=((Paire)this.paires.get(i)).toString()+"\n";
+		}
+		return res;
 	}
 
 }

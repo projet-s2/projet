@@ -54,6 +54,10 @@ public class Joueur {
 		this.perf+= niveau*10;
 		this.anciensPart = new Liste();
 	}
+	// Tests
+		public Joueur(int id, boolean nouv){
+			this(id, "Bon", "Jean", (20+id), 'M', nouv, (id%3));
+		}
 
 	/** Retourne l'id d'un joueur
 		*
@@ -132,7 +136,7 @@ public class Joueur {
 		* @return txt l'affichage d'un joueur
 		*/
 	public String toString(){
-		String txt = ""+this.id+" "+this.prenom+" "+this.nom;
+		String txt = ""+this.id+" "+this.prenom+" "+this.nom+" "+this.score;
 		return txt;
 	}
 
@@ -201,4 +205,5 @@ public class Joueur {
 		}
 		else return false;
 	}
+
 }
