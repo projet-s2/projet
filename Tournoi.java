@@ -2,6 +2,13 @@ package tournoi;
 import java.math.*;
 import liste.Liste;
 
+/**Tournoi est la classe représentant un Tournoi.
+ * 
+ * @author Yanis OUAKRIM, RICHARD Nicolas, ORHON Paul, RIALET Yohann, NIVELAIS Quentin
+ * 
+ * @version 0.1
+ */
+
 public class Tournoi{
 	
 	private Liste nouveauxJoueurs;
