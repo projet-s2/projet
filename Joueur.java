@@ -11,11 +11,11 @@ public class Joueur {
 	private boolean joue;
 	private int perf;
 	/*
-		Débutant
-		Intermédiaire
-		Confirmé
+		0 : Débutant
+		1 : Intermédiaire
+		2 : Confirmé
 	 */
-	private String niveau;
+	private int niveau;
 	private Liste anciensPart;
 
 	public Joueur(int id, String nom, String prenom, int age, char sexe,
@@ -29,6 +29,10 @@ public class Joueur {
 		this.score = 0;
 		this.joue = false;
 		this.niveau = niveau;
+		this.perf = 0;
+		//on calcule la performance en fonction de l'age
+		this.perf = 80-age;
+		this.perf+= niveau*10;
 	}
 
 	public int getId(){
@@ -82,8 +86,7 @@ public class Joueur {
 	public Liste getAnciensPart(){
 		return this.anciensPart;
 	}
-
-	public boolean aJoueAvec(Joueur j1){
+	private boolean aJoueAvec(Joueur j1){
 		boolean res = false;
 		for (int i=0;i<this.getAnciensPart().size() ; i++) {
 			if(((Joueur) this.getAnciensPart().get(i)).equals(Joueur j1)) {
@@ -93,12 +96,11 @@ public class Joueur {
 		return res;
 	}
 	public boolean estCompatibleAvec(Joueur joueur){
-		boolean res =true;
 		//On vérifie si les joueurs ont déjà joué ensemble
-		if(!this.aJoueAvec(joueur)){
-			res = false;
+		if(this.aJoueAvec(joueur)){
+			return false;
 		}
-		return res;
+		return true;
 	}
 
 	public boolean equals(Object o){
