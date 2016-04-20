@@ -12,7 +12,9 @@ public class Joueur {
 	private String nom;
 	private String prenom;
 	private int age;
-	private char sexe;
+	// 0 : homme
+	// 1 : femme
+	private boolean sexe;
 	private boolean nouveau;
 	private int score;
 	private boolean joue;
@@ -37,7 +39,7 @@ public class Joueur {
 		* @param niveau le niveau du joueur ()
 		*
 		*/
-	public Joueur(int id, String nom, String prenom, int age, char sexe,
+	public Joueur(int id, String nom, String prenom, int age, boolean sexe,
 			boolean nouveau, int niveau){
 		this.id = id;
 		this.nom = nom;
@@ -52,11 +54,14 @@ public class Joueur {
 		//on calcule la performance en fonction de l'age
 		this.perf = 80-age;
 		this.perf+= niveau*10;
+		if(sexe){
+			this.perf-=40;
+		}
 		this.anciensPart = new Liste();
 	}
 	// Tests
-		public Joueur(int id, boolean nouv){
-			this(id, "Bon", "Jean", (20+id), 'M', nouv, (id%3));
+		public Joueur(int id, boolean sexe, boolean nouv){
+			this(id, "Bon", "Jean", (20+id), sexe, nouv, (id%3));
 		}
 
 	/** Retourne l'id d'un joueur
@@ -66,7 +71,9 @@ public class Joueur {
 	public int getId(){
 		return this.id;
 	}
-
+	public void ajouterAnciensPart(Joueur j){
+		this.anciensPart.add(j);
+	}
 	/** Retourne le nom d'un joueur
 		*
 		* @return nom le nom du joueur
@@ -95,7 +102,7 @@ public class Joueur {
 		*
 		* @return sexe le sexe du joueur
 		*/
-	public char getSexe(){
+	public boolean getSexe(){
 		return this.sexe;
 	}
 
@@ -143,7 +150,11 @@ public class Joueur {
 		* @return txt l'affichage d'un joueur
 		*/
 	public String toString(){
-		String txt = ""+this.id+" "+this.prenom+" "+this.nom+" "+this.score;
+		String sx="un homme";
+		if(this.sexe){
+			sx= "une femme";
+		}
+		String txt = this.prenom + "" + this.nom +" a "+ this.age+ " ans et est "+sx+ "(perf"+this.perf+")";
 		return txt;
 	}
 

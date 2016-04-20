@@ -107,7 +107,6 @@ public class Paire {
 		return txt;
 	}
 	
-	public 
 
 	/** Retourne le score de la paire
 		*
