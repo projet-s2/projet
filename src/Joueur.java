@@ -1,4 +1,5 @@
 package tournoi;
+import liste.Liste;
 
 public class Joueur {
 	private int id;
@@ -19,7 +20,7 @@ public class Joueur {
 	private Liste anciensPart;
 
 	public Joueur(int id, String nom, String prenom, int age, char sexe,
-			boolean nouveau, String niveau){
+			boolean nouveau, int niveau){
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -33,6 +34,7 @@ public class Joueur {
 		//on calcule la performance en fonction de l'age
 		this.perf = 80-age;
 		this.perf+= niveau*10;
+		this.anciensPart = new Liste();
 	}
 
 	public int getId(){
@@ -67,7 +69,7 @@ public class Joueur {
 		return this.joue;
 	}
 
-	public String getNiveau(){
+	public int getNiveau(){
 		return this.niveau;
 	}
 
@@ -89,7 +91,7 @@ public class Joueur {
 	private boolean aJoueAvec(Joueur j1){
 		boolean res = false;
 		for (int i=0;i<this.getAnciensPart().size() ; i++) {
-			if(((Joueur) this.getAnciensPart().get(i)).equals(Joueur j1)) {
+			if(((Joueur) this.getAnciensPart().get(i)).equals(j1)) {
 				res =true;
 			}
 		}
