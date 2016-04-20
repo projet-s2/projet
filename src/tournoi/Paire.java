@@ -106,6 +106,8 @@ public class Paire {
 		String txt = this.joueur1.toString() + " et " + this.joueur2.toString() + " Perf : " + this.perf;
 		return txt;
 	}
+	
+	public 
 
 	/** Retourne le score de la paire
 		*
