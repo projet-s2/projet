@@ -26,6 +26,7 @@ public class Joueur {
 	 */
 	private int niveau;
 	private Liste anciensPart;
+	private boolean prio;
 
 
 	/** Constructeur de la classe Joueur
@@ -57,6 +58,7 @@ public class Joueur {
 		if(sexe){
 			this.perf-=40;
 		}
+		this.prio = true;
 		this.anciensPart = new Liste();
 	}
 	// Tests
@@ -130,6 +132,12 @@ public class Joueur {
 		return this.joue;
 	}
 
+	public boolean getPrio(){
+		return this.prio;
+	}
+	public void setPrio(boolean pr){
+		this.prio = pr;
+	}
 	/** Retourne le niveau d'un joueur
 		*
 		* @return niveau le niveau du joueur
@@ -151,10 +159,14 @@ public class Joueur {
 		*/
 	public String toString(){
 		String sx="un homme";
+		String prio="un homme";
 		if(this.sexe){
 			sx= "une femme";
 		}
-		String txt = this.prenom + "" + this.nom +" a "+ this.age+ " ans et est "+sx+ "(perf"+this.perf+")";
+		if(this.prio){
+			prio= "Oui";
+		}
+		String txt = this.prenom + "" + this.nom +" a "+ this.age+ " ans et est "+sx+ " Prio : " +prio;
 		return txt;
 	}
 

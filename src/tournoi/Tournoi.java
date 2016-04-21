@@ -12,7 +12,9 @@ import liste.Liste;
 public class Tournoi{
 
 	private Liste nouveauxJoueurs;
+	private Liste nouveauxJoueursClasses;
 	private Liste anciensJoueurs;
+	private Liste anciensJoueursClasses;
 	private Liste terrains;
 	private Liste paires;
 	private int nbrTerrains;
@@ -116,7 +118,28 @@ public class Tournoi{
 		if (this.anciensJoueurs.size()>=this.nouveauxJoueurs.size()){
 			tailleMin=this.nouveauxJoueurs.size()-1;
 			tailleMax=this.anciensJoueurs.size();
-			//On cherche à créer le maximum de paires ancien/nouveau
+			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs qui n'ont pas joué (prios);
+			for (int j=0; j<tailleMin; j++)
+			// On parcourt les nouveaux joueurs
+			{
+				joueur = ((Joueur)this.nouveauxJoueurs.get(j));
+				//On vérifie que le nouveau joueur est prioritaire et qu'il ne joue pas
+				if(joueur.getPrio() && (!joueur.getJoue())){
+					for (int i=0; i<tailleMax; i++){
+						//On cherche un ancien joueur compatible qui ne joue pas
+						if (joueur.estCompatibleAvec(((Joueur)this.anciensJoueurs.get(i))) && (!((Joueur)this.anciensJoueurs.get(i)).getJoue()) && (((Joueur)this.anciensJoueurs.get(i)).getPrio())){
+							//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
+							this.paires.add(new Paire(joueur,((Joueur)this.anciensJoueurs.get(i)),i,i));
+							joueur.ajouterAnciensPart(((Joueur)this.anciensJoueurs.get(i)));
+							((Joueur)this.anciensJoueurs.get(i)).ajouterAnciensPart(joueur);
+							joueur.setJoue(true);
+							((Joueur)this.anciensJoueurs.get(i)).setJoue(true);
+							break;
+						}
+					}
+				}
+			}
+			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs restants;
 			for (int j=0; j<tailleMin; j++)
 			// On parcourt les nouveaux joueurs
 			{
@@ -146,9 +169,21 @@ public class Tournoi{
 						this.paires.add(new Paire(joueur,((Joueur)this.nouveauxJoueurs.get(i)),i,i));
 						joueur.setJoue(true);
 						((Joueur)this.nouveauxJoueurs.get(i)).setJoue(true);
+						((Joueur)this.nouveauxJoueurs.get(i)).setPrio(false);
 						break;
 					}
 				}
+			}
+		}
+		//On rend prioritaires les joueurs qui ne jouent pas
+		for(int i=0;i<this.anciensJoueurs.size();i++){
+			if(!((Joueur)this.anciensJoueurs.get(i)).getJoue()){
+				((Joueur)this.anciensJoueurs.get(i)).setPrio(true);
+			}
+		}
+		for(int i=0;i<this.nouveauxJoueurs.size();i++){
+			if(!((Joueur)this.nouveauxJoueurs.get(i)).getJoue()){
+				((Joueur)this.nouveauxJoueurs.get(i)).setPrio(true);
 			}
 		}
 	}
@@ -228,6 +263,36 @@ public class Tournoi{
 		for (int i=0; i<this.nouveauxJoueurs.size(); i++){
 			((Joueur)this.nouveauxJoueurs.get(i)).setJoue(false);
 		}
+	}
+	public void calculerClassementAnciens(int gauche, int droite){
+		//Algorithme de tri rapide adapté pour ranger les scores des joueurs
+		int pivot;
+		Joueur tmp;
+		this.anciensJoueursClasses = this.anciensJoueurs;
+		if(droite > gauche){
+			pivot = (gauche+droite)/2;
+			tmp = ((Joueur) this.anciensJoueursClasses.get(gauche));
+			this.anciensJoueursClasses.set(gauche, ((Joueur) this.anciensJoueursClasses.get(pivot))) ;
+			this.anciensJoueursClasses.set(pivot, tmp) ;
+			pivot = gauche;
+			for(int i = gauche+1; i<=droite;i++){
+				if(((Joueur)this.anciensJoueursClasses.get(i)).getScore() < ((Joueur)this.anciensJoueursClasses.get(gauche)).getScore()){
+					pivot++;
+					tmp = (Joueur) this.anciensJoueursClasses.get(i);
+					this.anciensJoueursClasses.set(i, ((Joueur) this.anciensJoueursClasses.get(pivot)) );
+					this.anciensJoueursClasses.set(pivot, tmp);
+				}
+			}
+			tmp = (Joueur) this.anciensJoueursClasses.get(pivot);
+			this.anciensJoueursClasses.set(pivot, ((Joueur) this.anciensJoueursClasses.get(gauche)));
+			this.anciensJoueursClasses.set(gauche, tmp);
+			calculerClassementAnciens(gauche, pivot-1);
+			calculerClassementAnciens(pivot+1, droite);
+		}
+	}
+	public Liste getClassementAnciens(){
+		calculerClassementAnciens(0, this.anciensJoueurs.size()-1);
+		return this.anciensJoueursClasses;
 	}
 	public String toString(){
 		String res= "";
