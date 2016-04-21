@@ -18,6 +18,7 @@ public class Joueur {
 	private boolean nouveau;
 	private int score;
 	private boolean joue;
+	private boolean dansPaire;
 	private int perf;
 	/*
 		0 : Débutant
@@ -50,6 +51,7 @@ public class Joueur {
 		this.nouveau = nouveau;
 		this.score = 0;
 		this.joue = false;
+		this.setDansPaire(false);
 		this.niveau = niveau;
 		this.perf = 0;
 		//on calcule la performance en fonction de l'age
@@ -159,7 +161,7 @@ public class Joueur {
 		*/
 	public String toString(){
 		String sx="un homme";
-		String prio="un homme";
+		String prio="Non";
 		if(this.sexe){
 			sx= "une femme";
 		}
@@ -234,6 +236,12 @@ public class Joueur {
 					&& this.prenom.equals(((Joueur)o).prenom));
 		}
 		else return false;
+	}
+	public boolean getDansPaire() {
+		return this.dansPaire;
+	}
+	public void setDansPaire(boolean dansPaire) {
+		this.dansPaire = dansPaire;
 	}
 
 }

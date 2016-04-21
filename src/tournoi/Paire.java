@@ -29,6 +29,7 @@ public class Paire {
 		this.id = id;
 		this.tour = tour;
 		this.perf = j1.getPerf()+j2.getPerf();
+		this.joueursJouent(false);
 	}
 	public Paire(Joueur j1, Joueur j2){
 		this(j1, j2, 0, 0);
@@ -106,7 +107,11 @@ public class Paire {
 		String txt = this.joueur1.toString() + " et " + this.joueur2.toString() + " Perf : " + this.perf;
 		return txt;
 	}
-	
+
+	public void joueursJouent(boolean j){
+		this.joueur1.setJoue(j);
+		this.joueur2.setJoue(j);
+	}
 
 	/** Retourne le score de la paire
 		*
@@ -124,6 +129,10 @@ public class Paire {
 		this.score = score;
 	}
 
+	public boolean estPrio(){
+		return (this.joueur1.getPrio() || this.joueur2.getPrio());
+	}
+	
 	/** Redéfinition de la méthode equals()
 		*
 		* @param o l'objet à comparer
