@@ -30,9 +30,6 @@ public class Liste
   {
     return this.liste.remove(paramObject);
   }
-  public void set(int i, Object o){
-	  this.liste.set(i, o);
-  }
   public int size()
   {
     return this.liste.size();

@@ -113,8 +113,8 @@ public class Tournoi{
 		int tailleMin, tailleMax;
 		Joueur joueur;
 		//On vérifie si le nombre d'anciens est supérieur au nombre de nouveaux
-		if ( this.anciensJoueurs.size()>=this.nouveauxJoueurs.size() ){
-			tailleMin=this.nouveauxJoueurs.size();
+		if (this.anciensJoueurs.size()>=this.nouveauxJoueurs.size()){
+			tailleMin=this.nouveauxJoueurs.size()-1;
 			tailleMax=this.anciensJoueurs.size();
 			//On cherche à créer le maximum de paires ancien/nouveau
 			for (int j=0; j<tailleMin; j++)
@@ -186,10 +186,13 @@ public class Tournoi{
 	private void attribuerMatchs(){
 		Paire paire1,paire2;
 		trierPaires(0, this.paires.size()-1);
-		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paires
+		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paire
+		int j=0;
 		for (int i=0; i<Math.floor(Math.min(this.nbrTerrains,this.paires.size()/2)); i++){
-			paire1=((Paire)this.paires.get(2*i));
-			paire2=((Paire)this.paires.get(2*i+1));
+			paire1=((Paire)this.paires.get(j));
+			j++;
+			paire2=((Paire)this.paires.get(j));
+			j++;
 			((Terrain)this.terrains.get(i)).setMatch(new Match(i+1, paire1, paire2));
 		}
 		String res= "";
