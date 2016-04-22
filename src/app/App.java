@@ -8,9 +8,22 @@ public class App {
 	private static Scanner sca;
 
 	public static void main(String[] args) {
-		System.out.println("Entrez un nombre de terrains");
 		sca = new Scanner(System.in);
-		int nbTerrains = sca.nextInt();
+		int nbTerrains;
+		
+		do{
+			System.out.println("Entrez un nombre de terrains");
+			String nbTerrainsS = sca.nextLine();
+			nbTerrains=0;
+			try{
+				nbrTerrains =Integer.parseInt(nbrTerrainsS);
+			}
+			catch(NumberFormatException e){
+			System.out.println("Il faut saisir un nombre !");
+			}
+		
+		}while(nbrTerrains<=0);
+	
 		Tournoi t = new Tournoi(nbTerrains);
 		boolean nouv = true;
 		boolean sexe = true;
