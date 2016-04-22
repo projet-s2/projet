@@ -273,7 +273,9 @@ public class Tournoi{
 		for (int i=0; i<this.nbrTerrains; i++){
 			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
 				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(0);
+				((Terrain)this.terrains.get(i)).getMatch().getPaire1().ajouterMatchJoue();
 				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(0);
+				((Terrain)this.terrains.get(i)).getMatch().getPaire2().ajouterMatchJoue();
 				//On détermine les vainqueurs de chaque match
 				((Terrain)this.terrains.get(i)).getMatch().setVainqueur(((Terrain)this.terrains.get(i)).getMatch().determinerVainqueur());
 				//On modifie le score des joueurs en conséquence

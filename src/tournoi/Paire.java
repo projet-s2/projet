@@ -112,6 +112,10 @@ public class Paire {
 		this.joueur1.setJoue(j);
 		this.joueur2.setJoue(j);
 	}
+	public void ajouterMatchJoue(){
+		this.joueur1.ajouterMatchJoue();
+		this.joueur2.ajouterMatchJoue();
+	}
 
 	/** Retourne le score de la paire
 		*

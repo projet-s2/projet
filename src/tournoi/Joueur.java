@@ -28,6 +28,7 @@ public class Joueur {
 	private int niveau;
 	private Liste anciensPart;
 	private boolean prio;
+	private int nbMatchJoues;
 
 
 	/** Constructeur de la classe Joueur
@@ -62,6 +63,7 @@ public class Joueur {
 		}
 		this.prio = true;
 		this.anciensPart = new Liste();
+		this.nbMatchJoues = 0;
 	}
 	// Tests
 		public Joueur(int id, boolean sexe, boolean nouv){
@@ -161,14 +163,14 @@ public class Joueur {
 		*/
 	public String toString(){
 		String sx="un homme";
-		String prio="Non";
+		String prio="a joué au tour précédent";
 		if(this.sexe){
 			sx= "une femme";
 		}
 		if(this.prio){
-			prio= "Oui";
+			prio= "n'a pas joué au tour précédent";
 		}
-		String txt = this.prenom + "" + this.nom +" a "+ this.age+ " ans et est "+sx+ " Prio : " +prio;
+		String txt = this.prenom + " " + this.nom +" ("+sx+" de "+this.age+ " ans) " +prio+" et a joué "+this.nbMatchJoues+" fois au total";
 		return txt;
 	}
 
@@ -242,6 +244,17 @@ public class Joueur {
 	}
 	public void setDansPaire(boolean dansPaire) {
 		this.dansPaire = dansPaire;
+	}
+	/**
+	 * @return le nombre de matchs joués
+	 */
+	public int getNbMatchJoues() {
+		return nbMatchJoues;
+	}
+	/**
+	 */
+	public void ajouterMatchJoue() {
+		this.nbMatchJoues++;
 	}
 
 }
