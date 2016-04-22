@@ -29,6 +29,7 @@ public class Joueur {
 	private Liste anciensPart;
 	private boolean prio;
 	private int nbMatchJoues;
+	private boolean peutJouer;
 
 
 	/** Constructeur de la classe Joueur
@@ -40,10 +41,11 @@ public class Joueur {
 		* @param sexe le sexe du joueur
 		* @param nouveau 0 : joueur ancien / 1 : joueur nouveau
 		* @param niveau le niveau du joueur ()
+		* @param peutJouer si le joueur peut jouer
 		*
 		*/
 	public Joueur(int id, String nom, String prenom, int age, boolean sexe,
-			boolean nouveau, int niveau){
+			boolean nouveau, int niveau, boolean peutJouer){
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -64,10 +66,11 @@ public class Joueur {
 		this.prio = true;
 		this.anciensPart = new Liste();
 		this.nbMatchJoues = 0;
+		this.peutJouer = peutJouer;
 	}
 	// Tests
 		public Joueur(int id, boolean sexe, boolean nouv){
-			this(id, "Bon", "Jean", (20+id), sexe, nouv, (id%3));
+			this(id, "Bon", "Jean", (20+id), sexe, nouv, (id%3),true);
 		}
 
 	/** Retourne l'id d'un joueur
@@ -173,7 +176,22 @@ public class Joueur {
 		String txt = this.prenom + " " + this.nom +" ("+sx+" de "+this.age+ " ans) " +prio+" et a joué "+this.nbMatchJoues+" fois au total";
 		return txt;
 	}
-
+	/** Retourne si le joueur peut jouer ou non
+	*
+	* @return actif 0 : le joueur ne peut pas jouer / 1 : le joueur peut jouer
+	*/
+	public boolean peutJouer() {
+		return peutJouer;
+	}
+	
+	/** Redéfinit l'attribut "peutJouer"
+	*
+	* @param bool 0 : le joueur ne joue pas / 1 : le joueur joue
+	*/
+	public void setPeutJouer(boolean peutJouer) {
+		this.peutJouer = peutJouer;
+	}
+	
 	/** Redéfinit l'attribut "joue"
 		*
 		* @param bool 0 : le joueur ne joue pas / 1 : le joueur joue
