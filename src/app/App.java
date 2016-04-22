@@ -1,6 +1,8 @@
 package app;
 import tournoi.*;
 import java.util.Scanner;
+
+import liste.Liste;
 public class App {
 
 	private static Scanner sca;
@@ -11,18 +13,44 @@ public class App {
 		int nbTerrains = sca.nextInt();
 		Tournoi t = new Tournoi(nbTerrains);
 		boolean nouv = true;
+		boolean sexe = true;
 		for(int id=0;id<100;id++){
 			if(Math.random()>0.5){
 				nouv =false;
 			}else{
 				nouv =true;
 			}
-			t.ajouterjoueur(new Joueur(id, nouv));
-		
+			if(Math.random()>0.5){
+				sexe =false;
+			}else{
+				sexe =true;
+			}
+			t.ajouterjoueur(new Joueur(id, sexe, nouv));
+
 		}
 		t.initialiserTerrains();
 		t.demarrerTour();
 		t.finirTour();
+		t.demarrerTour();
+		t.finirTour();
+		t.demarrerTour();
+		t.finirTour();
+		t.demarrerTour();
+		t.finirTour();
+		t.demarrerTour();
+		t.finirTour();
+		t.demarrerTour();
+		t.finirTour();
+		t.demarrerTour();
+		t.finirTour();
+		t.demarrerTour();
+		t.finirTour();
+		System.out.println("Classement anciens");
+		Liste classem = t.getClassementAnciens();
+		for(int i=classem.size()-1;i>0;i--){
+			System.out.println((classem.size()-(i))+" "+((Joueur)classem.get(i)).toString()+" Score : " +((Joueur)classem.get(i)).getScore());
+		}
+
 	}
 
 }
