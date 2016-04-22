@@ -107,36 +107,50 @@ public class Tournoi{
 		
 	}
 
-	/** Appelée pour créer la liste des paires d'un tournoi
-		*
-		*
-		*
+	/** Appelée pour créer la liste des paires d'un tournoi* 
+	 	* On n'attribue un patenaire seulement aux joueurs actifs (ceux qui sont disponibles pour jouer)
+		* On cherche d'abord à faire jouer ceux qui ont le moins joué
+		* On cherche ensuite à faire jouer les joueurs qui n'ont pas joué au tour d'avant (les prios)
+		* On fait ensuite jouer les autres joueurs
 		*/
 	private void creerPaires(){
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
 		int tailleMin, tailleMax;
 		Joueur joueur;
+		//On récupères les listes des nouveaux joueurs actifs et des anciens joueurs actif
+		Liste nouveauxJoueursActifs = new Liste();
+		Liste anciensJoueursActifs = new Liste();
+		for (int i=0;i<this.nouveauxJoueurs.size();i++){
+			if(((Joueur)this.nouveauxJoueurs.get(i)).peutJouer()){
+				nouveauxJoueursActifs.add((Joueur)this.nouveauxJoueurs.get(i));
+			}
+		}
+		for (int i=0;i<this.anciensJoueurs.size();i++){
+			if(((Joueur)this.anciensJoueurs.get(i)).peutJouer()){
+				anciensJoueursActifs.add((Joueur)this.anciensJoueurs.get(i));
+			}
+		}
 		this.paires = new Liste();
 		//On vérifie si le nombre d'anciens est supérieur au nombre de nouveaux
-		if (this.anciensJoueurs.size()>=this.nouveauxJoueurs.size()){
-			tailleMin=this.nouveauxJoueurs.size();
-			tailleMax=this.anciensJoueurs.size();
+		if (anciensJoueursActifs.size()>=nouveauxJoueursActifs.size()){
+			tailleMin=nouveauxJoueursActifs.size();
+			tailleMax=anciensJoueursActifs.size();
 			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs qui n'ont pas joué (prios);
 			for (int j=0; j<tailleMin; j++)
 			// On parcourt les nouveaux joueurs
 			{
-				joueur = ((Joueur)this.nouveauxJoueurs.get(j));
+				joueur = ((Joueur)nouveauxJoueursActifs.get(j));
 				//On vérifie que le nouveau joueur est prioritaire et qu'il ne joue pas
 				if(joueur.getPrio() && (!joueur.getDansPaire())){
 					for (int i=0; i<tailleMax; i++){
 						//On cherche un ancien joueur compatible qui ne joue pas
-						if (joueur.estCompatibleAvec(((Joueur)this.anciensJoueurs.get(i))) && (!((Joueur)this.anciensJoueurs.get(i)).getDansPaire()) && (((Joueur)this.anciensJoueurs.get(i)).getPrio())){
+						if (joueur.estCompatibleAvec(((Joueur)anciensJoueursActifs.get(i))) && (!((Joueur)anciensJoueursActifs.get(i)).getDansPaire()) && (((Joueur)anciensJoueursActifs.get(i)).getPrio())){
 							//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-							this.paires.add(new Paire(joueur,((Joueur)this.anciensJoueurs.get(i)),i,i));
-							joueur.ajouterAnciensPart(((Joueur)this.anciensJoueurs.get(i)));
-							((Joueur)this.anciensJoueurs.get(i)).ajouterAnciensPart(joueur);
+							this.paires.add(new Paire(joueur,((Joueur)anciensJoueursActifs.get(i)),i,i));
+							joueur.ajouterAnciensPart(((Joueur)anciensJoueursActifs.get(i)));
+							((Joueur)anciensJoueursActifs.get(i)).ajouterAnciensPart(joueur);
 							joueur.setDansPaire(true);
-							((Joueur)this.anciensJoueurs.get(i)).setDansPaire(true);
+							((Joueur)anciensJoueursActifs.get(i)).setDansPaire(true);
 							break;
 						}
 					}
@@ -146,32 +160,32 @@ public class Tournoi{
 			for (int j=0; j<tailleMin; j++)
 			// On parcourt les nouveaux joueurs
 			{
-				joueur = ((Joueur)this.nouveauxJoueurs.get(j));
+				joueur = ((Joueur)nouveauxJoueursActifs.get(j));
 				for (int i=0; i<tailleMax; i++){
 					//On cherche un ancien joueur compatible qui ne joue pas
-					if (joueur.estCompatibleAvec(((Joueur)this.anciensJoueurs.get(i))) && (!((Joueur)this.anciensJoueurs.get(i)).getDansPaire())){
+					if (joueur.estCompatibleAvec(((Joueur)anciensJoueursActifs.get(i))) && (!((Joueur)anciensJoueursActifs.get(i)).getDansPaire())){
 						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-						this.paires.add(new Paire(joueur,((Joueur)this.anciensJoueurs.get(i)),i,i));
-						joueur.ajouterAnciensPart(((Joueur)this.anciensJoueurs.get(i)));
-						((Joueur)this.anciensJoueurs.get(i)).ajouterAnciensPart(joueur);
+						this.paires.add(new Paire(joueur,((Joueur)anciensJoueursActifs.get(i)),i,i));
+						joueur.ajouterAnciensPart(((Joueur)anciensJoueursActifs.get(i)));
+						((Joueur)anciensJoueursActifs.get(i)).ajouterAnciensPart(joueur);
 						joueur.setDansPaire(true);
-						((Joueur)this.anciensJoueurs.get(i)).setDansPaire(true);
+						((Joueur)anciensJoueursActifs.get(i)).setDansPaire(true);
 						break;
 					}
 				}
 			}
 		}
 		else{
-			tailleMin=this.anciensJoueurs.size();
-			tailleMax=this.nouveauxJoueurs.size();
+			tailleMin=anciensJoueursActifs.size();
+			tailleMax=nouveauxJoueursActifs.size();
 			for (int j=0; j<tailleMin; j++)
 			{
-				joueur = ((Joueur)this.anciensJoueurs.get(j));
+				joueur = ((Joueur)anciensJoueursActifs.get(j));
 				for (int i=0; i<tailleMax; i++){
-					if (joueur.estCompatibleAvec(((Joueur)this.nouveauxJoueurs.get(i))) && (!((Joueur) this.nouveauxJoueurs.get(i)).getDansPaire())){
-						this.paires.add(new Paire(joueur,((Joueur)this.nouveauxJoueurs.get(i)),i,i));
+					if (joueur.estCompatibleAvec(((Joueur)nouveauxJoueursActifs.get(i))) && (!((Joueur) nouveauxJoueursActifs.get(i)).getDansPaire())){
+						this.paires.add(new Paire(joueur,((Joueur)nouveauxJoueursActifs.get(i)),i,i));
 						joueur.setDansPaire(true);
-						((Joueur)this.nouveauxJoueurs.get(i)).setDansPaire(true);
+						((Joueur)nouveauxJoueursActifs.get(i)).setDansPaire(true);
 						break;
 					}
 				}
@@ -181,10 +195,8 @@ public class Tournoi{
 	}
 
 	/** Attribue un match à deux paires
-		*
-		*
-		*
-		*/
+	 	
+	*/
 	private void trierPaires(int gauche, int droite){
 		//Algorithme de tri rapide adapté pour ranger les performances des paires
 		int pivot;
