@@ -314,6 +314,11 @@ public class Tournoi{
 			tmp = (Joueur) this.anciensJoueursClasses.get(pivot);
 			this.anciensJoueursClasses.set(pivot, ((Joueur) this.anciensJoueursClasses.get(gauche)));
 			this.anciensJoueursClasses.set(gauche, tmp);
+			Liste classementCroissant = new Liste();
+			for(int i=this.anciensJoueursClasses.size()-1;i>0;i--){
+				classementCroissant.add(((Joueur)this.anciensJoueursClasses.get(i)));
+			}
+			this.anciensJoueursClasses = classementCroissant;
 			calculerClassementAnciens(gauche, pivot-1);
 			calculerClassementAnciens(pivot+1, droite);
 		}
