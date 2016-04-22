@@ -291,14 +291,51 @@ public class Tournoi{
 		*
 		*/
 	public void finirTour(){
+		
+		Scanner sca= new Scanner(System.in);
+		
 		//On demande le score des équipes pour chaque terrain
 		for (int i=0; i<this.nbrTerrains; i++){
 			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
 			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
 				//Il faudrait demander de rentrer les scores 
-				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(0);
+				
+				int score;
+				Match variablePratique;
+				do{
+					variablePratique = ((Terrain)this.terrains.get(i)).getMatch();
+					System.out.println("Entrez un score pour la paire 1 : \n" + variablePratique.getPaire1().getJoueur1().getNom() + " " + variablePratique.getPaire1().getJoueur1().getPrenom()
+							+ " et " + variablePratique.getPaire1().getJoueur2().getNom() + " " + variablePratique.getPaire1().getJoueur2().getPrenom()
+							+"\n Du terrain "+(i+1));
+					String scoreS = sca.nextLine();
+					score=-1;
+					try{
+						score =Integer.parseInt(scoreS);
+					}
+					catch(NumberFormatException e){
+					System.out.println("Il faut saisir un nombre !");
+					}
+				
+				}while(score<0);
+				
+				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(score);
 				((Terrain)this.terrains.get(i)).getMatch().getPaire1().ajouterMatchJoue();
-				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(0);
+				
+				do{
+					System.out.println("Entrez un score pour la paire 2 : \n" + variablePratique.getPaire2().getJoueur1().getNom() + " " + variablePratique.getPaire2().getJoueur1().getPrenom()
+							+ " et " + variablePratique.getPaire2().getJoueur2().getNom() + " " + variablePratique.getPaire2().getJoueur2().getPrenom()
+							+"\n Du terrain "+(i+1));
+					String scoreS = sca.nextLine();
+					score=-1;
+					try{
+						score =Integer.parseInt(scoreS);
+					}
+					catch(NumberFormatException e){
+					System.out.println("Il faut saisir un nombre !");
+					}
+				
+				}while(score<0);
+				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(score);
 				((Terrain)this.terrains.get(i)).getMatch().getPaire2().ajouterMatchJoue();
 				//On détermine les vainqueurs de chaque match
 				((Terrain)this.terrains.get(i)).getMatch().setVainqueur(((Terrain)this.terrains.get(i)).getMatch().determinerVainqueur());
