@@ -1,4 +1,4 @@
-package aplication;
+package app;
 
 import tournoi.*;
 import java.util.Scanner;

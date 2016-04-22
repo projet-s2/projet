@@ -246,19 +246,20 @@ public class Tournoi{
 		//On mélange cette liste
 		matchs.melangerListe();
 		//On parcourt les terrains et on leur attribue des matchs prios
+		int p=0;
 		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
 			if(((Match) matchs.get(i)).estPrio()){
 				((Match) matchs.get(i)).pairesJouent(true);
-				((Terrain)this.terrains.get(i)).setMatch((Match) matchs.get(i));
+				((Terrain)this.terrains.get(i)).setMatch((Match) matchs.get(p));
+				p++;
 			}
 		}
-		int p=i;
 		//On parcourt les matchs restants et on leur attribue les terrains restants
 		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
 			if(!((Match) matchs.get(i)).estPrio()){
 				((Match) matchs.get(i)).pairesJouent(true);
-				p++;
 				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i));
+				p++;
 			}
 		}
 		//On affiche les matchs pour voir si tout est en ordre
