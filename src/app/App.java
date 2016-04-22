@@ -47,8 +47,8 @@ public class App {
 		t.finirTour();
 		System.out.println("Classement anciens");
 		Liste classem = t.getClassementAnciens();
-		for(int i=classem.size()-1;i>0;i--){
-			System.out.println((classem.size()-(i))+" "+((Joueur)classem.get(i)).toString()+" Score : " +((Joueur)classem.get(i)).getScore());
+		for(int i=0;i<classem.size();i++){
+			System.out.println((i+1)+" "+((Joueur)classem.get(i)).toString()+" Score : " +((Joueur)classem.get(i)).getScore());
 		}
 
 	}

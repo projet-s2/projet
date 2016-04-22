@@ -314,18 +314,18 @@ public class Tournoi{
 			tmp = (Joueur) this.anciensJoueursClasses.get(pivot);
 			this.anciensJoueursClasses.set(pivot, ((Joueur) this.anciensJoueursClasses.get(gauche)));
 			this.anciensJoueursClasses.set(gauche, tmp);
-			Liste classementCroissant = new Liste();
-			for(int i=this.anciensJoueursClasses.size()-1;i>0;i--){
-				classementCroissant.add(((Joueur)this.anciensJoueursClasses.get(i)));
-			}
-			this.anciensJoueursClasses = classementCroissant;
 			calculerClassementAnciens(gauche, pivot-1);
 			calculerClassementAnciens(pivot+1, droite);
 		}
 	}
 	public Liste getClassementAnciens(){
 		calculerClassementAnciens(0, this.anciensJoueurs.size()-1);
-		return this.anciensJoueursClasses;
+		Liste classem = this.anciensJoueursClasses;
+		Liste classem2 = new Liste();
+		for(int i=classem.size()-1;i>0;i--){
+			classem2.add((Joueur)classem.get(i));
+		}
+		return classem2;
 	}
 	public String toString(){
 		String res= "";
