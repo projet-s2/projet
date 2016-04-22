@@ -20,7 +20,7 @@ public class Tournoi{
 	private int nbrTerrains;
 /** Constructeur de la classe tournoi
 	*
-	* @param nbrTerrains
+	* @param nbrTerrains le nombre de terrains disponibles pour le tournoi
 	*
 	*/
 	public Tournoi(int nbrTerrains){
@@ -33,7 +33,7 @@ public class Tournoi{
 
 /** Retourne la liste de nouveaux joueurs
 	*
-	* @return Une liste de Tournoi, qui correspond à celle de tous les nouveaux joueurs
+	* @return la liste des nouveaux adhérents joueurs
 	*
 	*/
 	public Liste getNouveauxJoueurs() {
@@ -42,7 +42,7 @@ public class Tournoi{
 
 	/** Retourne la liste des anciens joueurs
 		*
-		* @return Une liste de Tournoi, qui correspond à celle de tous les anciens joueurs
+		* @return la liste des anciens adhérents joueurs
 		*
 		*/
 	public Liste getAnciensJoueurs() {
@@ -51,18 +51,16 @@ public class Tournoi{
 
 	/** Retourne la liste des terrains
 		*
-		* @return Une liste de Tournoi, qui correspond à celle de tous les terrains
+		* @return la liste des terrains
 		*
 		*/
 	public Liste getTerrains() {
 		return this.terrains;
 	}
 
-	/** Initialise tous les terrains
-		*
-		*
-		*
-		*/
+	/** Initialise les terrains disponibles
+	 * 
+	*/
 	public void initialiserTerrains(){
 		for (int i=0; i<this.nbrTerrains; i++){
 			this.terrains.add(new Terrain(i+1));
@@ -71,7 +69,7 @@ public class Tournoi{
 
 	/** Retourne le nombre de terrains
 		*
-		* @return Un entier de Tournoi, correspondant au nombre de terrains
+		* @return le nombre de terrains disponibles
 		*
 		*/
 	public int getNbrTerrains() {
@@ -80,7 +78,7 @@ public class Tournoi{
 
 	/** Ajoute un joueur à la liste des joueurs d'un tournoi
 		*
-		* @param joueur
+		* @param joueur Le joueur que l'on souhaite ajouter
 		*
 		*/
 	public void ajouterjoueur(Joueur joueur){
@@ -91,9 +89,10 @@ public class Tournoi{
 		}
 	}
 
-	/** Appelée pour démarrer un tour
-		*
-		*
+	/** Appelée pour démarrer un tour,
+		* Comprend un mélange des listes de joueurs,
+		* La création des paires,
+		* La création des matchs à partir des paires
 		*
 		*/
 	public void demarrerTour(){
@@ -107,9 +106,9 @@ public class Tournoi{
 		
 	}
 
-	/** Appelée pour créer la liste des paires d'un tournoi* 
-	 	* On n'attribue un patenaire seulement aux joueurs actifs (ceux qui sont disponibles pour jouer)
-		* On cherche d'abord à faire jouer ceux qui ont le moins joué
+	/** Appelée pour créer la liste des paires d'un tournoi 
+	 	* On attribue un partenaire uniquement aux joueurs actifs (ceux qui sont disponibles pour jouer)
+		* On cherche d'abord à faire jouer ceux qui ont le moins participé
 		* On cherche ensuite à faire jouer les joueurs qui n'ont pas joué au tour d'avant (les prios)
 		* On fait ensuite jouer les autres joueurs
 		*/
@@ -191,14 +190,17 @@ public class Tournoi{
 				}
 			}
 		}
-		//On rend prioritaires les joueurs qui ne jouent pas
 	}
 
-	/** Attribue un match à deux paires
-	 	
-	*/
+	/** Algorithme de tri rapide adapté pour ranger les performances des paires
+	 * 
+	 * @param gauche L'indice minimal de la liste à trier
+	 * 
+	 * @param droite L'indice maximal de la liste à trier
+	 * 
+	 */
+	
 	private void trierPaires(int gauche, int droite){
-		//Algorithme de tri rapide adapté pour ranger les performances des paires
 		int pivot;
 		Paire tmp;
 		if(droite > gauche){
@@ -222,6 +224,10 @@ public class Tournoi{
 			trierPaires(pivot+1, droite);
 		}
 	}
+	
+	/** Attribue un match pour un maximum de paires
+	 * 
+	 */
 	private void attribuerMatchs(){
 		Paire paire1,paire2;
 		trierPaires(0, this.paires.size()-1);
@@ -266,7 +272,7 @@ public class Tournoi{
 			res +=((Terrain)this.terrains.get(i1)).getMatch().toString()+"\n";
 		}
 		System.out.println(res);
-		//On parcourt les anciens joueur et on rend prioritaires ceux qui ne jouent pas
+		//On parcourt les anciens joueurs et on rend prioritaires ceux qui ne jouent pas
 		for(int i1=0; i1<this.anciensJoueurs.size();i1++){
 			((Joueur) this.anciensJoueurs.get(i1)).setPrio(!((Joueur) this.anciensJoueurs.get(i1)).getJoue());
 		}
@@ -275,7 +281,7 @@ public class Tournoi{
 		}
 	}
 
-	/** Appelée pour finir un tour du tournoi
+	/** Appelée pour finir un tour et mettre à jour les scores
 		*
 		*
 		*
@@ -283,7 +289,9 @@ public class Tournoi{
 	public void finirTour(){
 		//On demande le score des équipes pour chaque terrain
 		for (int i=0; i<this.nbrTerrains; i++){
+			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
 			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
+				//Il faudrait demander de rentrer les scores 
 				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(0);
 				((Terrain)this.terrains.get(i)).getMatch().getPaire1().ajouterMatchJoue();
 				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(0);
@@ -304,8 +312,11 @@ public class Tournoi{
 			((Joueur)this.nouveauxJoueurs.get(i)).setDansPaire(false);
 		}
 	}
+	
+	/**
+	 * Tri rapide pour classer les joueurs selon leur score
+	 */
 	public void calculerClassementAnciens(int gauche, int droite){
-		//Algorithme de tri rapide adapté pour ranger les scores des joueurs
 		int pivot;
 		Joueur tmp;
 		this.anciensJoueursClasses = this.anciensJoueurs;
@@ -339,8 +350,11 @@ public class Tournoi{
 		}
 		return classem2;
 	}
+	
+	/**
+	 * Tri rapide pour classer les joueurs selon leur score
+	 */
 	public void calculerClassementNouveaux(int gauche, int droite){
-		//Algorithme de tri rapide adapté pour ranger les scores des joueurs
 		int pivot;
 		Joueur tmp;
 		this.nouveauxJoueursClasses = this.nouveauxJoueurs;
@@ -365,6 +379,10 @@ public class Tournoi{
 			calculerClassementNouveaux(pivot+1, droite);
 		}
 	}
+	
+	/** Renvoie le classement des nouveaux joueurs
+	 * @return le classement des nouveaux adhérents joueurs
+	 */
 	public Liste getClassementNouveaux(){
 		calculerClassementNouveaux(0, this.nouveauxJoueurs.size()-1);
 		Liste classem = this.nouveauxJoueursClasses;
@@ -374,6 +392,10 @@ public class Tournoi{
 		}
 		return classem2;
 	}
+	
+	/** Redéfinition la méthode public toString
+	 * @return L'état de toutes les paires à un moment donné
+	 */
 	public String toString(){
 		String res= "";
 		for(int i=0; i<this.paires.size();i++){
