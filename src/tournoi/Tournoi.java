@@ -237,42 +237,43 @@ public class Tournoi{
 	private void attribuerMatchs(){
 		trierPaires(0, this.paires.size()-1);
 		//On créer une liste de matchs avec les paires couplées par niveau
-		int i;
+		int a;
 		Liste matchs = new Liste();
-		for(i=0;0<Math.floor(this.paires.size()/2);i+=2){
-			matchs.add(new Match((Paire) this.paires.get(i),(Paire) this.paires.get(i+1)));
+		for(a=0;a<this.paires.size();a+=2){
+			matchs.add(new Match(((Paire) this.paires.get(a)),((Paire) this.paires.get(a+1))));
 		}
 		//On mélange cette liste
-		matchs.melangerListe();
+		matchs =matchs.melangerListe();
 		//On parcourt les terrains et on leur attribue des matchs prios
 		int p=0;
+		int i;
 		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
 			if(((Match) matchs.get(i)).estPrio()){
-				((Match) matchs.get(i)).pairesJouent(true);
-				((Terrain)this.terrains.get(i)).setMatch((Match) matchs.get(p));
-				p++;
-			}
-		}
-		//On parcourt les matchs restants et on leur attribue les terrains restants
-		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
-			if(!((Match) matchs.get(i)).estPrio()){
 				((Match) matchs.get(i)).pairesJouent(true);
 				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i));
 				p++;
 			}
 		}
+		//On parcourt les matchs restants et on leur attribue les terrains restants
+		for (int i1=0; i1<Math.min(this.nbrTerrains,matchs.size()); i1++){
+			if(!((Match) matchs.get(i1)).estPrio()){
+				((Match) matchs.get(i1)).pairesJouent(true);
+				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i1));
+				p++;
+			}
+		}
 		//On affiche les matchs pour voir si tout est en ordre
 		String res= "";
-		for(int i1=0; i1<Math.min(this.nbrTerrains,matchs.size());i1++){
-			res+=((Terrain)this.terrains.get(i1)).getMatch().toString()+"\n";
+		for(int i2=0; i2<Math.min(this.nbrTerrains,matchs.size());i2++){
+			res+=((Terrain)this.terrains.get(i2)).getMatch().toString()+"\n";
 		}
 		System.out.println(res);
 		//On parcourt les anciens joueurs et on rend prioritaires ceux qui ne jouent pas
-		for(int i1=0; i1<this.anciensJoueurs.size();i1++){
-			((Joueur) this.anciensJoueurs.get(i1)).setPrio(!((Joueur) this.anciensJoueurs.get(i1)).getJoue());
+		for(int i3=0; i3<this.anciensJoueurs.size();i3++){
+			((Joueur) this.anciensJoueurs.get(i3)).setPrio(!((Joueur) this.anciensJoueurs.get(i3)).getJoue());
 		}
-		for(int i1=0; i1<this.nouveauxJoueurs.size();i1++){
-			((Joueur) this.nouveauxJoueurs.get(i1)).setPrio(!((Joueur) this.nouveauxJoueurs.get(i1)).getJoue());
+		for(int i4=0; i4<this.nouveauxJoueurs.size();i4++){
+			((Joueur) this.nouveauxJoueurs.get(i4)).setPrio(!((Joueur) this.nouveauxJoueurs.get(i4)).getJoue());
 		}
 	}
 
