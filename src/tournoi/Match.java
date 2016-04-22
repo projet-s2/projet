@@ -7,22 +7,19 @@ package tournoi;
  * @version 0.1
  */
 public class Match {
-	private int id;
 	private Paire paire1;
 	private Paire paire2;
 	private Paire vainqueur;
 
 	/** Constructeur de la classe Match
 		*
-		* @param id l'id d'un match
 		* @param laPaire1 la première paire du match
 		* @param laPaire2 la deuxième paire du match
 		*
 		*/
-	public Match(int id, Paire laPaire1, Paire laPaire2){
+	public Match(Paire laPaire1, Paire laPaire2){
 		this.paire1 = laPaire1;
 		this.paire2 = laPaire2;
-		this.id = id;
 		this.vainqueur=null;
 	}
 
@@ -44,15 +41,6 @@ public class Match {
 		return this.paire2;
 	}
 
-	/** Retourne l'id d'un match
-		*
-		* @return l'id du match
-		*
-		*/
-	public int getId(){
-		return this.id;
-	}
-
 	/** Redéfinit l'attribut "paire1"
 		*
 		* @param p1 la première paire du match
@@ -69,15 +57,6 @@ public class Match {
 		*/
 	public void setPaire2(Paire p2){
 		this.paire2 = p2;
-	}
-
-	/** Redéfinit l'attribut "id"
-		*
-		* @param lIdMatch l'id d'un match
-		*
-		*/
-	public void setId(int lIdMatch){
-		this.id = lIdMatch;
 	}
 
 	/** Redéfinit l'attribut "vainqueur"
@@ -153,6 +132,16 @@ public class Match {
 	public String toString(){
 		String txt = this.paire1.toString() + " jouent contre "+this.paire2.toString();
 		return txt;
+	}
+	public boolean getPairesJouent(){
+		return (paire1.getJoueursJouent() && paire2.getJoueursJouent());
+	}
+	public void pairesJouent(boolean j){
+		paire1.joueursJouent(j);
+		paire2.joueursJouent(j);
+	}
+	public boolean estPrio(){
+		return (paire1.estPrio() || paire2.estPrio());
 	}
 
 }

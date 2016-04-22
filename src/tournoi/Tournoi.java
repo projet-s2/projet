@@ -228,52 +228,43 @@ public class Tournoi{
 	 * Ce qui se passe : les paires les plus nulles sont les premières à avoir un terrain d'attribué
 	 * Ce qu'on veut faire : chaque paire a la même probabilité de se voir attribuer un terrain
 	 * Pour cela
-	 * On créée une liste de matches avec les paires couplées par niveau
-	 * On mélange cette liste
-	 * On attribue les terrains
+	 * On créée une liste de matchs
+	 * On ajoute des matchs prios avec des paires prios
+	 * On ajoutes des matchs avec les paires restantes
+	 * On mélange la liste de matchs
+	 * On attribue les terrains aux matchs prio
+	 * On attribue les terrains aux autres matchs
 	 */
 	private void attribuerMatchs(){
-		Paire paire1,paire2;
 		trierPaires(0, this.paires.size()-1);
-		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paires prio
-		int j=0;
+		//On créer une liste de matchs avec les paires couplées par niveau
 		int i;
-		for (i=0; i<Math.floor(Math.min(this.nbrTerrains,this.paires.size()/2)); i++){
-			if(((Paire)this.paires.get(j)).estPrio()){
-				paire1=((Paire)this.paires.get(j));
-				paire1.joueursJouent(true);
-				j++;
-				paire2=((Paire)this.paires.get(j));
-				paire2.joueursJouent(true);
-				j++;
-				((Terrain)this.terrains.get(i)).setMatch(new Match(i+1, paire1, paire2));
-			}else{
-				i--;
-				j++;
-			}
-			if(j>=(this.paires.size()-2)){
-				break;
+		Liste matchs = new Liste();
+		for(i=0;0<Math.floor(this.paires.size()/2);i+=2){
+			matchs.add(new Match((Paire) this.paires.get(i),(Paire) this.paires.get(i+1)));
+		}
+		//On mélange cette liste
+		matchs.melangerListe();
+		//On parcourt les terrains et on leur attribue des matchs prios
+		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
+			if(((Match) matchs.get(i)).estPrio()){
+				((Match) matchs.get(i)).pairesJouent(true);
+				((Terrain)this.terrains.get(i)).setMatch((Match) matchs.get(i));
 			}
 		}
-		//On parcourt les terrains et on leur attribue des matchs que l'on crée à partir des paires restantes
-		j=0;
-		for (int p=i; i<Math.floor(Math.min(this.nbrTerrains,this.paires.size()/2)); i++){
-			if(!((Paire)this.paires.get(j)).estPrio()){
-				paire1=((Paire)this.paires.get(j));
-				paire1.joueursJouent(true);
-				j++;
-				paire2=((Paire)this.paires.get(j));
-				paire2.joueursJouent(true);
-				j++;
-				((Terrain)this.terrains.get(i)).setMatch(new Match(i+1, paire1, paire2));
-			}else{
-				i--;
-				j++;
+		int p=i;
+		//On parcourt les matchs restants et on leur attribue les terrains restants
+		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
+			if(!((Match) matchs.get(i)).estPrio()){
+				((Match) matchs.get(i)).pairesJouent(true);
+				p++;
+				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i));
 			}
 		}
+		//On affiche les matchs pour voir si tout est en ordre
 		String res= "";
-		for(int i1=0; i1<Math.floor(Math.min(this.nbrTerrains,this.paires.size()/2));i1++){
-			res +=((Terrain)this.terrains.get(i1)).getMatch().toString()+"\n";
+		for(int i1=0; i1<Math.min(this.nbrTerrains,matchs.size());i1++){
+			res+=((Terrain)this.terrains.get(i1)).getMatch().toString()+"\n";
 		}
 		System.out.println(res);
 		//On parcourt les anciens joueurs et on rend prioritaires ceux qui ne jouent pas

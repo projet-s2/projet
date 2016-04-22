@@ -112,6 +112,10 @@ public class Paire {
 		this.joueur1.setJoue(j);
 		this.joueur2.setJoue(j);
 	}
+	public boolean getJoueursJouent(){
+		return (this.joueur1.getJoue() && this.joueur2.getJoue());
+	}
+	
 	public void ajouterMatchJoue(){
 		this.joueur1.ajouterMatchJoue();
 		this.joueur2.ajouterMatchJoue();
