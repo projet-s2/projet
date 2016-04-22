@@ -1,4 +1,4 @@
-package app;
+package aplication;
 
 import tournoi.*;
 import java.util.Scanner;
@@ -71,23 +71,23 @@ public class App {
 		}while(nbTours<=0);
 		
 		
-		for (int i = 0; i<nbTours; i++)
-		t.demarrerTour();
-		//On doit pouvoir attendre avant de finir au cas où l'on souhaite modifier des paires
-		t.finirTour();
+		for (int i = 0; i<nbTours; i++){
+			t.demarrerTour();
+			//On doit pouvoir attendre avant de finir au cas où l'on souhaite modifier des paires
+			t.finirTour();
 		
 		
-		System.out.println("Classement anciens");
-		Liste classem = t.getClassementAnciens();
-		for(int i=0;i<classem.size();i++){
-			System.out.println((i+1)+" "+((Joueur)classem.get(i)).toString()+" Score : " +((Joueur)classem.get(i)).getScore());
+			System.out.println("Classement anciens");
+			Liste classem = t.getClassementAnciens();
+			for(int j=0;j<classem.size();j++){
+				System.out.println((j+1)+" "+((Joueur)classem.get(j)).toString()+" Score : " +((Joueur)classem.get(j)).getScore());
+			}
+			System.out.println("\nClassement nouveaux");
+			classem = t.getClassementNouveaux();
+			for(int j=0;j<classem.size();j++){
+				System.out.println((j+1)+" "+((Joueur)classem.get(j)).toString()+" Score : " +((Joueur)classem.get(j)).getScore());
+			}
 		}
-		System.out.println("\nClassement nouveaux");
-		classem = t.getClassementNouveaux();
-		for(int i=0;i<classem.size();i++){
-			System.out.println((i+1)+" "+((Joueur)classem.get(i)).toString()+" Score : " +((Joueur)classem.get(i)).getScore());
-		}
-		//
 
 	}
 
