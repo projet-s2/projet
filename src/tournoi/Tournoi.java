@@ -1,6 +1,7 @@
 package tournoi;
 
 import liste.Liste;
+import java.util.Scanner;
 
 /**Tournoi est la classe représentant un Tournoi.
  *
