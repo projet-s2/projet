@@ -224,7 +224,6 @@ public class Tournoi{
 			trierPaires(pivot+1, droite);
 		}
 	}
-<<<<<<< HEAD
 	/* On attribue les match à des paires
 	 * Ce qui se passe : les paires les plus nulles sont les premières à avoir un terrain d'attribué
 	 * Ce qu'on veut faire : chaque paire a la même probabilité de se voir attribuer un terrain
@@ -232,11 +231,6 @@ public class Tournoi{
 	 * On créée une liste de matches avec les paires couplées par niveau
 	 * On mélange cette liste
 	 * On attribue les terrains
-=======
-	
-	/** Attribue un match pour un maximum de paires
-	 * 
->>>>>>> origin/master
 	 */
 	private void attribuerMatchs(){
 		Paire paire1,paire2;
