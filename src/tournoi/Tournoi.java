@@ -229,9 +229,7 @@ public class Tournoi{
 	 * Ce qui se passe : les paires les plus nulles sont les premières à avoir un terrain d'attribué
 	 * Ce qu'on veut faire : chaque paire a la même probabilité de se voir attribuer un terrain
 	 * Pour cela
-	 * On créée une liste de matchs
-	 * On ajoute des matchs prios avec des paires prios
-	 * On ajoutes des matchs avec les paires restantes
+	 * On créée une liste de matchs avec les paires rangées par niveau
 	 * On mélange la liste de matchs
 	 * On attribue les terrains aux matchs prio
 	 * On attribue les terrains aux autres matchs
