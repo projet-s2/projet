@@ -66,4 +66,12 @@ public class Terrain{
   public Match getMatch(){
     return this.match;
   }
+  
+  public String toString(){
+	  String s = this.numero + " ";
+	  if(this.match==null){
+		  s+="OUI";
+	  }
+	  return s;
+  }
 }
