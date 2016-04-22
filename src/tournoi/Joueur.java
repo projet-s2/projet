@@ -198,6 +198,9 @@ public class Joueur {
 		*/
 	public void setJoue(boolean bool){
 		this.joue=bool;
+		if(bool){
+			this.nbMatchJoues++;
+		}
 	}
 
 	/** Redéfinit l'attribut "score"
