@@ -2,8 +2,8 @@ package aplication;
 
 import tournoi.*;
 import java.util.Scanner;
-
 import liste.Liste;
+
 public class App {
 
 	private static Scanner sca;
@@ -70,12 +70,14 @@ public class App {
 			
 		}while(nbTours<=0);
 		
-		
 		for (int i = 0; i<nbTours; i++){
+			
 			t.demarrerTour();
+			
+			
 			//On doit pouvoir attendre avant de finir au cas où l'on souhaite modifier des paires
 			t.finirTour();
-		
+			
 		
 			System.out.println("Classement anciens");
 			Liste classem = t.getClassementAnciens();
