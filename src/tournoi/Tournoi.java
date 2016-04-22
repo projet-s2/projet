@@ -327,6 +327,41 @@ public class Tournoi{
 		}
 		return classem2;
 	}
+	public void calculerClassementNouveaux(int gauche, int droite){
+		//Algorithme de tri rapide adapté pour ranger les scores des joueurs
+		int pivot;
+		Joueur tmp;
+		this.nouveauxJoueursClasses = this.nouveauxJoueurs;
+		if(droite > gauche){
+			pivot = (gauche+droite)/2;
+			tmp = ((Joueur) this.nouveauxJoueursClasses.get(gauche));
+			this.nouveauxJoueursClasses.set(gauche, ((Joueur) this.nouveauxJoueursClasses.get(pivot))) ;
+			this.nouveauxJoueursClasses.set(pivot, tmp) ;
+			pivot = gauche;
+			for(int i = gauche+1; i<=droite;i++){
+				if(((Joueur)this.nouveauxJoueursClasses.get(i)).getScore() < ((Joueur)this.nouveauxJoueursClasses.get(gauche)).getScore()){
+					pivot++;
+					tmp = (Joueur) this.nouveauxJoueursClasses.get(i);
+					this.nouveauxJoueursClasses.set(i, ((Joueur) this.nouveauxJoueursClasses.get(pivot)) );
+					this.nouveauxJoueursClasses.set(pivot, tmp);
+				}
+			}
+			tmp = (Joueur) this.nouveauxJoueursClasses.get(pivot);
+			this.nouveauxJoueursClasses.set(pivot, ((Joueur) this.nouveauxJoueursClasses.get(gauche)));
+			this.nouveauxJoueursClasses.set(gauche, tmp);
+			calculerClassementNouveaux(gauche, pivot-1);
+			calculerClassementNouveaux(pivot+1, droite);
+		}
+	}
+	public Liste getClassementNouveaux(){
+		calculerClassementNouveaux(0, this.nouveauxJoueurs.size()-1);
+		Liste classem = this.nouveauxJoueursClasses;
+		Liste classem2 = new Liste();
+		for(int i=classem.size()-1;i>0;i--){
+			classem2.add((Joueur)classem.get(i));
+		}
+		return classem2;
+	}
 	public String toString(){
 		String res= "";
 		for(int i=0; i<this.paires.size();i++){

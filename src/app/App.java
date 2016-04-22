@@ -50,6 +50,11 @@ public class App {
 		for(int i=0;i<classem.size();i++){
 			System.out.println((i+1)+" "+((Joueur)classem.get(i)).toString()+" Score : " +((Joueur)classem.get(i)).getScore());
 		}
+		System.out.println("\nClassement nouveaux");
+		classem = t.getClassementAnciens();
+		for(int i=0;i<classem.size();i++){
+			System.out.println((i+1)+" "+((Joueur)classem.get(i)).toString()+" Score : " +((Joueur)classem.get(i)).getScore());
+		}
 
 	}
 
