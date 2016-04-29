@@ -141,7 +141,7 @@ public class Match {
 		paire2.joueursJouent(j);
 	}
 	public boolean estPrio(){
-		return (paire1.estPrio() || paire2.estPrio());
+		return (paire1.estPrio() && paire2.estPrio());
 	}
 
 }

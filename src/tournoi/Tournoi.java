@@ -98,8 +98,8 @@ public class Tournoi{
 		*
 		*/
 	public void demarrerTour(){
-		this.anciensJoueurs = this.anciensJoueurs.melangerListe();
-		this.nouveauxJoueurs = this.nouveauxJoueurs.melangerListe();
+		trierAnciensJoueurs(0, this.anciensJoueurs.size()-1);
+		trierNouveauxJoueurs(0, this.nouveauxJoueurs.size()-1);
 		this.creerPaires();
 		for (int i=0; i<this.nbrTerrains; i++){
 			((Terrain)this.terrains.get(i)).setMatch(null);
@@ -107,7 +107,54 @@ public class Tournoi{
 		this.attribuerMatchs();
 		
 	}
-
+	private void trierNouveauxJoueurs(int gauche, int droite){
+		int pivot;
+		Joueur tmp;
+		if(droite > gauche){
+			pivot = (gauche+droite)/2;
+			tmp = ((Joueur) this.nouveauxJoueurs.get(gauche));
+			this.nouveauxJoueurs.set(gauche, ((Joueur) this.nouveauxJoueurs.get(pivot))) ;
+			this.nouveauxJoueurs.set(pivot, tmp) ;
+			pivot = gauche;
+			for(int i = gauche+1; i<=droite;i++){
+				if(((Joueur)this.nouveauxJoueurs.get(i)).getNbMatchJoues() < ((Joueur)this.nouveauxJoueurs.get(gauche)).getNbMatchJoues()){
+					pivot++;
+					tmp = (Joueur) this.nouveauxJoueurs.get(i);
+					this.nouveauxJoueurs.set(i, ((Joueur) this.nouveauxJoueurs.get(pivot)) );
+					this.nouveauxJoueurs.set(pivot, tmp);
+				}
+			}
+			tmp = (Joueur) this.nouveauxJoueurs.get(pivot);
+			this.nouveauxJoueurs.set(pivot, ((Joueur) this.nouveauxJoueurs.get(gauche)));
+			this.nouveauxJoueurs.set(gauche, tmp);
+			trierNouveauxJoueurs(gauche, pivot-1);
+			trierNouveauxJoueurs(pivot+1, droite);
+		}
+	}
+	private void trierAnciensJoueurs(int gauche, int droite){
+		int pivot;
+		Joueur tmp;
+		if(droite > gauche){
+			pivot = (gauche+droite)/2;
+			tmp = ((Joueur) this.anciensJoueurs.get(gauche));
+			this.anciensJoueurs.set(gauche, ((Joueur) this.anciensJoueurs.get(pivot))) ;
+			this.anciensJoueurs.set(pivot, tmp) ;
+			pivot = gauche;
+			for(int i = gauche+1; i<=droite;i++){
+				if(((Joueur)this.anciensJoueurs.get(i)).getNbMatchJoues() < ((Joueur)this.anciensJoueurs.get(gauche)).getNbMatchJoues()){
+					pivot++;
+					tmp = (Joueur) this.anciensJoueurs.get(i);
+					this.anciensJoueurs.set(i, ((Joueur) this.anciensJoueurs.get(pivot)) );
+					this.anciensJoueurs.set(pivot, tmp);
+				}
+			}
+			tmp = (Joueur) this.anciensJoueurs.get(pivot);
+			this.anciensJoueurs.set(pivot, ((Joueur) this.anciensJoueurs.get(gauche)));
+			this.anciensJoueurs.set(gauche, tmp);
+			trierAnciensJoueurs(gauche, pivot-1);
+			trierAnciensJoueurs(pivot+1, droite);
+		}
+	}
 	/** Appelée pour créer la liste des paires d'un tournoi 
 	 	* On attribue un partenaire uniquement aux joueurs actifs (ceux qui sont disponibles pour jouer)
 		* On cherche d'abord à faire jouer ceux qui ont le moins participé
@@ -179,12 +226,39 @@ public class Tournoi{
 		else{
 			tailleMin=anciensJoueursActifs.size();
 			tailleMax=nouveauxJoueursActifs.size();
+			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs qui n'ont pas joué (prios);
 			for (int j=0; j<tailleMin; j++)
+			// On parcourt les anciens joueurs
+			{
+				joueur = ((Joueur)anciensJoueursActifs.get(j));
+				//On vérifie que le nouveau joueur est prioritaire et qu'il ne joue pas
+				if(joueur.getPrio() && (!joueur.getDansPaire())){
+					for (int i=0; i<tailleMax; i++){
+						//On cherche un ancien joueur compatible qui ne joue pas
+						if (joueur.estCompatibleAvec(((Joueur)nouveauxJoueursActifs.get(i))) && (!((Joueur)nouveauxJoueursActifs.get(i)).getDansPaire()) && (((Joueur)nouveauxJoueursActifs.get(i)).getPrio())){
+							//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
+							this.paires.add(new Paire(joueur,((Joueur)nouveauxJoueursActifs.get(i)),i,i));
+							joueur.ajouterAnciensPart(((Joueur)nouveauxJoueursActifs.get(i)));
+							((Joueur)nouveauxJoueursActifs.get(i)).ajouterAnciensPart(joueur);
+							joueur.setDansPaire(true);
+							((Joueur)nouveauxJoueursActifs.get(i)).setDansPaire(true);
+							break;
+						}
+					}
+				}
+			}
+			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs restants;
+			for (int j=0; j<tailleMin; j++)
+			// On parcourt les anciens joueurs
 			{
 				joueur = ((Joueur)anciensJoueursActifs.get(j));
 				for (int i=0; i<tailleMax; i++){
-					if (joueur.estCompatibleAvec(((Joueur)nouveauxJoueursActifs.get(i))) && (!((Joueur) nouveauxJoueursActifs.get(i)).getDansPaire())){
+					//On cherche un ancien joueur compatible qui ne joue pas
+					if (joueur.estCompatibleAvec(((Joueur)nouveauxJoueursActifs.get(i))) && (!((Joueur)nouveauxJoueursActifs.get(i)).getDansPaire())){
+						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
 						this.paires.add(new Paire(joueur,((Joueur)nouveauxJoueursActifs.get(i)),i,i));
+						joueur.ajouterAnciensPart(((Joueur)nouveauxJoueursActifs.get(i)));
+						((Joueur)nouveauxJoueursActifs.get(i)).ajouterAnciensPart(joueur);
 						joueur.setDansPaire(true);
 						((Joueur)nouveauxJoueursActifs.get(i)).setDansPaire(true);
 						break;
@@ -236,7 +310,7 @@ public class Tournoi{
 	 * On attribue les terrains aux autres matchs
 	 */
 	private void attribuerMatchs(){
-		trierPaires(0, this.paires.size()-1);
+		//trierPaires(0, this.paires.size()-1);
 		//On créer une liste de matchs avec les paires couplées par niveau
 		int i;
 		Liste matchs = new Liste();
@@ -286,64 +360,25 @@ public class Tournoi{
 		*
 		*/
 	public void finirTour(){
-		
-		Scanner sca= new Scanner(System.in);
 		//On demande le score des équipes pour chaque terrain
-		for (int i=0; i<this.nbrTerrains; i++){
-			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
-			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
-				//Il faudrait demander de rentrer les scores 
-				int score;
-				Match variablePratique;
-				do{
-					variablePratique = ((Terrain)this.terrains.get(i)).getMatch();
-					System.out.println("Entrez un score pour la paire 1 : \n" + variablePratique.getPaire1().getJoueur1().getNom() + " " + variablePratique.getPaire1().getJoueur1().getPrenom()
-							+ " et " + variablePratique.getPaire1().getJoueur2().getNom() + " " + variablePratique.getPaire1().getJoueur2().getPrenom()
-							+"\n Du terrain "+(i+1));
-					String scoreS = sca.nextLine();
-					score=-1;
-					try{
-						score =Integer.parseInt(scoreS);
-					}
-					catch(NumberFormatException e){
-					System.out.println("Il faut saisir un nombre !");
-					}
-				
-				}while(score<0);
-				
-				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(score);
-				((Terrain)this.terrains.get(i)).getMatch().getPaire1().ajouterMatchJoue();
-				
-				do{
-					System.out.println("Entrez un score pour la paire 2 : \n" + variablePratique.getPaire2().getJoueur1().getNom() + " " + variablePratique.getPaire2().getJoueur1().getPrenom()
-							+ " et " + variablePratique.getPaire2().getJoueur2().getNom() + " " + variablePratique.getPaire2().getJoueur2().getPrenom()
-							+"\n Du terrain "+(i+1));
-					String scoreS = sca.nextLine();
-					score=-1;
-					try{
-						score =Integer.parseInt(scoreS);
-					}
-					catch(NumberFormatException e){
-					System.out.println("Il faut saisir un nombre !");
-					}
-				
-				}while(score<0);
-				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(score);
-				((Terrain)this.terrains.get(i)).getMatch().getPaire2().ajouterMatchJoue();
+  		for (int i=0; i<this.nbrTerrains; i++){
+  			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
+  			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
+  				//Il faudrait demander de rentrer les scores 
+ 				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(0);
+ 				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(0);
 				//On détermine les vainqueurs de chaque match
-				((Terrain)this.terrains.get(i)).getMatch().setVainqueur(((Terrain)this.terrains.get(i)).getMatch().determinerVainqueur());
-				//On modifie le score des joueurs en conséquence
 				((Terrain)this.terrains.get(i)).getMatch().modifierScores();
-			}
-
-		}
-
+  			}
+  		}
 		//On remet tous les joueurs en attente d'une paire
 		for (int i=0; i<this.anciensJoueurs.size(); i++){
 			((Joueur)this.anciensJoueurs.get(i)).setDansPaire(false);
+			((Joueur)this.anciensJoueurs.get(i)).setJoue(false);
 		}
 		for (int i=0; i<this.nouveauxJoueurs.size(); i++){
 			((Joueur)this.nouveauxJoueurs.get(i)).setDansPaire(false);
+			((Joueur)this.nouveauxJoueurs.get(i)).setJoue(false);
 		}
 	}
 	
@@ -379,7 +414,7 @@ public class Tournoi{
 		calculerClassementAnciens(0, this.anciensJoueurs.size()-1);
 		Liste classem = this.anciensJoueursClasses;
 		Liste classem2 = new Liste();
-		for(int i=classem.size()-1;i>0;i--){
+		for(int i=classem.size()-1;i>=0;i--){
 			classem2.add((Joueur)classem.get(i));
 		}
 		return classem2;
@@ -421,7 +456,7 @@ public class Tournoi{
 		calculerClassementNouveaux(0, this.nouveauxJoueurs.size()-1);
 		Liste classem = this.nouveauxJoueursClasses;
 		Liste classem2 = new Liste();
-		for(int i=classem.size()-1;i>0;i--){
+		for(int i=classem.size()-1;i>=0;i--){
 			classem2.add((Joueur)classem.get(i));
 		}
 		return classem2;

@@ -9,28 +9,8 @@ public class App {
 	private static Scanner sca;
 
 	public static void main(String[] args) {
-		sca = new Scanner(System.in);
-		int nbTerrains;
-		boolean reBoot= false;
-		do{
-			if (reBoot==true){
-				System.out.println("Abruti, mets un truc au dessus de 0");
-			}
-			System.out.println("Entrez un nombre de terrains");
-			String nbTerrainsS = sca.nextLine();
-			nbTerrains=0;
-			try{
-				nbTerrains =Integer.parseInt(nbTerrainsS);
-				reBoot= true;
-			}
-			catch(NumberFormatException e){
-			System.out.println("Il faut saisir un nombre !");
-			reBoot= false;
-			}
-		
-		}while(nbTerrains<=0);
 	
-		Tournoi t = new Tournoi(nbTerrains);
+		Tournoi t = new Tournoi(26);
 		boolean nouv = true;
 		boolean sexe = true;
 		for(int id=0;id<100;id++){
@@ -49,46 +29,19 @@ public class App {
 		}
 
 		t.initialiserTerrains();
-		
-		int nbTours;
-		reBoot= false;
-		System.out.println("Entrez un nombre de tours");
-		do{
-			if (reBoot==true){
-				System.out.println("Abruti, mets un truc au dessus de 0");
-			}
-			String nbToursS = sca.nextLine();
-			nbTours=-1;
-			try{
-				nbTours =Integer.parseInt(nbToursS);
-				reBoot= true;
-			}
-			catch(NumberFormatException e){
-			System.out.println("Il faut saisir un nombre !");
-			reBoot= false;
-			}
-			
-		}while(nbTours<=0);
-		
-		for (int i = 0; i<nbTours; i++){
-			
+		for(int i=0;i<5;i++){
 			t.demarrerTour();
-			
-			
-			//On doit pouvoir attendre avant de finir au cas où l'on souhaite modifier des paires
 			t.finirTour();
-			
-		
-			System.out.println("Classement anciens");
-			Liste classem = t.getClassementAnciens();
-			for(int j=0;j<classem.size();j++){
-				System.out.println((j+1)+" "+((Joueur)classem.get(j)).toString()+" Score : " +((Joueur)classem.get(j)).getScore());
-			}
-			System.out.println("\nClassement nouveaux");
-			classem = t.getClassementNouveaux();
-			for(int j=0;j<classem.size();j++){
-				System.out.println((j+1)+" "+((Joueur)classem.get(j)).toString()+" Score : " +((Joueur)classem.get(j)).getScore());
-			}
+		}
+		System.out.println("Classement anciens");
+		Liste classem = t.getClassementAnciens();
+		for(int j=0;j<classem.size();j++){
+			System.out.println((j+1)+" "+((Joueur)classem.get(j)).toString()+" Score : " +((Joueur)classem.get(j)).getScore());
+		}
+		System.out.println("\nClassement nouveaux");
+		classem = t.getClassementNouveaux();
+		for(int j=0;j<classem.size();j++){
+			System.out.println((j+1)+" "+((Joueur)classem.get(j)).toString()+" Score : " +((Joueur)classem.get(j)).getScore());
 		}
 
 	}

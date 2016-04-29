@@ -173,7 +173,7 @@ public class Joueur {
 		if(this.prio){
 			prio= "n'a pas joué au tour précédent";
 		}
-		String txt = this.prenom + " " + this.nom +" ("+sx+" de "+this.age+ " ans) " +prio+" et a joué "+this.nbMatchJoues+" fois au total";
+		String txt = this.prenom + " " + this.nom +" ("+sx+" de "+this.age+ " ans a une perf de "+this.perf+") " +prio+" et a joué "+this.nbMatchJoues+" fois au total";
 		return txt;
 	}
 	/** Retourne si le joueur peut jouer ou non
