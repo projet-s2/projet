@@ -82,6 +82,44 @@ public class Fenetre extends JFrame {
 		terrain.add(terrainContent, BorderLayout.CENTER);
 		terrain.add(new JTextArea("Il y a actuellement 15 terrain"), BorderLayout.WEST);
 
+		//Notre onglet pour les score a l'issue d'un match
+		JPanel score = new JPanel();
+		score.setLayout(new BorderLayout());
+		//Le scoreContent pour les info par apport au deux joueur
+		JPanel scoreContent = new JPanel();
+		scoreContent.setLayout(new GridLayout(5,2));
+		//Le jpannel pour le nom des joueur (les 4, deux pour chaques paire)
+		String[] choixScoreName = { "Liste", "Des", "Joueur"};
+		JPanel scoreName1 = new JPanel();
+		scoreName1.setLayout(new GridLayout(1,2));
+		scoreName1.add(new JLabel("Pair 1 - joueur 1: "));
+		scoreName1.add(new JComboBox(choixScoreName));
+		JPanel scoreName2 = new JPanel();
+		scoreName2.setLayout(new GridLayout(1,2));
+		scoreName2.add(new JLabel("Pair 1 - joueur 2: "));
+		scoreName2.add(new JComboBox(choixScoreName));
+		JPanel scoreName3 = new JPanel();
+		scoreName3.setLayout(new GridLayout(1,2));
+		scoreName3.add(new JLabel("Pair 2 - joueur 1: "));
+		scoreName3.add(new JComboBox(choixScoreName));
+		JPanel scoreName4 = new JPanel();
+		scoreName4.setLayout(new GridLayout(1,2));
+		scoreName4.add(new JLabel("Pair 2 - joueur 2: "));
+		scoreName4.add(new JComboBox(choixScoreName));
+		//On repasse sur le JPanel content
+		scoreContent.add(scoreName1);
+		scoreContent.add(scoreName2);
+		scoreContent.add(new JLabel("Score final pair 1"));
+		scoreContent.add(new JTextArea());
+		scoreContent.add(scoreName3);
+		scoreContent.add(scoreName4);
+		scoreContent.add(new JLabel("Score final pair 2"));
+		scoreContent.add(new JTextArea());
+		scoreContent.add(new JButton("Ajouté score"));
+		score.add(scoreContent, BorderLayout.CENTER);
+		score.add(new JTextArea("Albert - Jenne v Albert - Jenne : \r\n 21 vs 13 \r\n\r\n Albert - Jenne v Albert - Jenne : \r\n 21 vs 13"), BorderLayout.WEST);
+
+
 
 		//Notre onglet pour les paire
 		JPanel paire = new JPanel();
@@ -103,6 +141,7 @@ public class Fenetre extends JFrame {
 		onglets.addTab("Acceuil", acceuil);
 		onglets.addTab("Joueur", joueur);
 		onglets.addTab("Terrain", terrain);
+		onglets.addTab("Score", score);
 		onglets.addTab("Paire", paire);
 
 		onglets.setOpaque(true);
