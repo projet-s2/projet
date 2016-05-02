@@ -209,16 +209,18 @@ public class Tournoi{
 			// On parcourt les nouveaux joueurs
 			{
 				joueur = ((Joueur)nouveauxJoueursActifs.get(j));
-				for (int i=0; i<tailleMax; i++){
-					//On cherche un ancien joueur compatible qui ne joue pas
-					if (joueur.estCompatibleAvec(((Joueur)anciensJoueursActifs.get(i))) && (!((Joueur)anciensJoueursActifs.get(i)).getDansPaire())){
-						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-						this.paires.add(new Paire(joueur,((Joueur)anciensJoueursActifs.get(i)),i,i));
-						joueur.ajouterAnciensPart(((Joueur)anciensJoueursActifs.get(i)));
-						((Joueur)anciensJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-						joueur.setDansPaire(true);
-						((Joueur)anciensJoueursActifs.get(i)).setDansPaire(true);
-						break;
+				if(!joueur.getDansPaire()){
+					for (int i=0; i<tailleMax; i++){
+						//On cherche un ancien joueur compatible qui ne joue pas
+						if (joueur.estCompatibleAvec(((Joueur)anciensJoueursActifs.get(i))) && (!((Joueur)anciensJoueursActifs.get(i)).getDansPaire())){
+							//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
+							this.paires.add(new Paire(joueur,((Joueur)anciensJoueursActifs.get(i)),i,i));
+							joueur.ajouterAnciensPart(((Joueur)anciensJoueursActifs.get(i)));
+							((Joueur)anciensJoueursActifs.get(i)).ajouterAnciensPart(joueur);
+							joueur.setDansPaire(true);
+							((Joueur)anciensJoueursActifs.get(i)).setDansPaire(true);
+							break;
+						}
 					}
 				}
 			}
@@ -252,16 +254,18 @@ public class Tournoi{
 			// On parcourt les anciens joueurs
 			{
 				joueur = ((Joueur)anciensJoueursActifs.get(j));
-				for (int i=0; i<tailleMax; i++){
-					//On cherche un ancien joueur compatible qui ne joue pas
-					if (joueur.estCompatibleAvec(((Joueur)nouveauxJoueursActifs.get(i))) && (!((Joueur)nouveauxJoueursActifs.get(i)).getDansPaire())){
-						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-						this.paires.add(new Paire(joueur,((Joueur)nouveauxJoueursActifs.get(i)),i,i));
-						joueur.ajouterAnciensPart(((Joueur)nouveauxJoueursActifs.get(i)));
-						((Joueur)nouveauxJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-						joueur.setDansPaire(true);
-						((Joueur)nouveauxJoueursActifs.get(i)).setDansPaire(true);
-						break;
+				if(!joueur.getDansPaire()){
+					for (int i=0; i<tailleMax; i++){
+						//On cherche un ancien joueur compatible qui ne joue pas
+						if (joueur.estCompatibleAvec(((Joueur)nouveauxJoueursActifs.get(i))) && (!((Joueur)nouveauxJoueursActifs.get(i)).getDansPaire())){
+							//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
+							this.paires.add(new Paire(joueur,((Joueur)nouveauxJoueursActifs.get(i)),i,i));
+							joueur.ajouterAnciensPart(((Joueur)nouveauxJoueursActifs.get(i)));
+							((Joueur)nouveauxJoueursActifs.get(i)).ajouterAnciensPart(joueur);
+							joueur.setDansPaire(true);
+							((Joueur)nouveauxJoueursActifs.get(i)).setDansPaire(true);
+							break;
+						}
 					}
 				}
 			}
@@ -310,7 +314,7 @@ public class Tournoi{
 	 * On attribue les terrains aux autres matchs
 	 */
 	private void attribuerMatchs(){
-		//trierPaires(0, this.paires.size()-1);
+		trierPaires(0, this.paires.size()-1);
 		//On créer une liste de matchs avec les paires couplées par niveau
 		int i;
 		Liste matchs = new Liste();
