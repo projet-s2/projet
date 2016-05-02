@@ -10,7 +10,7 @@ public class App {
 
 	public static void main(String[] args) {
 	
-		Tournoi t = new Tournoi(260);
+		Tournoi t = new Tournoi(26);
 		boolean nouv = true;
 		boolean sexe = true;
 		for(int id=0;id<100;id++){
@@ -29,7 +29,7 @@ public class App {
 		}
 
 		t.initialiserTerrains();
-		for(int i=0;i<10;i++){
+		for(int i=0;i<5;i++){
 			t.demarrerTour();
 			t.finirTour();
 		}
