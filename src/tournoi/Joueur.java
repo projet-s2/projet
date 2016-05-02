@@ -260,19 +260,32 @@ public class Joueur {
 		}
 		else return false;
 	}
+	
+	/** Retourne si le joueur est dans une paire 
+	 * 
+	 * @return si le joueur est dans paire
+	 */
 	public boolean getDansPaire() {
 		return this.dansPaire;
 	}
+	
+	/** Redéfinition de l'attribut "dansPaire"
+	 * 
+	 * @param dansPaire
+	 */
 	public void setDansPaire(boolean dansPaire) {
 		this.dansPaire = dansPaire;
 	}
-	/**
+	
+	/** Retourne le nombre de match joués
 	 * @return le nombre de matchs joués
 	 */
 	public int getNbMatchJoues() {
 		return nbMatchJoues;
 	}
-	/**
+	/** Ajoute un Match aux matchs joués d'un joueur
+	 * 
+	 * 
 	 */
 	public void ajouterMatchJoue() {
 		this.nbMatchJoues++;
