@@ -1,6 +1,7 @@
 package app;
 
 import tournoi.*;
+import vue.*;
 import java.util.Scanner;
 import liste.Liste;
 
@@ -9,7 +10,7 @@ public class App {
 	private static Scanner sca;
 
 	public static void main(String[] args) {
-	
+		Fenetre fen = new Fenetre("Match Point");
 		Tournoi t = new Tournoi(26);
 		boolean nouv = true;
 		boolean sexe = true;
