@@ -103,6 +103,7 @@ public class Paire {
 		*
 		* @return txt l'affichage d'une paire
 		*/
+	@Override
 	public String toString(){
 		String txt = this.joueur1.toString() + " et " + this.joueur2.toString() + " Perf : " + this.perf;
 		return txt;
@@ -146,6 +147,7 @@ public class Paire {
 		* @param o l'objet à comparer
 		* @return true si les deux paires sont égales
 		*/
+	@Override
 	public boolean equals(Object o){
 		if (o instanceof Paire){
 			return (this.joueur1.equals(((Paire)o).joueur1)
