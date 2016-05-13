@@ -129,6 +129,7 @@ public class Match {
 		* @return txt l'affichage d'un match
 		*
 		*/
+	@Override
 	public String toString(){
 		String txt = this.paire1.toString() + " jouent contre "+this.paire2.toString();
 		return txt;
