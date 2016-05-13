@@ -2,7 +2,9 @@ package tournoi;
 
 import liste.Liste;
 
+import java.io.*;
 import java.util.Scanner;
+
 
 /**Tournoi est la classe représentant un Tournoi.
  *
@@ -473,5 +475,44 @@ public class Tournoi{
 		}
 		return res;
 	}
+	/** Méthode permettant d'enregistrer un tournoi dans un fichier
+	 * 
+	 * @return Booléen qui permet de savoir si le fichier à été enregistré avec succès
+	 */
+	public boolean save(String chemin, String nomFichier){
+		FileOutputStream fop = null;
+		File file;
+		String content = this.toString();
+		try {
 
+			file = new File(chemin+nomFichier+".txt");
+			fop = new FileOutputStream(file);
+
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			// get the content in bytes
+			byte[] contentInBytes = content.getBytes();
+
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+
+			System.out.println("Done");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fop != null) {
+					fop.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
 }

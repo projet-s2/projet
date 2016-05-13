@@ -2,6 +2,10 @@ package app;
 
 import tournoi.*;
 import vue.*;
+
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.util.Locale;
 import java.util.Scanner;
 import liste.Liste;
 
@@ -10,8 +14,7 @@ public class App {
 	private static Scanner sca;
 
 	public static void main(String[] args) {
-		Fenetre fen = new Fenetre("Match Point");
-		NouveauTournoi tourn = new NouveauTournoi();
+		Locale.setDefault(new Locale("fr", "FR"));
 		Tournoi t = new Tournoi(26);
 		boolean nouv = true;
 		boolean sexe = true;
@@ -45,7 +48,17 @@ public class App {
 		for(int j=0;j<classem.size();j++){
 			System.out.println((j+1)+" "+((Joueur)classem.get(j)).toString()+" Score : " +((Joueur)classem.get(j)).getScore());
 		}
+		
+		
+		Frame fr = new Frame("Choississez un répertoire");
+		FileDialog dial = new FileDialog(fr, "Nouveau Tournoi", FileDialog.SAVE);
+		dial.setVisible(true);
+		fr.setVisible(false);
+		t.save(dial.getDirectory(),dial.getFile());
+		
 
+		NouveauTournoi tourn = new NouveauTournoi();
+		Fenetre fen = new Fenetre("Match Point");
 	}
 
 }
