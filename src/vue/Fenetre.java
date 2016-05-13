@@ -15,8 +15,20 @@ public class Fenetre extends JFrame {
 
 	public Fenetre(String titre) {
 		super(titre);
-
+		
 		//On inclue le lookandfeel, pour changement de l'apparence de l'interface
+		//Set the look and feel to users OS LaF.
+	    try {
+	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (InstantiationException e) {
+	        e.printStackTrace();
+	    } catch (IllegalAccessException e) {
+	        e.printStackTrace();
+	    } catch (UnsupportedLookAndFeelException e) {
+	        e.printStackTrace();
+	    }
 		/*try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
