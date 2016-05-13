@@ -67,6 +67,7 @@ public class Terrain{
     return this.match;
   }
   
+  @Override
   public String toString(){
 	  String s = this.numero + " ";
 	  if(this.match==null){
