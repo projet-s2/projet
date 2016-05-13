@@ -164,6 +164,7 @@ public class Joueur {
 		*
 		* @return txt l'affichage d'un joueur
 		*/
+	@Override
 	public String toString(){
 		String sx="un homme";
 		String prio="a joué au tour précédent";
@@ -252,6 +253,7 @@ public class Joueur {
 		* @param o l'objet à comparer
 		* @return booléen 0 : ils ne sont pas égaux / 1 : ils sont égaux
 		*/
+	@Override
 	public boolean equals(Object o){
 		if (o instanceof Joueur){
 			return (this.id==((Joueur)o).id
