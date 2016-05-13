@@ -11,6 +11,7 @@ public class App {
 
 	public static void main(String[] args) {
 		Fenetre fen = new Fenetre("Match Point");
+		NouveauTournoi tourn = new NouveauTournoi();
 		Tournoi t = new Tournoi(26);
 		boolean nouv = true;
 		boolean sexe = true;

@@ -1,4 +1,4 @@
-package graphique;
+package vue;
 
 import javax.swing.*;
 import javax.swing.UIManager.*;
@@ -17,7 +17,7 @@ public class Fenetre extends JFrame {
 		super(titre);
 
 		//On inclue le lookandfeel, pour changement de l'apparence de l'interface
-		try {
+		/*try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
 					UIManager.setLookAndFeel(info.getClassName());
@@ -26,7 +26,7 @@ public class Fenetre extends JFrame {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		//Les declarations de base
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -141,8 +141,8 @@ public class Fenetre extends JFrame {
 		onglets.addTab("Acceuil", acceuil);
 		onglets.addTab("Joueur", joueur);
 		onglets.addTab("Terrain", terrain);
-		onglets.addTab("Score", score);
 		onglets.addTab("Paire", paire);
+		onglets.addTab("Score", score);
 
 		onglets.setOpaque(true);
 
