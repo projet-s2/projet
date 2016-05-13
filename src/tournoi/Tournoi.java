@@ -465,6 +465,7 @@ public class Tournoi{
 	/** Redéfinition la méthode public toString
 	 * @return L'état de toutes les paires à un moment donné
 	 */
+	@Override
 	public String toString(){
 		String res= "";
 		for(int i=0; i<this.paires.size();i++){
