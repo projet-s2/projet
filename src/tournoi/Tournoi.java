@@ -482,10 +482,10 @@ public class Tournoi{
 	public boolean save(String chemin, String nomFichier){
 		FileOutputStream fop = null;
 		File file;
-		String content = this.toString();
+		String content = this.readyToBeSaved();
 		try {
 
-			file = new File(chemin+nomFichier+".txt");
+			file = new File(chemin+nomFichier+".mpf");
 			fop = new FileOutputStream(file);
 
 			// if file doesnt exists, then create it
@@ -514,5 +514,36 @@ public class Tournoi{
 			}
 		}
 		return true;
+	}
+	/*On génère une version textuelle du tournoi pour l'enregistrement
+	 * @return Le tournoi sous forme de chaine pouvant être parsée
+	 */
+	public String readyToBeSaved(){
+		String str = "";
+		//On insère les anciens joueurs
+		String anc = "";
+		for(int i = 0;i<this.anciensJoueurs.size();i++){
+			anc += ((Joueur)this.anciensJoueurs.get(i)).readyToBeSaved();
+		}
+		anc = anc.replaceAll("(?m)^", "\t");
+		anc = "<ancienJoueurs>"+anc+"\n</anciensJoueurs>";
+		
+		//On insère les nouveaux joueurs
+		String nouv = "";
+		for(int i = 0;i<this.nouveauxJoueurs.size();i++){
+			nouv += ((Joueur)this.nouveauxJoueurs.get(i)).readyToBeSaved();
+		}
+		nouv = nouv.replaceAll("(?m)^", "\t");
+		nouv = "<nouveauxJoueurs>"+nouv+"\n</nouveauxJoueurs>";
+		
+		//On insère les terrains
+		String terr = "";
+		for(int i = 0;i<this.terrains.size();i++){
+			terr += ((Terrain)this.terrains.get(i)).readyToBeSaved();
+		}
+		terr = terr.replaceAll("(?m)^", "\t");
+		terr = "<terrains>"+terr+"\n</terrains>";
+		str = "<?xml version = \"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>\n"+anc+"\n"+nouv+"\n"+terr;
+		return str;
 	}
 }

@@ -75,4 +75,8 @@ public class Terrain{
 	  }
 	  return s;
   }
+  
+  public String readyToBeSaved(){
+	  return "\n<terrain>\n	<numero>"+this.numero+"</numero>\n</terrain>";
+  }
 }

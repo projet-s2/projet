@@ -144,5 +144,9 @@ public class Match {
 	public boolean estPrio(){
 		return (paire1.estPrio() && paire2.estPrio());
 	}
+	
+	public String readyToBeSaved(){
+		return "";
+	}
 
 }
