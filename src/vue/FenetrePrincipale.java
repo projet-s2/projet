@@ -1,23 +1,23 @@
 package vue;
 
-import javax.swing.*;
-import javax.swing.UIManager.*;
-import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Dimension;
-import java.text.NumberFormat;
-import java.awt.Dimension;
-import java.awt.event.KeyEvent;
 
-public class Fenetre extends JFrame {
+import javax.swing.*;
+import tournoi.*;
 
-	public Fenetre(String titre) {
+public class FenetrePrincipale extends JFrame {
+	
+	//La fenêtre principale à un tournoi surlequel elle peut agir
+	private Tournoi tournoi;
+	
+	public FenetrePrincipale(String titre, Tournoi leTournoi) {
 		super(titre);
+		this.tournoi = leTournoi;
 		
-		//On inclue le lookandfeel, pour changement de l'apparence de l'interface
-		//Set the look and feel to users OS LaF.
+		//On charge le look and feel du système de l'utilisateur (à la place de GTK) auquel il est habitué
 	    try {
 	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	    } catch (ClassNotFoundException e) {
@@ -29,17 +29,10 @@ public class Fenetre extends JFrame {
 	    } catch (UnsupportedLookAndFeelException e) {
 	        e.printStackTrace();
 	    }
-		/*try {
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-
+	    
+	    //On assigne le menu à la fenetre
+	    setJMenuBar(new Menu(tournoi));
+	    
 		//Les declarations de base
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();

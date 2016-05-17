@@ -50,15 +50,9 @@ public class App {
 		}
 		
 		
-		Frame fr = new Frame("Choississez un répertoire");
-		FileDialog dial = new FileDialog(fr, "Nouveau Tournoi", FileDialog.SAVE);
-		dial.setVisible(true);
-		fr.setVisible(false);
-		t.save(dial.getDirectory(),dial.getFile());
-		
 
+		FenetrePrincipale fen = new FenetrePrincipale("Match Point", t);
 		NouveauTournoi tourn = new NouveauTournoi();
-		Fenetre fen = new Fenetre("Match Point");
 	}
 
 }

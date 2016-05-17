@@ -3,7 +3,7 @@ package tournoi;
 import liste.Liste;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.regex.*;
 
 
 /**Tournoi est la classe reprÃ©sentant un Tournoi.
@@ -515,7 +515,7 @@ public class Tournoi{
 		}
 		return true;
 	}
-	/*On gÃ©nÃ¨re une version textuelle du tournoi pour l'enregistrement
+	/*On génère une version textuelle du tournoi pour l'enregistrement
 	 * @return Le tournoi sous forme de chaine pouvant Ãªtre parsÃ©e
 	 */
 	public String readyToBeSaved(){
@@ -528,7 +528,7 @@ public class Tournoi{
 		anc = anc.replaceAll("(?m)^", "\t");
 		anc = "<ancienJoueurs>"+anc+"\n</anciensJoueurs>";
 		
-		//On insÃ¨re les nouveaux joueurs
+		//On insère les nouveaux joueurs
 		String nouv = "";
 		for(int i = 0;i<this.nouveauxJoueurs.size();i++){
 			nouv += ((Joueur)this.nouveauxJoueurs.get(i)).readyToBeSaved();
@@ -536,7 +536,7 @@ public class Tournoi{
 		nouv = nouv.replaceAll("(?m)^", "\t");
 		nouv = "<nouveauxJoueurs>"+nouv+"\n</nouveauxJoueurs>";
 		
-		//On insÃ¨re les terrains
+		//On insère les terrains
 		String terr = "";
 		for(int i = 0;i<this.terrains.size();i++){
 			terr += ((Terrain)this.terrains.get(i)).readyToBeSaved();
@@ -545,5 +545,13 @@ public class Tournoi{
 		terr = "<terrains>"+terr+"\n</terrains>";
 		str = "<?xml version = \"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>\n"+anc+"\n"+nouv+"\n"+terr;
 		return str;
+	}
+	
+	public void load(){
+		
+	}
+	public void parserMPF(String str){
+		Pattern pattern = Pattern.compile("Hugo");
+	    Matcher matcher = pattern.matcher("Hugo Etiévant";
 	}
 }
