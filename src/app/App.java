@@ -8,13 +8,11 @@ import java.awt.Frame;
 import java.util.Locale;
 import java.util.Scanner;
 import liste.Liste;
-
 public class App {
-
 	private static Scanner sca;
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("fr", "FR"));
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		Tournoi t = new Tournoi(26);
 		boolean nouv = true;
 		boolean sexe = true;

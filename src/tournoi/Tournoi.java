@@ -515,7 +515,7 @@ public class Tournoi{
 		}
 		return true;
 	}
-	/*On génère une version textuelle du tournoi pour l'enregistrement
+	/*On gï¿½nï¿½re une version textuelle du tournoi pour l'enregistrement
 	 * @return Le tournoi sous forme de chaine pouvant Ãªtre parsÃ©e
 	 */
 	public String readyToBeSaved(){
@@ -528,7 +528,7 @@ public class Tournoi{
 		anc = anc.replaceAll("(?m)^", "\t");
 		anc = "<ancienJoueurs>"+anc+"\n</anciensJoueurs>";
 		
-		//On insère les nouveaux joueurs
+		//On insï¿½re les nouveaux joueurs
 		String nouv = "";
 		for(int i = 0;i<this.nouveauxJoueurs.size();i++){
 			nouv += ((Joueur)this.nouveauxJoueurs.get(i)).readyToBeSaved();
@@ -536,7 +536,7 @@ public class Tournoi{
 		nouv = nouv.replaceAll("(?m)^", "\t");
 		nouv = "<nouveauxJoueurs>"+nouv+"\n</nouveauxJoueurs>";
 		
-		//On insère les terrains
+		//On insï¿½re les terrains
 		String terr = "";
 		for(int i = 0;i<this.terrains.size();i++){
 			terr += ((Terrain)this.terrains.get(i)).readyToBeSaved();
@@ -552,6 +552,6 @@ public class Tournoi{
 	}
 	public void parserMPF(String str){
 		Pattern pattern = Pattern.compile("Hugo");
-	    Matcher matcher = pattern.matcher("Hugo Etiévant";
+	    Matcher matcher = pattern.matcher("Hugo Etiï¿½vant");
 	}
 }
