@@ -1,12 +1,16 @@
 package vue;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import controleur.NouveauTournoiControleur;
+
 public class NouveauTournoi extends JDialog {
-	public NouveauTournoi(Frame o){
+	public NouveauTournoi(FenetrePrincipale o){
 		//On créer la fenetre
 		super(o);
 		//On initialise le content pane ainsi que sa structure
@@ -57,8 +61,19 @@ public class NouveauTournoi extends JDialog {
 		
 		//On ajoute les boutons
 		JPanel buttonContainer = new JPanel(new BorderLayout());
-		JButton valider = new JButton("Valider");;
+		JButton valider = new JButton("Valider");
+		//On assigne un controleur au bouton pour générer la création du tournoi
+		valider.addActionListener(new NouveauTournoiControleur(o, nom, nbTerrains, this));
+		
+		//On assigne un controleur au bouton annuler pour fermer la fenetre
 		JButton annuler = new JButton("Annuler");
+		final JDialog frameToClose = this;
+		annuler.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				frameToClose.dispose();
+				
+			}
+		});
 		
 		JPanel boutonsAnVal = new JPanel();
 		boutonsAnVal.setLayout(new BoxLayout(boutonsAnVal, BoxLayout.X_AXIS));
@@ -84,7 +99,6 @@ public class NouveauTournoi extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setSize(410, 150);
 		this.setResizable(false);
-		
 
 	}
 }

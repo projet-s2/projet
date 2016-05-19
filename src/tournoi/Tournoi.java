@@ -22,17 +22,22 @@ public class Tournoi{
 	private Liste terrains;
 	private Liste paires;
 	private int nbrTerrains;
+	private String nom;
 /** Constructeur de la classe tournoi
 	*
 	* @param nbrTerrains le nombre de terrains disponibles pour le tournoi
 	*
 	*/
-	public Tournoi(int nbrTerrains){
+	public Tournoi(int nbrTerrains, String leNom){
 		this.nouveauxJoueurs= new Liste();
 		this.anciensJoueurs= new Liste();
 		this.terrains= new Liste();
 		this.paires= new Liste();
 		this.nbrTerrains= nbrTerrains;
+		this.nom = leNom;
+	}
+	public Tournoi(int nbrTerrains){
+		this(nbrTerrains, "Sans titre");
 	}
 
 /** Retourne la liste de nouveaux joueurs
@@ -553,5 +558,19 @@ public class Tournoi{
 	public void parserMPF(String str){
 		Pattern pattern = Pattern.compile("Hugo");
 	    Matcher matcher = pattern.matcher("Hugo Eti�vant");
+	}
+
+	/**
+	 * @return the nom
+	 */
+	public String getNom() {
+		return this.nom;
+	}
+
+	/**
+	 * @param nom the nom to set
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 }

@@ -14,9 +14,8 @@ public class FenetrePrincipale extends JFrame {
 	//La fen�tre principale � un tournoi surlequel elle peut agir
 	private Tournoi tournoi;
 	
-	public FenetrePrincipale(String titre, Tournoi leTournoi) {
+	public FenetrePrincipale(String titre) {
 		super(titre);
-		this.tournoi = leTournoi;
 		
 		//On charge le look and feel du syst�me de l'utilisateur (� la place de GTK) auquel il est habitu�
 	    try {
@@ -41,7 +40,15 @@ public class FenetrePrincipale extends JFrame {
 		this.setTitle(titre);
 		this.setLocation(0,0);
 		this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
-
+		this.setVisible(true);
+	}
+	public void setTournoi(Tournoi t){
+		this.tournoi=t;
+		this.setTitle("Match Point - "+t.getNom());
+		this.afficherTournoi();
+	}
+	
+	public void afficherTournoi(){
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
 
 		//Notre onglet pour l'acceuil
