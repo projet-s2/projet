@@ -16,14 +16,25 @@ public class Menu extends JMenuBar{
 	    JMenu menuFichier = new JMenu("Fichier");
 
 	    //On creer le bouton nouveau tournoi
-	    JMenuItem nouveauTournoi = new JMenuItem("Nouveau tournoi");
+	    JMenuItem nouveauTournoi = new JMenuItem("Nouveau...");
 	    nouveauTournoi.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 	    menuFichier.add(nouveauTournoi);
 	    this.add(menuFichier);
+
+	    //Ouvrir un fichier
+	    JMenuItem ouvrir = new JMenuItem("Ouvrir...");
+	    ouvrir.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    menuFichier.add(ouvrir);
 	    menuFichier.addSeparator();
+
+	    //On creer le bouton enregister sous
+	    JMenuItem enregistrer = new JMenuItem("Enregistrer");
+	    enregistrer.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    menuFichier.add(enregistrer);
+	    
 	    //On creer le bouton enregister sous
 	    JMenuItem enregistrerSous = new JMenuItem("Enregistrer sous...");
-	    enregistrerSous.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    enregistrerSous.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()+KeyEvent.SHIFT_MASK));
 	    enregistrerSous.addActionListener(new ActionListener(){
 	    	@Override
 	    	public void actionPerformed(ActionEvent e){
@@ -36,7 +47,12 @@ public class Menu extends JMenuBar{
 	    	}
 	    });
 	    menuFichier.add(enregistrerSous);
-	    menuFichier.add(new JMenuItem("Ouvrir un tournoi..."));
+	    
+	    
+	  //On creer le bouton exporter
+	    JMenuItem exporter = new JMenuItem("Exporter le classement...");
+	    exporter.setAccelerator(KeyStroke.getKeyStroke('G', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    menuFichier.add(exporter);
 	    
 	}
 

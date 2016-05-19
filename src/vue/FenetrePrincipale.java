@@ -4,20 +4,21 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 
 import javax.swing.*;
 import tournoi.*;
 
 public class FenetrePrincipale extends JFrame {
 	
-	//La fenêtre principale à un tournoi surlequel elle peut agir
+	//La fenï¿½tre principale ï¿½ un tournoi surlequel elle peut agir
 	private Tournoi tournoi;
 	
 	public FenetrePrincipale(String titre, Tournoi leTournoi) {
 		super(titre);
 		this.tournoi = leTournoi;
 		
-		//On charge le look and feel du système de l'utilisateur (à la place de GTK) auquel il est habitué
+		//On charge le look and feel du systï¿½me de l'utilisateur (ï¿½ la place de GTK) auquel il est habituï¿½
 	    try {
 	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	    } catch (ClassNotFoundException e) {
@@ -30,7 +31,7 @@ public class FenetrePrincipale extends JFrame {
 	        e.printStackTrace();
 	    }
 	    
-	    //On assigne le menu à la fenetre
+	    //On assigne le menu ï¿½ la fenetre
 	    setJMenuBar(new Menu(tournoi));
 	    
 		//Les declarations de base
@@ -38,8 +39,8 @@ public class FenetrePrincipale extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		this.setTitle(titre);
-		this.setLocationRelativeTo(null);
-		this.setSize(900, 300);
+		this.setLocation(0,0);
+		this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
 

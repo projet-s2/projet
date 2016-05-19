@@ -50,7 +50,7 @@ public class App {
 		
 
 		FenetrePrincipale fen = new FenetrePrincipale("Match Point", t);
-		NouveauTournoi tourn = new NouveauTournoi();
+		NouveauTournoi tourn = new NouveauTournoi(fen);
 	}
 
 }
