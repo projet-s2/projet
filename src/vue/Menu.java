@@ -39,7 +39,7 @@ public class Menu extends JMenuBar{
 	    	@Override
 	    	public void actionPerformed(ActionEvent e){
 	    		//On affiche le sï¿½lï¿½ctionneur de rï¿½pertoire
-	    		Frame fr = new Frame("Choississez un rÃ©pertoire");
+	    		Frame fr = new Frame("Choississez un répertoire");
 	    		FileDialog dial = new FileDialog(fr, "Nouveau Tournoi", FileDialog.SAVE);
 	    		dial.setVisible(true);
 	    		fr.setVisible(false);

@@ -11,25 +11,25 @@ import controleur.NouveauTournoiControleur;
 
 public class NouveauTournoi extends JDialog {
 	public NouveauTournoi(FenetrePrincipale o){
-		//On crÃ©er la fenetre
+		//On créer la fenetre
 		super(o);
 		//On initialise le content pane ainsi que sa structure
 		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
 		
-		//on crÃ©er Ã©lÃ©ments
+		//on créer les éléments
 		JTextField nom = new JTextField();
 		JSpinner nbTerrains = new JSpinner();
 		JLabel nomLabel = new JLabel("Nom : ", SwingConstants.RIGHT);
 		JLabel nbTerrainsLabel = new JLabel("Nombre de terrains : ", SwingConstants.RIGHT);
 		
-		//On les ajoute Ã  des panels de position
+		//On les ajoute à des panels de position
 		JPanel etiquettes = new JPanel();
 		etiquettes.setLayout(new GridLayout(2,1));
 		etiquettes.add(nomLabel);
 		etiquettes.add(nbTerrainsLabel);
 
-		//On creer un panel de marge Ã  droite
+		//On creer un panel de marge à droite
 		JPanel margeDroite = new JPanel();
 		margeDroite.setPreferredSize(new Dimension(60, 30));
 		
@@ -41,12 +41,10 @@ public class NouveauTournoi extends JDialog {
 		JPanel margeBas = new JPanel();
 		margeBas.setPreferredSize(new Dimension(30, 20));
 		
+		//On créer un panel avec les champs de texte
 		JPanel champsTexte = new JPanel();
-		champsTexte.setLayout(new GridLayout(2,1));
-		JPanel nomCentre = new JPanel();
-		nomCentre.setLayout(new BoxLayout(nomCentre, BoxLayout.X_AXIS));
-		nomCentre.add(nom);
-		champsTexte.add(nomCentre);
+		champsTexte.setLayout(new GridLayout(2,1,0,5));
+		champsTexte.add(nom);
 		champsTexte.add(nbTerrains);
 		
 		//On les ajoute au contenaire du haut
@@ -62,7 +60,7 @@ public class NouveauTournoi extends JDialog {
 		//On ajoute les boutons
 		JPanel buttonContainer = new JPanel(new BorderLayout());
 		JButton valider = new JButton("Valider");
-		//On assigne un controleur au bouton pour gÃ©nÃ©rer la crÃ©ation du tournoi
+		//On assigne un controleur au bouton pour générer la création du tournoi
 		valider.addActionListener(new NouveauTournoiControleur(o, nom, nbTerrains, this));
 		
 		//On assigne un controleur au bouton annuler pour fermer la fenetre
@@ -86,10 +84,10 @@ public class NouveauTournoi extends JDialog {
 		container.add(topContainer, BorderLayout.NORTH);
 		container.add(buttonContainer, BorderLayout.SOUTH);
 		
-		//On ajoute le content pane Ã  la fenÃªtre
+		//On ajoute le content pane à  la fenêtre
 		this.setContentPane(container);
 		
-		//On prÃ©selectionne le bouton valider
+		//On préselectionne le bouton valider
 		this.getRootPane().setDefaultButton(valider);
 		
 		//affichage final
