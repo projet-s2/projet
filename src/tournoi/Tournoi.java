@@ -5,6 +5,8 @@ import liste.Liste;
 import java.io.*;
 import java.util.regex.*;
 
+import exception.NomVideException;
+
 
 /**Tournoi est la classe représentant un Tournoi.
  *
@@ -28,7 +30,10 @@ public class Tournoi{
 	* @param nbrTerrains le nombre de terrains disponibles pour le tournoi
 	*
 	*/
-	public Tournoi(int nbrTerrains, String leNom){
+	public Tournoi(int nbrTerrains, String leNom) throws NomVideException{
+		if(leNom == ""){
+			throw new NomVideException("Nom vide");
+		}
 		this.nouveauxJoueurs= new Liste();
 		this.anciensJoueurs= new Liste();
 		this.terrains= new Liste();
@@ -36,7 +41,7 @@ public class Tournoi{
 		this.nbrTerrains= nbrTerrains;
 		this.nom = leNom;
 	}
-	public Tournoi(int nbrTerrains){
+	public Tournoi(int nbrTerrains) throws NomVideException{
 		this(nbrTerrains, "Sans titre");
 	}
 
