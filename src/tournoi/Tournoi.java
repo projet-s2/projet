@@ -1,11 +1,11 @@
 package tournoi;
 
-import liste.Liste;
+import liste.Liste; 
 
 import java.io.*;
 import java.util.regex.*;
 
-import exception.NomVideException;
+import exception.*;
 
 
 /**Tournoi est la classe repr√©sentant un Tournoi.
@@ -30,9 +30,12 @@ public class Tournoi{
 	* @param nbrTerrains le nombre de terrains disponibles pour le tournoi
 	*
 	*/
-	public Tournoi(int nbrTerrains, String leNom) throws NomVideException{
-		if(leNom == ""){
+	public Tournoi(int nbrTerrains, String leNom) throws NomVideException,NbTerrainNeg{
+		if(leNom.equals("")){
 			throw new NomVideException("Nom vide");
+		}
+		else if(nbrTerrains < 1){
+			throw new NbTerrainNeg("Nombre de terrain nÈgatif");
 		}
 		this.nouveauxJoueurs= new Liste();
 		this.anciensJoueurs= new Liste();
@@ -41,7 +44,7 @@ public class Tournoi{
 		this.nbrTerrains= nbrTerrains;
 		this.nom = leNom;
 	}
-	public Tournoi(int nbrTerrains) throws NomVideException{
+	public Tournoi(int nbrTerrains) throws NomVideException, NbTerrainNeg{
 		this(nbrTerrains, "Sans titre");
 	}
 

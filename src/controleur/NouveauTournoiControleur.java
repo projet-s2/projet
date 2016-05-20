@@ -1,13 +1,14 @@
 package controleur;
 
-import java.awt.Frame; 
+import java.awt.Frame;  
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
-import exception.NomVideException;
+import exception.*;
 import liste.Liste;
 import tournoi.*;
 import vue.*;
@@ -33,9 +34,11 @@ public class NouveauTournoiControleur implements ActionListener {
 			//Fermeture de la fenetre
 			this.nouveauTournoiFen.dispose();
 		}
-		
 		catch(NomVideException e1){
-			System.out.println("Le tournoi doit avoir un nom valide");
+			JOptionPane.showMessageDialog(null, "Entrez un nom de tournoi", "Erreur", JOptionPane.ERROR_MESSAGE);
+		} 
+		catch(NbTerrainNeg e1){
+			JOptionPane.showMessageDialog(null, "Entrez un nombre de terrain positif", "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
