@@ -2,11 +2,15 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
 import tournoi.*;
 
 public class FenetrePrincipale extends JFrame {
@@ -30,8 +34,8 @@ public class FenetrePrincipale extends JFrame {
 	        e.printStackTrace();
 	    }
 	    
-	    //On assigne le menu � la fenetre
-	    setJMenuBar(new Menu(tournoi));
+	    //On assigne le menu � la fenetres
+	    this.setJMenuBar(new Menu(tournoi));
 	    
 		//Les declarations de base
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,55 +49,38 @@ public class FenetrePrincipale extends JFrame {
 	public void setTournoi(Tournoi t){
 		this.tournoi=t;
 		this.setTitle("Match Point - "+t.getNom());
+		((Menu) this.getJMenuBar()).enableSave();
 		this.afficherTournoi();
 	}
 	
 	public void afficherTournoi(){
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
 
-		//Notre onglet pour l'acceuil
-		JPanel acceuil = new JPanel();
-		JLabel acceuilTitre = new JLabel("Acceuil");
-		acceuil.add(new JLabel("La on donne des info sur le fonctionnement de l'appli"));
+		//Notre onglet pour les joueur
+		JPanel joueurs = new JPanel();
+		 Object[][] data = {
+			      {"Cysboy", "Truc", "12"},
+			      {"BZHHydde", "Machin", "53"},
+			      {"IamBow", "Chose", "45"},
+			      {"FunMan", "Bidule", "64"}
+			    };
 
-		//Notre onglet pour les joueur (Le jpanel joueurContent ser au contenue du pannel (en gros lees bouton) le pannel joueur regroupe joueurContent + la jtextarea pour display des info)
-		JPanel joueur = new JPanel();
-		joueur.setLayout(new BorderLayout());
-		joueur.setBackground(Color.white);
-		JPanel joueurContent = new JPanel();
-		joueurContent.setLayout(new GridLayout(4,1));
-		//Le Jpannel pour le nom du joueur
-		JPanel nomduJoueur = new JPanel();
-		nomduJoueur.setLayout(new GridLayout(1,2));
-		nomduJoueur.add(new JLabel("Nom du joueur : "));
-		nomduJoueur.add(new JTextField());
-		nomduJoueur.setBackground(Color.white);
-		joueurContent.add(nomduJoueur);
-		//La notre choix avec liste deroulante et le bouton pour ajouté le joueur et la combobox pour le sexe du joueur
-		String[] choixSexe = { "Homme", "Femme", "Les deux"};
-		joueurContent.add(new JComboBox(choixSexe));
-		String[] choixLvl = { "Debutant", "Intermediaire", "Proffessionnel"};
-		joueurContent.add(new JComboBox(choixLvl));
-		joueurContent.add(new JButton("Ajouté joueur"));
-		joueur.add(joueurContent, BorderLayout.CENTER);
-		joueur.add(new JTextArea("Albert : Niveaux debutant, homme \r\n Janne : Niveaux Intermediaire, femme \r\n etc ..."), BorderLayout.WEST);
+	    //Les titres des colonnes
+	    String  title[] = {"Prenom", "Nom", "Score"};
+	    JTable listeJoueurs = new JTable(data, title);
+	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
+	    //Sinon les titres des colonnes ne s'afficheront pas !
+	    listeJoueurs.setAutoCreateRowSorter(true);
+		joueurs.add(new JScrollPane(listeJoueurs));
 
-		//Pareil que pour les joueur, terrain = le pannel en gros, terrainContent = les bouton du pannel
-		JPanel terrain = new JPanel();
-		terrain.setLayout(new BorderLayout());
-		terrain.setBackground(Color.white);
-		JPanel terrainContent = new JPanel();
-		terrainContent.setLayout(new GridLayout(2,1));
-		//Pareil que pour joueur, ajouté le label a cote de la textBox
-		JPanel nombreTerrain = new JPanel();
-		nombreTerrain.setLayout(new GridLayout(1,2));
-		nombreTerrain.add(new JLabel("Nombre de terrain : "));
-		nombreTerrain.add(new JTextField());
-		nombreTerrain.setBackground(Color.white);
-		terrainContent.add(nombreTerrain);
-		terrainContent.add(new JButton("Refraichir le nombre de terrain"));
-		terrain.add(terrainContent, BorderLayout.CENTER);
-		terrain.add(new JTextArea("Il y a actuellement 15 terrain"), BorderLayout.WEST);
+		//On veut afficher les terrains et les paires qui jouent dessus
+		JPanel listeTerrains = new JPanel();
+		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/250))), (int) Math.floor(this.getBounds().width/250), 10, 10));
+		//On parcours les terrains pour les afficher
+		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
+			listeTerrains.add(nouvelAffichageTerrain(i));
+		}
+		JScrollPane terrains = new JScrollPane(listeTerrains);
 
 		//Notre onglet pour les score a l'issue d'un match
 		JPanel score = new JPanel();
@@ -151,11 +138,8 @@ public class FenetrePrincipale extends JFrame {
 		paire.add(pairePourcent, BorderLayout.SOUTH);
 
 		//On ajoute tout les onglet
-		onglets.addTab("Acceuil", acceuil);
-		onglets.addTab("Joueur", joueur);
-		onglets.addTab("Terrain", terrain);
-		onglets.addTab("Paire", paire);
-		onglets.addTab("Score", score);
+		onglets.addTab("Terrains", terrains);
+		onglets.addTab("Joueurs", joueurs);
 
 		onglets.setOpaque(true);
 
@@ -165,6 +149,21 @@ public class FenetrePrincipale extends JFrame {
 		principal.add(onglets, BorderLayout.CENTER);
 		this.setContentPane(principal);
 		this.setVisible(true);
+	}
+	
+	public JPanel nouvelAffichageTerrain(int i){
+		JPanel terr = new JPanel();
+		terr.setBackground(Color.orange);
+		terr.setPreferredSize(new Dimension(200,300));
+		try{
+			terr.add(new JLabel(((Terrain) this.tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1().toString()));
+		}catch(Exception e){
+			terr.add(new JLabel("Pas de j1 sur le terr :  "+(i+1)));
+			
+		}
+		JPanel terrain = new JPanel();
+		terrain.add(terr);
+		return terrain;
 	}
 
 }

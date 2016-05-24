@@ -30,12 +30,12 @@ public class Tournoi{
 	* @param nbrTerrains le nombre de terrains disponibles pour le tournoi
 	*
 	*/
-	public Tournoi(int nbrTerrains, String leNom) throws NomVideException,NbTerrainNeg{
+	public Tournoi(int nbrTerrains, String leNom) throws NomVideException, NbTerrainNeg{
 		if(leNom.equals("")){
 			throw new NomVideException("Nom vide");
 		}
 		else if(nbrTerrains < 1){
-			throw new NbTerrainNeg("Nombre de terrain négatif");
+			throw new NbTerrainNeg("Nombre de terrain nï¿½gatif");
 		}
 		this.nouveauxJoueurs= new Liste();
 		this.anciensJoueurs= new Liste();
