@@ -8,6 +8,8 @@ import liste.Liste;
  * @version 0.1
  */
 public class Joueur {
+	
+
 	private int id;
 	private String nom;
 	private String prenom;
@@ -56,13 +58,9 @@ public class Joueur {
 		this.joue = false;
 		this.setDansPaire(false);
 		this.niveau = niveau;
-		this.perf = 0;
+		this.perf = this.calculerPerf();
 		//on calcule la performance en fonction de l'age
-		this.perf = 80-age;
-		this.perf+= niveau*10;
-		if(sexe){
-			this.perf-=40;
-		}
+		
 		this.prio = true;
 		this.anciensPart = new Liste();
 		this.nbMatchJoues = 0;
@@ -72,6 +70,18 @@ public class Joueur {
 		public Joueur(int id, boolean sexe, boolean nouv){
 			this(id, "Bon", "Jean", (20+id), sexe, nouv, (id%3),true);
 		}
+		
+	
+	public int calculerPerf(){
+		int p = 0;
+		p = 80-age;
+		p+= niveau*10;
+		if(sexe){
+			p-=40;
+		}
+		return p;
+	}
+	
 
 	/** Retourne l'id d'un joueur
 		*
@@ -80,6 +90,33 @@ public class Joueur {
 	public int getId(){
 		return this.id;
 	}
+	
+	
+	public boolean isPeutJouer() {
+		return peutJouer;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public void setSexe(boolean sexe) {
+		this.sexe = sexe;
+	}
+	public void setNouveau(boolean nouveau) {
+		this.nouveau = nouveau;
+	}
+	public void setPerf(int perf) {
+		this.perf = perf;
+	}
+	public void setNiveau(int niveau) {
+		this.niveau = niveau;
+	}
+	
 	public void ajouterAnciensPart(Joueur j){
 		this.anciensPart.add(j);
 	}

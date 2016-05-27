@@ -567,6 +567,38 @@ public class Tournoi{
 		Pattern pattern = Pattern.compile("Hugo");
 	    Matcher matcher = pattern.matcher("Hugo Eti�vant");
 	}
+	
+	public void updateJoueur(int id, String nom, String prenom, int age, boolean sexe,
+			boolean nouveau, int niveau, boolean peutJouer){
+		boolean done = false;
+		Joueur test;
+		for (int i = 0; i < anciensJoueurs.size(); i++){
+			test = (Joueur)anciensJoueurs.get(i);
+			if (test.getId()==id){
+				//anciensJoueurs.set(i, new Joueur(id, nom, prenom, age, sexe,
+				//nouveau, niveau, peutJouer));
+				test.setNom(nom);
+				test.setPrenom(prenom);
+				test.setAge(age);
+				test.setSexe(sexe);
+				test.setNouveau(nouveau);
+				test.setNiveau(niveau);
+				test.setPeutJouer(peutJouer);
+				test.setPerf(test.calculerPerf());
+				done = true;
+				break;
+			}
+			
+		}
+		for (int i = 0; i < nouveauxJoueurs.size(); i++){
+			if (((Joueur)nouveauxJoueurs.get(i)).getId()==id){
+				nouveauxJoueurs.set(i, new Joueur(id, nom, prenom, age, sexe,
+				nouveau, niveau, peutJouer));
+				break;
+			}
+			
+		}
+	}
 
 	/**
 	 * @return the nom
