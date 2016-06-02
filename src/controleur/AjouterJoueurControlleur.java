@@ -16,7 +16,7 @@ public class AjouterJoueurControlleur implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (verifier()){
-			
+			vue.ajouterJoueur();
 		}
 
 	}

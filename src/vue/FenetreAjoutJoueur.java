@@ -17,13 +17,26 @@ import javax.swing.JTextField;
 import controleur.AjouterJoueurControlleur;
 
 public class FenetreAjoutJoueur extends JFrame {
-	
 
-	public FenetreAjoutJoueur(String titre){
-		
+	private Tournoi tournoi;
+
+	private JTextField nom;
+	private JTextField prenom;
+	private JComboBox niveau;
+	private JComboBox anciennete;
+	private JSpinner age;
+	private JRadioButton fem;
+	private JRadioButton hom;
+	private JRadioButton deb;
+	private JRadioButton anc;
+
+	public FenetreAjoutJoueur(String titre, Tournoi tournoi){
+
+		this.tournoi = tournoi;
+
 		nom = new JTextField();
 		prenom = new JTextField();
-		niveau = new JComboBox(new String[]{"Débutant","Intermédiaire", "Confirmé"});
+		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
 		anciennete = new JComboBox(new String[]{"Nouveau","Ancien"});
 		age = new JSpinner();
 		fem = new JRadioButton("Femme");
@@ -32,7 +45,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		ButtonGroup grSexe = new ButtonGroup();
 		grSexe.add(hom);
 		grSexe.add(fem);
-		deb = new JRadioButton("Débutant");
+		deb = new JRadioButton("Debutant");
 		anc = new JRadioButton("Ancien");
 		deb.setSelected(true);
 		ButtonGroup grAnc = new ButtonGroup();
@@ -75,10 +88,10 @@ public class FenetreAjoutJoueur extends JFrame {
 		panelAnc.add(deb);
 		panelAnc.add(anc);
 		
-		droite.add(new JLabel("Ancienneté :"));
+		droite.add(new JLabel("Anciennete :"));
 		droite.add(panelAnc);
 		
-		droite.add(new JLabel("Âge :"));
+		droite.add(new JLabel("Age :"));
 		droite.add(age);
 		
 		corePanel.add(droite,BorderLayout.EAST);
@@ -100,11 +113,9 @@ public class FenetreAjoutJoueur extends JFrame {
 	}
 
 
-
 	public JTextField getPrenom() {
 		return prenom;
 	}
-
 
 
 	public JComboBox getNiveau() {
@@ -112,11 +123,9 @@ public class FenetreAjoutJoueur extends JFrame {
 	}
 
 
-
 	public JComboBox getAnciennete() {
 		return anciennete;
 	}
-
 
 
 	public JSpinner getAge() {
@@ -124,11 +133,9 @@ public class FenetreAjoutJoueur extends JFrame {
 	}
 
 
-
 	public JRadioButton getFem() {
 		return fem;
 	}
-
 
 
 	public JRadioButton getHom() {
@@ -136,11 +143,9 @@ public class FenetreAjoutJoueur extends JFrame {
 	}
 
 
-
 	public JRadioButton getDeb() {
 		return deb;
 	}
-
 
 
 	public JRadioButton getAnc() {
@@ -148,18 +153,14 @@ public class FenetreAjoutJoueur extends JFrame {
 	}
 
 
+	public void ajouterJoueur(){
+		int id = Joueur.nbJoueursCrees, age = this.age.getValue();
+		String nom = this.nom.getText(), prenom = this.prenom.getText();
+		tournoi.ajouterJoueur(new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, true));
+	}
 
-	private JTextField nom;
-	private JTextField prenom;
-	private JComboBox niveau;
-	private JComboBox anciennete;
-	private JSpinner age;
-	private JRadioButton fem;
-	private JRadioButton hom;
-	private JRadioButton deb;
-	private JRadioButton anc;
 	
-	
+
 	
 	public static void main(String[] args){
 		new FenetreAjoutJoueur("COUCOu");

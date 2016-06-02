@@ -33,6 +33,8 @@ public class Joueur {
 	private int nbMatchJoues;
 	private boolean peutJouer;
 
+	//Savoir combien on a créé de joueurs permet de donner un identifiant facilement
+	static int nbJoueursCrees = 0;
 
 	/** Constructeur de la classe Joueur
 		*
@@ -65,6 +67,8 @@ public class Joueur {
 		this.anciensPart = new Liste();
 		this.nbMatchJoues = 0;
 		this.peutJouer = peutJouer;
+
+		nbJoueursCrees++;
 	}
 	// Tests
 		public Joueur(int id, boolean sexe, boolean nouv){
