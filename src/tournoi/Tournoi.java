@@ -397,6 +397,14 @@ public class Tournoi{
 		}
 	}
 	
+	
+	//Sert à changer les scores des paires en direct on passant le numéro
+	//de terrain et les scores des deux équipes
+	public void setScore(int numTerrain, int scoreP1, int scoreP2){
+		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
+		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
+	}
+	
 	/**
 	 * Tri rapide pour classer les joueurs selon leur score
 	 */
