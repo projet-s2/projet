@@ -110,9 +110,10 @@ public class Tournoi{
 		* Comprend un mélange des listes de joueurs,
 		* La création des paires,
 		* La création des matchs à partir des paires
+		* @throws TournoiVideException 
 		*
 		*/
-	public void demarrerTour(){
+	public void demarrerTour() throws TournoiVideException{
 		trierAnciensJoueurs(0, this.anciensJoueurs.size()-1);
 		trierNouveauxJoueurs(0, this.nouveauxJoueurs.size()-1);
 		this.creerPaires();
@@ -175,12 +176,16 @@ public class Tournoi{
 		* On cherche d'abord à faire jouer ceux qui ont le moins participé
 		* On cherche ensuite à faire jouer les joueurs qui n'ont pas joué au tour d'avant (les prios)
 		* On fait ensuite jouer les autres joueurs
+		* @throws TournoiVideException 
 		*/
-	private void creerPaires(){
+	private void creerPaires() throws TournoiVideException{
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
 		int tailleMin, tailleMax;
 		Joueur joueur;
 		//On récupères les listes des nouveaux joueurs actifs et des anciens joueurs actif
+		if(this.nouveauxJoueurs.size() == 0 && this.anciensJoueurs.size() == 0){
+			throw new TournoiVideException("Il n'y a pas de joueurs dans le tournoi");
+		}
 		Liste nouveauxJoueursActifs = new Liste();
 		Liste anciensJoueursActifs = new Liste();
 		for (int i=0;i<this.nouveauxJoueurs.size();i++){
