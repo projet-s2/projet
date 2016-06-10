@@ -34,7 +34,7 @@ public class Joueur {
 	private boolean peutJouer;
 
 	//Savoir combien on a créé de joueurs permet de donner un identifiant facilement
-	static int nbJoueursCrees = 0;
+	public static int nbJoueursCrees = 0;
 
 	/** Constructeur de la classe Joueur
 		*
