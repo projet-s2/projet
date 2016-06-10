@@ -16,28 +16,30 @@ import javax.swing.JTextField;
 
 import controleur.AjouterJoueurControlleur;
 
+import tournoi.*;
+
 public class FenetreAjoutJoueur extends JFrame {
 
 	private Tournoi tournoi;
+	FenetrePrincipale vue;
 
 	private JTextField nom;
 	private JTextField prenom;
 	private JComboBox niveau;
-	private JComboBox anciennete;
 	private JSpinner age;
 	private JRadioButton fem;
 	private JRadioButton hom;
-	private JRadioButton deb;
+	private JRadioButton nouv;
 	private JRadioButton anc;
 
-	public FenetreAjoutJoueur(String titre, Tournoi tournoi){
+	public FenetreAjoutJoueur(String titre, Tournoi tournoi, FenetrePrincipale vue){
 
 		this.tournoi = tournoi;
+		this.vue = vue;
 
 		nom = new JTextField();
 		prenom = new JTextField();
 		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
-		anciennete = new JComboBox(new String[]{"Nouveau","Ancien"});
 		age = new JSpinner();
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
@@ -45,11 +47,11 @@ public class FenetreAjoutJoueur extends JFrame {
 		ButtonGroup grSexe = new ButtonGroup();
 		grSexe.add(hom);
 		grSexe.add(fem);
-		deb = new JRadioButton("Debutant");
+		nouv = new JRadioButton("Debutant");
 		anc = new JRadioButton("Ancien");
-		deb.setSelected(true);
+		nouv.setSelected(true);
 		ButtonGroup grAnc = new ButtonGroup();
-		grAnc.add(deb);
+		grAnc.add(nouv);
 		grAnc.add(anc);
 		
 		JButton ajouter = new JButton("Ajouter le joueur");
@@ -72,7 +74,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		gauche.add(new JLabel("Sexe :"));
 		gauche.add(panelSexe);
 		
-		gauche.add(new JLabel("Niveau"));
+		gauche.add(new JLabel("Niveau :"));
 		gauche.add(niveau);
 		
 		corePanel.add(gauche,BorderLayout.WEST);
@@ -85,7 +87,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		
 		JPanel panelAnc = new JPanel();
 		panelAnc.setLayout(new GridLayout(2,1));
-		panelAnc.add(deb);
+		panelAnc.add(nouv);
 		panelAnc.add(anc);
 		
 		droite.add(new JLabel("Anciennete :"));
@@ -99,13 +101,13 @@ public class FenetreAjoutJoueur extends JFrame {
 		corePanel.add(ajouter,BorderLayout.SOUTH);
 		
 		this.setContentPane(corePanel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
 		this.setTitle(titre);
-		this.setLocation(0,0);
-		this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/4, Toolkit.getDefaultToolkit().getScreenSize().height/2);
-		this.setVisible(true);
+		int tailleX = 400, tailleY = 200;
+		this.setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-tailleX)/2,(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-tailleY)/2);
+		this.setSize(tailleX,tailleY);
+		this.setResizable(false);
 	}
 	
 	public JTextField getNom() {
@@ -120,11 +122,6 @@ public class FenetreAjoutJoueur extends JFrame {
 
 	public JComboBox getNiveau() {
 		return niveau;
-	}
-
-
-	public JComboBox getAnciennete() {
-		return anciennete;
 	}
 
 
@@ -143,8 +140,8 @@ public class FenetreAjoutJoueur extends JFrame {
 	}
 
 
-	public JRadioButton getDeb() {
-		return deb;
+	public JRadioButton getNouv() {
+		return nouv;
 	}
 
 
@@ -154,16 +151,27 @@ public class FenetreAjoutJoueur extends JFrame {
 
 
 	public void ajouterJoueur(){
-		int id = Joueur.nbJoueursCrees, age = this.age.getValue();
+		int id = Joueur.nbJoueursCrees;
+		int age = ((int)this.age.getValue());
 		String nom = this.nom.getText(), prenom = this.prenom.getText();
-		tournoi.ajouterJoueur(new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, true));
+		boolean sexe = fem.isSelected();
+		boolean nouveau = nouv.isSelected();
+		int niveau = this.niveau.getSelectedIndex();
+		Joueur j = new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, true);
+		tournoi.ajouterJoueur(j);
+		vue.actualiserJoueurs();
 	}
 
 	
 
 	
 	public static void main(String[] args){
-		new FenetreAjoutJoueur("COUCOu");
+		try {
+			new FenetreAjoutJoueur("Ajout d'un joueur", new Tournoi(5), new FenetrePrincipale("Test"));
+		}
+		catch(Exception e){
+			System.out.println("NUL");
+		}
 	}
 
 }

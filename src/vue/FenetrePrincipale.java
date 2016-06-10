@@ -6,10 +6,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import liste.Liste;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
 import tournoi.*;
 
@@ -17,6 +18,8 @@ public class FenetrePrincipale extends JFrame {
 	
 	//La fen�tre principale � un tournoi surlequel elle peut agir
 	private Tournoi tournoi;
+	private JScrollPane panJoueurs;
+	private JTable listeJoueurs;
 	
 	public FenetrePrincipale(String titre) {
 		super(titre);
@@ -58,20 +61,34 @@ public class FenetrePrincipale extends JFrame {
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
+		String[]_ = new String[]{"","",""};
 		 Object[][] data = {
-			      {"Cysboy", "Truc", "12"},
-			      {"BZHHydde", "Machin", "53"},
-			      {"IamBow", "Chose", "45"},
-			      {"FunMan", "Bidule", "64"}
+				 _,
+				 _,
+				 _,
+				 _,
+				 _,
+				 _,
+				 _,
 			    };
 
 	    //Les titres des colonnes
 	    String  title[] = {"Prenom", "Nom", "Score"};
-	    JTable listeJoueurs = new JTable(data, title);
+	    listeJoueurs = new JTable(data, title);
 	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
 	    //Sinon les titres des colonnes ne s'afficheront pas !
 	    listeJoueurs.setAutoCreateRowSorter(true);
-		joueurs.add(new JScrollPane(listeJoueurs));
+		panJoueurs = new JScrollPane(listeJoueurs);
+		joueurs.add(panJoueurs);
+		//Ajout d'un joueur
+		JButton ajouterJoueur = new JButton("Ajouter un joueur");
+		ajouterJoueur.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fenetreAjout();
+			}
+		});
+		joueurs.add(ajouterJoueur);
 
 		//On veut afficher les terrains et les paires qui jouent dessus
 		JPanel listeTerrains = new JPanel();
@@ -150,7 +167,56 @@ public class FenetrePrincipale extends JFrame {
 		this.setContentPane(principal);
 		this.setVisible(true);
 	}
-	
+
+	private void fenetreAjout(){
+		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
+	}
+
+	//Appelé quand on ajoute un joueur dans la fenêtre ajout joueur
+	public void actualiserJoueurs(){
+		String[] colonnes = {"Nom","Prenom","Score"};
+		Liste classA = tournoi.getAnciensJoueurs();
+		Liste classN = tournoi.getNouveauxJoueurs();
+		int tailleTotale = classA.size()+classN.size();
+		//Joueur[] joueurs = new Joueur[tailleTotale];
+		String[][] data = new String[tailleTotale][3];
+		//On rentre les joueurs anciens dans les X premières cases
+		for(int i =0; i < classA.size(); i++){
+			Joueur j = (Joueur)classA.get(i);
+			System.out.println(i+"\t"+j);
+			listeJoueurs.setValueAt(j.getNom(),i,0);
+			listeJoueurs.setValueAt(j.getPrenom(),i,1);
+			listeJoueurs.setValueAt(""+j.getScore(),i,2);
+			data[i] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
+		}
+		//On rentre les joueurs nouveaux dans les cases restantes
+		for(int i = 0; i < classN.size(); i++){
+			Joueur j = (Joueur)classN.get(i);
+			System.out.println(i+"\t"+j);
+			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),0);
+			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),1);
+			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),2);
+			data[i+classA.size()] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
+		}
+		/*
+		for(String[] s : data){
+			System.out.println("\nUn joueur");
+			for (String s2 : s)
+				System.out.print("\t"+s2);
+
+		}
+		*/
+		//listeJoueurs = new JTable(data, colonnes);
+		//Nous ajoutons notre tableau à notre contentPane dans un scroll
+		//Sinon les titres des colonnes ne s'afficheront pas !
+		//listeJoueurs.setAutoCreateRowSorter(true);
+		//panJoueurs = new JScrollPane(listeJoueurs);
+
+		//panJoueurs = new JScrollPane(listeJoueurs);
+
+	}
+
+
 	public JPanel nouvelAffichageTerrain(int i){
 		JPanel terr = new JPanel();
 		terr.setBackground(Color.orange);
