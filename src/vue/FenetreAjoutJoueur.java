@@ -158,7 +158,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		boolean nouveau = nouv.isSelected();
 		int niveau = this.niveau.getSelectedIndex();
 		Joueur j = new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, true);
-		tournoi.ajouterJoueur(j);
+		tournoi.ajouterjoueur(j);
 		vue.actualiserJoueurs();
 	}
 

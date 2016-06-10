@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import liste.Liste;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import tournoi.*;
 
@@ -19,6 +20,7 @@ public class FenetrePrincipale extends JFrame {
 	//La fenï¿½tre principale ï¿½ un tournoi surlequel elle peut agir
 	private Tournoi tournoi;
 	private JScrollPane panJoueurs;
+	private DefaultTableModel listeJoueursModele;
 	private JTable listeJoueurs;
 	
 	public FenetrePrincipale(String titre) {
@@ -73,8 +75,9 @@ public class FenetrePrincipale extends JFrame {
 			    };
 
 	    //Les titres des colonnes
-	    String  title[] = {"Prenom", "Nom", "Score"};
-	    listeJoueurs = new JTable(data, title);
+	    String  title[] = {"Nom", "Prénom", "Score"};
+	    listeJoueursModele = new DefaultTableModel(data,title);
+	    listeJoueurs = new JTable(listeJoueursModele);
 	    //Nous ajoutons notre tableau Ã  notre contentPane dans un scroll
 	    //Sinon les titres des colonnes ne s'afficheront pas !
 	    listeJoueurs.setAutoCreateRowSorter(true);
@@ -198,6 +201,8 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),2);
 			data[i+classA.size()] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
+
+		
 		/*
 		for(String[] s : data){
 			System.out.println("\nUn joueur");
