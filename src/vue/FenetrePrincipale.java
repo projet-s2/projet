@@ -8,11 +8,14 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import liste.Liste;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import controleur.SaisirScoreControlleur;
+import exception.TournoiVideException;
 import tournoi.*;
 
 public class FenetrePrincipale extends JFrame {
@@ -75,7 +78,7 @@ public class FenetrePrincipale extends JFrame {
 			    };
 
 	    //Les titres des colonnes
-	    String  title[] = {"Nom", "Pr�nom", "Score"};
+	    String  title[] = {"Nom", "Pr�nom", "Score"};
 	    listeJoueursModele = new DefaultTableModel(data,title);
 	    listeJoueurs = new JTable(listeJoueursModele);
 	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
@@ -153,13 +156,25 @@ public class FenetrePrincipale extends JFrame {
 		progressBar.setStringPainted(true);
 		pairePourcent.add(progressBar);
 		pairePourcent.add(new JLabel("Creation des paire non lancé"));
-		paire.add(new JButton("Creation des paire"), BorderLayout.CENTER);
+		JButton creer = new JButton("Creation des paire");
+		creer.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				try {
+					creerPaires();
+				} catch (TournoiVideException e1) {
+					
+				}
+			}
+		});
+		paire.add(creer, BorderLayout.CENTER);
 		paire.add(new JTextArea("Affichage des paire generé"), BorderLayout.WEST);
 		paire.add(pairePourcent, BorderLayout.SOUTH);
 
 		//On ajoute tout les onglet
 		onglets.addTab("Terrains", terrains);
 		onglets.addTab("Joueurs", joueurs);
+		onglets.addTab("Paires", paire);
 
 		onglets.setOpaque(true);
 
@@ -173,6 +188,10 @@ public class FenetrePrincipale extends JFrame {
 
 	private void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
+	}
+	
+	public void creerPaires() throws TournoiVideException{
+		tournoi.demarrerTour();
 	}
 
 	//Appelé quand on ajoute un joueur dans la fenêtre ajout joueur
@@ -224,14 +243,66 @@ public class FenetrePrincipale extends JFrame {
 
 	public JPanel nouvelAffichageTerrain(int i){
 		JPanel terr = new JPanel();
-		terr.setBackground(Color.orange);
-		terr.setPreferredSize(new Dimension(200,300));
+		
+		JPanel paire1 = new JPanel();
+		paire1.setLayout(new GridLayout(2,2));
+		JTextArea p1j1 = new JTextArea();
+		p1j1.setWrapStyleWord(true);
+		p1j1.setLineWrap(true);
+		p1j1.setEditable(false);
+		JTextArea p1j2 = new JTextArea();
+		p1j2.setWrapStyleWord(true);
+		p1j2.setLineWrap(true);
+		p1j2.setEditable(false);
+		JTextField scoreP1 = new JTextField();
+		scoreP1.setColumns(3);
+		paire1.add(p1j1);
+		paire1.add(p1j2);
+		paire1.add(scoreP1);
+		
+		JPanel paire2 = new JPanel();
+		paire2.setLayout(new GridLayout(2,2));
+		JTextArea p2j1 = new JTextArea();
+		p2j1.setWrapStyleWord(true);
+		p2j1.setLineWrap(true);
+		p2j1.setEditable(false);
+		JTextArea p2j2 = new JTextArea();
+		p2j2.setWrapStyleWord(true);
+		p2j2.setLineWrap(true);
+		p2j2.setEditable(false);
+		JTextField scoreP2 = new JTextField();
+		scoreP2.setColumns(3);
+		paire2.add(p2j1);
+		paire2.add(p2j2);
+		paire2.add(scoreP2);
+		
+		JButton scoreBouton = new JButton("Valider Scores");
+		scoreBouton.addActionListener(new SaisirScoreControlleur(scoreP1,scoreP2,this,this.tournoi,i));
+		
 		try{
-			terr.add(new JLabel(((Terrain) this.tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1().toString()));
-		}catch(Exception e){
-			terr.add(new JLabel("Pas de j1 sur le terr :  "+(i+1)));
+			p1j1.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1().toString());
+			p1j2.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2().toString());
+			p2j1.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur1().toString());
+			p2j2.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur2().toString());
+		}catch(NullPointerException e){
+			p1j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
+			p1j2.setText(" ");
+			p2j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
+			p2j2.setText(" ");
+			scoreBouton.setEnabled(false);
 			
 		}
+		
+		
+		
+		terr.setLayout(new BorderLayout());
+		terr.setBackground(Color.orange);
+		terr.setPreferredSize(new Dimension(200,300));
+		
+		terr.add(paire1, BorderLayout.NORTH);
+		terr.add(paire2, BorderLayout.SOUTH);
+		terr.add(scoreBouton, BorderLayout.EAST);
+		
 		JPanel terrain = new JPanel();
 		terrain.add(terr);
 		return terrain;
