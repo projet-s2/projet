@@ -98,7 +98,7 @@ public class Tournoi{
 		* @param joueur Le joueur que l'on souhaite ajouter
 		*
 		*/
-	public void ajouterjoueur(Joueur joueur){
+	public void ajouterJoueur(Joueur joueur){
 		if (joueur.getNouveau()){
 			this.nouveauxJoueurs.add(joueur);}
 		else{
@@ -117,7 +117,7 @@ public class Tournoi{
 		trierAnciensJoueurs(0, this.anciensJoueurs.size()-1);
 		trierNouveauxJoueurs(0, this.nouveauxJoueurs.size()-1);
 		this.creerPaires();
-		for (int i=0; i<this.nbrTerrains; i++){
+		for (int i=0; i<this.terrains.size(); i++){
 			((Terrain)this.terrains.get(i)).setMatch(null);
 		}
 		this.attribuerMatchs();
@@ -342,7 +342,7 @@ public class Tournoi{
 		matchs=matchs.melangerListe();
 		//On parcourt les terrains et on leur attribue des matchs prios
 		int p=0;
-		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
+		for (i=0; i<Math.min(this.terrains.size(),matchs.size()); i++){
 			if(((Match) matchs.get(i)).estPrio()){
 				((Match) matchs.get(i)).pairesJouent(true);
 				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i));
@@ -351,7 +351,7 @@ public class Tournoi{
 		}
 
 		//On parcourt les matchs restants et on leur attribue les terrains restants
-		for (i=0; i<Math.min(this.nbrTerrains,matchs.size()); i++){
+		for (i=0; i<Math.min(this.terrains.size(),matchs.size()); i++){
 			if(!((Match) matchs.get(i)).estPrio()){
 				((Match) matchs.get(i)).pairesJouent(true);
 				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i));
@@ -361,7 +361,7 @@ public class Tournoi{
 
 		//On affiche les matchs pour voir si tout est en ordre
 		String res= "";
-		for(int i1=0; i1<Math.min(this.nbrTerrains,matchs.size());i1++){
+		for(int i1=0; i1<Math.min(this.terrains.size(),matchs.size());i1++){
 			res+=((Terrain)this.terrains.get(i1)).getMatch().toString()+"\n";
 		}
 		System.out.println(res);
@@ -381,7 +381,7 @@ public class Tournoi{
 		*/
 	public void finirTour(){
 		//On demande le score des Ã©quipes pour chaque terrain
-  		for (int i=0; i<this.nbrTerrains; i++){
+  		for (int i=0; i<this.terrains.size(); i++){
   			//Il faut vÃ©rifier qu'un match a bien eu lieu dur le terrain
   			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
   				//Il faudrait demander de rentrer les scores 
@@ -403,8 +403,8 @@ public class Tournoi{
 	}
 	
 	
-	//Sert à changer les scores des paires en direct on passant le numéro
-	//de terrain et les scores des deux équipes
+	//Sert ï¿½ changer les scores des paires en direct on passant le numï¿½ro
+	//de terrain et les scores des deux ï¿½quipes
 	public void setScore(int numTerrain, int scoreP1, int scoreP2){
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
