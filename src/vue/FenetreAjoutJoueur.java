@@ -108,22 +108,30 @@ public class FenetreAjoutJoueur extends JFrame {
 	public JTextField getNom() {
 		return nom;
 	}
-
+	
+	public void setNom(String str){
+		this.nom.setText(str);
+	}
 
 	public JTextField getPrenom() {
 		return prenom;
 	}
 
+	public void setPrenom(String str){
+		this.prenom.setText(str);
+	}
 
 	public JComboBox getNiveau() {
 		return niveau;
 	}
 
-
 	public JSpinner getAge() {
 		return age;
 	}
-
+	
+	public void setAge(){
+		this.age.setValue(0);
+	}
 
 	public JRadioButton getFem() {
 		return fem;
@@ -148,8 +156,12 @@ public class FenetreAjoutJoueur extends JFrame {
 		boolean nouveau = nouv.isSelected();
 		int niveau = this.niveau.getSelectedIndex();
 		Joueur j = new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, true);
+		this.setNom("");
+		this.setPrenom("");
+		this.setAge();
 		tournoi.ajouterJoueur(j);
 		vue.actualiserJoueurs();
+
 	}
 
 	
