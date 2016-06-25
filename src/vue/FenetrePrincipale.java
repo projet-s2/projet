@@ -25,6 +25,7 @@ public class FenetrePrincipale extends JFrame {
 	private JScrollPane panJoueurs;
 	private DefaultTableModel listeJoueursModele;
 	private JTable listeJoueurs;
+	private JPanel listeTerrains;
 	
 	public FenetrePrincipale(String titre) {
 		super(titre);
@@ -43,7 +44,7 @@ public class FenetrePrincipale extends JFrame {
 	    }
 	    
 	    //On assigne le menu � la fenetres
-	    this.setJMenuBar(new Menu(tournoi));
+	    this.setJMenuBar(new Menu(tournoi, this));
 	    
 		//Les declarations de base
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,7 +79,7 @@ public class FenetrePrincipale extends JFrame {
 			    };
 
 	    //Les titres des colonnes
-	    String  title[] = {"Nom", "Pr�nom", "Score"};
+	    String  title[] = {"Nom", "Prénom", "Score"};
 	    listeJoueursModele = new DefaultTableModel(data,title);
 	    listeJoueurs = new JTable(listeJoueursModele);
 	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
@@ -97,84 +98,18 @@ public class FenetrePrincipale extends JFrame {
 		joueurs.add(ajouterJoueur);
 
 		//On veut afficher les terrains et les paires qui jouent dessus
-		JPanel listeTerrains = new JPanel();
-		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/250))), (int) Math.floor(this.getBounds().width/250), 10, 10));
+		this.listeTerrains = new JPanel();
+		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
 		//On parcours les terrains pour les afficher
 		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
 			listeTerrains.add(nouvelAffichageTerrain(i));
 		}
 		JScrollPane terrains = new JScrollPane(listeTerrains);
-
-		//Notre onglet pour les score a l'issue d'un match
-		JPanel score = new JPanel();
-		score.setLayout(new BorderLayout());
-		//Le scoreContent pour les info par apport au deux joueur
-		JPanel scoreContent = new JPanel();
-		scoreContent.setLayout(new GridLayout(5,2));
-		//Le jpannel pour le nom des joueur (les 4, deux pour chaques paire)
-		String[] choixScoreName = { "Liste", "Des", "Joueur"};
-		JPanel scoreName1 = new JPanel();
-		scoreName1.setLayout(new GridLayout(1,2));
-		scoreName1.add(new JLabel("Pair 1 - joueur 1: "));
-		scoreName1.add(new JComboBox(choixScoreName));
-		JPanel scoreName2 = new JPanel();
-		scoreName2.setLayout(new GridLayout(1,2));
-		scoreName2.add(new JLabel("Pair 1 - joueur 2: "));
-		scoreName2.add(new JComboBox(choixScoreName));
-		JPanel scoreName3 = new JPanel();
-		scoreName3.setLayout(new GridLayout(1,2));
-		scoreName3.add(new JLabel("Pair 2 - joueur 1: "));
-		scoreName3.add(new JComboBox(choixScoreName));
-		JPanel scoreName4 = new JPanel();
-		scoreName4.setLayout(new GridLayout(1,2));
-		scoreName4.add(new JLabel("Pair 2 - joueur 2: "));
-		scoreName4.add(new JComboBox(choixScoreName));
-		//On repasse sur le JPanel content
-		scoreContent.add(scoreName1);
-		scoreContent.add(scoreName2);
-		scoreContent.add(new JLabel("Score final pair 1"));
-		scoreContent.add(new JTextArea());
-		scoreContent.add(scoreName3);
-		scoreContent.add(scoreName4);
-		scoreContent.add(new JLabel("Score final pair 2"));
-		scoreContent.add(new JTextArea());
-		scoreContent.add(new JButton("Ajouté score"));
-		score.add(scoreContent, BorderLayout.CENTER);
-		score.add(new JTextArea("Albert - Jenne v Albert - Jenne : \r\n 21 vs 13 \r\n\r\n Albert - Jenne v Albert - Jenne : \r\n 21 vs 13"), BorderLayout.WEST);
-
-
-
-		//Notre onglet pour les paire
-		JPanel paire = new JPanel();
-		paire.setLayout(new BorderLayout());
-		//Le jpannel pour la progressBar
-		JPanel pairePourcent = new JPanel();
-		pairePourcent.setBackground(Color.gray);
-		pairePourcent.setLayout(new FlowLayout(FlowLayout. CENTER));
-		JProgressBar progressBar = new JProgressBar(0, 100);
-		progressBar.setValue(0);
-		progressBar.setStringPainted(true);
-		pairePourcent.add(progressBar);
-		pairePourcent.add(new JLabel("Creation des paire non lancé"));
-		JButton creer = new JButton("Creation des paire");
-		creer.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				try {
-					creerPaires();
-				} catch (TournoiVideException e1) {
-					
-				}
-			}
-		});
-		paire.add(creer, BorderLayout.CENTER);
-		paire.add(new JTextArea("Affichage des paire generé"), BorderLayout.WEST);
-		paire.add(pairePourcent, BorderLayout.SOUTH);
+	
 
 		//On ajoute tout les onglet
 		onglets.addTab("Terrains", terrains);
 		onglets.addTab("Joueurs", joueurs);
-		onglets.addTab("Paires", paire);
 
 		onglets.setOpaque(true);
 
@@ -186,12 +121,13 @@ public class FenetrePrincipale extends JFrame {
 		this.setVisible(true);
 	}
 
-	private void fenetreAjout(){
+	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
 	
-	public void creerPaires() throws TournoiVideException{
+	public void genererPaires() throws TournoiVideException{
 		tournoi.demarrerTour();
+		this.actualiserTerrains();
 	}
 
 	//Appelé quand on ajoute un joueur dans la fenêtre ajout joueur
@@ -292,20 +228,29 @@ public class FenetrePrincipale extends JFrame {
 			scoreBouton.setEnabled(false);
 			
 		}
-		
-		
-		
 		terr.setLayout(new BorderLayout());
-		terr.setBackground(Color.orange);
-		terr.setPreferredSize(new Dimension(200,300));
-		
 		terr.add(paire1, BorderLayout.NORTH);
 		terr.add(paire2, BorderLayout.SOUTH);
 		terr.add(scoreBouton, BorderLayout.EAST);
+		terr.setBackground(Color.orange);
+		terr.setPreferredSize(new Dimension(200,300));
 		
 		JPanel terrain = new JPanel();
 		terrain.add(terr);
 		return terrain;
 	}
+	public void actualiserTerrains(){
+		//On vide la liste des terrains
+		this.listeTerrains = new JPanel();
+		this.listeTerrains.repaint();
+		/*listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
+		//On parcours les terrains pour les afficher
+		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
+			listeTerrains.add(nouvelAffichageTerrain(i));
+		}*/
+	}
+	public void actualiserScoresJoueurs(){
+		
+	};
 
 }

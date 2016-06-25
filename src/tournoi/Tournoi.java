@@ -178,7 +178,7 @@ public class Tournoi{
 		* On fait ensuite jouer les autres joueurs
 		* @throws TournoiVideException 
 		*/
-	private void creerPaires() throws TournoiVideException{
+	public void creerPaires() throws TournoiVideException{
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
 		int tailleMin, tailleMax;
 		Joueur joueur;
@@ -625,5 +625,9 @@ public class Tournoi{
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+	
+	public void parseTournoi(String tournoiXML){
+		
 	}
 }

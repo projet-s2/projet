@@ -4,26 +4,39 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import tournoi.*;
 import javax.swing.*;
 
+import controleur.AjouterJoueurControlleur;
+import exception.TournoiVideException;
+
 import java.awt.Toolkit;
 public class Menu extends JMenuBar{
-	private JMenuItem enregistrerI;
-	private JMenuItem enregistrerSousI;
-	private JMenuItem exporterI;
+	//Il n'est pas possible de proceder à certaines actions tant que le tournoi n'a pas été crée ou affiché
+	private ArrayList<JMenuItem> aAutoriser;
 	
-	public Menu(final Tournoi t){
+	public Menu(final Tournoi t, final FenetrePrincipale fen){
 		super();
 		//On cr�er le menu fichier
 	    JMenu menuFichier = new JMenu("Fichier");
-
+	    JMenu menuEdition = new JMenu("Édition");
+	    //On inctancie la liste des item à auatoriser
+	    this.aAutoriser = new ArrayList<JMenuItem>();
 	    //On creer le bouton nouveau tournoi
 	    JMenuItem nouveauTournoi = new JMenuItem("Nouveau...");
 	    nouveauTournoi.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    nouveauTournoi.addActionListener(new ActionListener(){
+	    	@Override
+	    	public void actionPerformed(ActionEvent e){
+	    		FenetrePrincipale fen = new FenetrePrincipale("Match Point");
+	    		NouveauTournoi tourn = new NouveauTournoi(fen);
+	    	}
+	    });
 	    menuFichier.add(nouveauTournoi);
 	    this.add(menuFichier);
+	    this.add(menuEdition);
 
 	    //Ouvrir un fichier
 	    JMenuItem ouvrir = new JMenuItem("Ouvrir...");
@@ -33,10 +46,10 @@ public class Menu extends JMenuBar{
 
 	    //On creer le bouton enregister
 	    JMenuItem enregistrer = new JMenuItem("Enregistrer");
-	    enregistrer.setEnabled(false);
 	    enregistrer.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 	    menuFichier.add(enregistrer);
-	    this.enregistrerI = enregistrer;
+	    this.aAutoriser.add(enregistrer);
+	    enregistrer.setEnabled(false);
 	    
 	    //On creer le bouton enregister sous
 	    JMenuItem enregistrerSous = new JMenuItem("Enregistrer sous...");
@@ -58,20 +71,52 @@ public class Menu extends JMenuBar{
 	    	}
 	    });
 	    menuFichier.add(enregistrerSous);
-	    this.enregistrerSousI = enregistrerSous;
+	    this.aAutoriser.add(enregistrerSous);
 	    
 	    
 	  //On creer le bouton exporter
 	    JMenuItem exporter = new JMenuItem("Exporter le classement...");
-	    exporter.setAccelerator(KeyStroke.getKeyStroke('G', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    exporter.setAccelerator(KeyStroke.getKeyStroke('E', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 	    menuFichier.add(exporter);
-	    this.exporterI = exporter;
+	    exporter.setEnabled(false);
+	    this.aAutoriser.add(exporter);
+	    
+	   //Dans le menu édition
+	    JMenuItem creerPaires = new JMenuItem("Générer les paires");
+	    creerPaires.setAccelerator(KeyStroke.getKeyStroke('G', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    creerPaires.addActionListener(new ActionListener(){
+	    	@Override
+	    	public void actionPerformed(ActionEvent e){
+	    		try {
+					fen.genererPaires();
+				} catch (TournoiVideException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	    	}
+	    });
+	    creerPaires.setEnabled(false);
+	    menuEdition.add(creerPaires);
+	    this.aAutoriser.add(creerPaires);
+	    
+	    JMenuItem ajouterJoueur = new JMenuItem("Nouveau joueur");
+	    ajouterJoueur.setAccelerator(KeyStroke.getKeyStroke('J', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+	    ajouterJoueur.addActionListener(new ActionListener(){
+	    	@Override
+	    	public void actionPerformed(ActionEvent e){
+				fen.fenetreAjout();
+	    	}
+				
+	    });
+	    ajouterJoueur.setEnabled(false);
+	    menuEdition.add(ajouterJoueur);
+	    this.aAutoriser.add(ajouterJoueur);
 	    
 	}
 	public void enableSave(){
-		this.enregistrerI.setEnabled(true);
-		this.enregistrerSousI.setEnabled(true);
-		this.exporterI.setEnabled(true);
+		for(int i = 0; i<this.aAutoriser.size();i++){
+			((JMenuItem)this.aAutoriser.get(i)).setEnabled(true);
+		}
 	}
 
 }

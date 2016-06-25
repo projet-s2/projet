@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,8 +30,7 @@ public class FenetreAjoutJoueur extends JFrame {
 	private JSpinner age;
 	private JRadioButton fem;
 	private JRadioButton hom;
-	private JRadioButton nouv;
-	private JRadioButton anc;
+	private JCheckBox nouv;
 
 	public FenetreAjoutJoueur(String titre, Tournoi tournoi, FenetrePrincipale vue){
 
@@ -47,12 +47,8 @@ public class FenetreAjoutJoueur extends JFrame {
 		ButtonGroup grSexe = new ButtonGroup();
 		grSexe.add(hom);
 		grSexe.add(fem);
-		nouv = new JRadioButton("Debutant");
-		anc = new JRadioButton("Ancien");
+		nouv = new JCheckBox("Nouveau");
 		nouv.setSelected(true);
-		ButtonGroup grAnc = new ButtonGroup();
-		grAnc.add(nouv);
-		grAnc.add(anc);
 		
 		JButton ajouter = new JButton("Ajouter le joueur");
 		ajouter.addActionListener(new AjouterJoueurControlleur(this));
@@ -88,7 +84,6 @@ public class FenetreAjoutJoueur extends JFrame {
 		JPanel panelAnc = new JPanel();
 		panelAnc.setLayout(new GridLayout(2,1));
 		panelAnc.add(nouv);
-		panelAnc.add(anc);
 		
 		droite.add(new JLabel("Anciennete :"));
 		droite.add(panelAnc);
@@ -104,7 +99,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		this.setTitle(titre);
-		int tailleX = 400, tailleY = 200;
+		int tailleX = 600, tailleY = 200;
 		this.setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-tailleX)/2,(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-tailleY)/2);
 		this.setSize(tailleX,tailleY);
 		this.setResizable(false);
@@ -140,13 +135,8 @@ public class FenetreAjoutJoueur extends JFrame {
 	}
 
 
-	public JRadioButton getNouv() {
+	public JCheckBox getNouv() {
 		return nouv;
-	}
-
-
-	public JRadioButton getAnc() {
-		return anc;
 	}
 
 
