@@ -160,7 +160,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		this.setPrenom("");
 		this.setAge();
 		tournoi.ajouterJoueur(j);
-		vue.actualiserJoueurs();
+		vue.ajouterJoueurTable();
 
 	}
 

@@ -80,7 +80,7 @@ public class FenetrePrincipale extends JFrame {
 
 	    //Les titres des colonnes
 	    String  title[] = {"Nom", "Prénom", "Score"};
-	    listeJoueursModele = new DefaultTableModel(data,title);
+	    listeJoueursModele = new DefaultTableModel(title,0);
 	    listeJoueurs = new JTable(listeJoueursModele);
 	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
 	    //Sinon les titres des colonnes ne s'afficheront pas !
@@ -252,5 +252,11 @@ public class FenetrePrincipale extends JFrame {
 	public void actualiserScoresJoueurs(){
 		
 	};
+	
+	public void ajouterJoueurTable(){
+		Object[]tJ = {"","",""};
+		this.listeJoueursModele.addRow(tJ);
+		this.actualiserJoueurs();
+	}
 
 }
