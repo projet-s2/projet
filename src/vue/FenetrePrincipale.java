@@ -19,17 +19,17 @@ import exception.TournoiVideException;
 import tournoi.*;
 
 public class FenetrePrincipale extends JFrame {
-	
+
 	//La fen�tre principale � un tournoi surlequel elle peut agir
 	private Tournoi tournoi;
 	private JScrollPane panJoueurs;
 	private DefaultTableModel listeJoueursModele;
 	private JTable listeJoueurs;
 	private JPanel listeTerrains;
-	
+
 	public FenetrePrincipale(String titre) {
 		super(titre);
-		
+
 		//On charge le look and feel du syst�me de l'utilisateur (� la place de GTK) auquel il est habitu�
 	    try {
 	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -42,10 +42,10 @@ public class FenetrePrincipale extends JFrame {
 	    } catch (UnsupportedLookAndFeelException e) {
 	        e.printStackTrace();
 	    }
-	    
+
 	    //On assigne le menu � la fenetres
 	    this.setJMenuBar(new Menu(tournoi, this));
-	    
+
 		//Les declarations de base
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
@@ -61,7 +61,7 @@ public class FenetrePrincipale extends JFrame {
 		((Menu) this.getJMenuBar()).enableSave();
 		this.afficherTournoi();
 	}
-	
+
 	public void afficherTournoi(){
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
 
@@ -105,7 +105,7 @@ public class FenetrePrincipale extends JFrame {
 			listeTerrains.add(nouvelAffichageTerrain(i));
 		}
 		JScrollPane terrains = new JScrollPane(listeTerrains);
-	
+
 
 		//On ajoute tout les onglet
 		onglets.addTab("Terrains", terrains);
@@ -124,7 +124,7 @@ public class FenetrePrincipale extends JFrame {
 	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
-	
+
 	public void genererPaires() throws TournoiVideException{
 		tournoi.demarrerTour();
 		this.actualiserTerrains();
@@ -157,7 +157,7 @@ public class FenetrePrincipale extends JFrame {
 			data[i+classA.size()] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
 
-		
+
 		/*
 		for(String[] s : data){
 			System.out.println("\nUn joueur");
@@ -179,7 +179,7 @@ public class FenetrePrincipale extends JFrame {
 
 	public JPanel nouvelAffichageTerrain(int i){
 		JPanel terr = new JPanel();
-		
+
 		JPanel paire1 = new JPanel();
 		paire1.setLayout(new GridLayout(2,2));
 		JTextArea p1j1 = new JTextArea();
@@ -195,7 +195,7 @@ public class FenetrePrincipale extends JFrame {
 		paire1.add(p1j1);
 		paire1.add(p1j2);
 		paire1.add(scoreP1);
-		
+
 		JPanel paire2 = new JPanel();
 		paire2.setLayout(new GridLayout(2,2));
 		JTextArea p2j1 = new JTextArea();
@@ -211,10 +211,10 @@ public class FenetrePrincipale extends JFrame {
 		paire2.add(p2j1);
 		paire2.add(p2j2);
 		paire2.add(scoreP2);
-		
+
 		JButton scoreBouton = new JButton("Valider Scores");
 		scoreBouton.addActionListener(new SaisirScoreControlleur(scoreP1,scoreP2,this,this.tournoi,i));
-		
+
 		try{
 			p1j1.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1().toString());
 			p1j2.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2().toString());
@@ -226,7 +226,7 @@ public class FenetrePrincipale extends JFrame {
 			p2j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
 			p2j2.setText(" ");
 			scoreBouton.setEnabled(false);
-			
+
 		}
 		terr.setLayout(new BorderLayout());
 		terr.add(paire1, BorderLayout.NORTH);
@@ -234,25 +234,26 @@ public class FenetrePrincipale extends JFrame {
 		terr.add(scoreBouton, BorderLayout.EAST);
 		terr.setBackground(Color.orange);
 		terr.setPreferredSize(new Dimension(200,300));
-		
+
 		JPanel terrain = new JPanel();
 		terrain.add(terr);
 		return terrain;
 	}
 	public void actualiserTerrains(){
 		//On vide la liste des terrains
-		this.listeTerrains = new JPanel();
+		this.listeTerrains.removeAll();
+		this.listeTerrains.revalidate();
 		this.listeTerrains.repaint();
-		//listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
+		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
 		//On parcours les terrains pour les afficher
 		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
 			listeTerrains.add(nouvelAffichageTerrain(i));
 		}
 	}
 	public void actualiserScoresJoueurs(){
-		
+
 	};
-	
+
 	public void ajouterJoueurTable(){
 		Object[]tJ = {"","",""};
 		this.listeJoueursModele.addRow(tJ);
