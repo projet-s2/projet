@@ -26,6 +26,11 @@ public class FenetrePrincipale extends JFrame {
 	private DefaultTableModel listeJoueursModele;
 	private JTable listeJoueurs;
 	private JPanel listeTerrains;
+	private JPanel[] terrains;
+	private JButton boutonFinir;
+	public static Color couleurOK = Color.GRAY;
+	public static Color couleurPasOK = Color.ORANGE;
+	private int verif;
 
 	public FenetrePrincipale(String titre) {
 		super(titre);
@@ -67,19 +72,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
-		String[]_ = new String[]{"","",""};
-		 Object[][] data = {
-				 _,
-				 _,
-				 _,
-				 _,
-				 _,
-				 _,
-				 _,
-			    };
-
-	    //Les titres des colonnes
-	    String  title[] = {"Nom", "Prénom", "Score"};
+	    String  title[] = {"Nom", "Prénom", "Score","Ancienneté","Disponible"};
 	    listeJoueursModele = new DefaultTableModel(title,0);
 	    listeJoueurs = new JTable(listeJoueursModele);
 	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
@@ -105,9 +98,18 @@ public class FenetrePrincipale extends JFrame {
 			listeTerrains.add(nouvelAffichageTerrain(i));
 		}
 		JScrollPane terrains = new JScrollPane(listeTerrains);
+		boutonFinir = new JButton("Finir tour");
+		boutonFinir.setEnabled(false);
+		boutonFinir.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				finirTour();
+			}
+		});
+		listeTerrains.add(boutonFinir);
 
 
-		//On ajoute tout les onglet
+		//On ajoute tous les onglets
 		onglets.addTab("Terrains", terrains);
 		onglets.addTab("Joueurs", joueurs);
 
@@ -121,13 +123,20 @@ public class FenetrePrincipale extends JFrame {
 		this.setVisible(true);
 	}
 
+	public void rentrerVerif(){
+		verif--;
+	}
+
 	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
 
 	public void genererPaires() throws TournoiVideException{
+		verif = 0;
 		tournoi.demarrerTour();
 		this.actualiserTerrains();
+		boutonFinir.setEnabled(true);
+
 	}
 
 	//Appelé quand on ajoute un joueur dans la fenêtre ajout joueur
@@ -145,6 +154,8 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(j.getNom(),i,0);
 			listeJoueurs.setValueAt(j.getPrenom(),i,1);
 			listeJoueurs.setValueAt(""+j.getScore(),i,2);
+			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i,3);
+			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i,4);
 			data[i] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
 		//On rentre les joueurs nouveaux dans les cases restantes
@@ -154,6 +165,8 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),0);
 			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),1);
 			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),2);
+			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i+classA.size(),3);
+			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i+classA.size(),4);
 			data[i+classA.size()] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
 
@@ -213,30 +226,38 @@ public class FenetrePrincipale extends JFrame {
 		paire2.add(scoreP2);
 
 		JButton scoreBouton = new JButton("Valider Scores");
-		scoreBouton.addActionListener(new SaisirScoreControlleur(scoreP1,scoreP2,this,this.tournoi,i));
+		scoreBouton.addActionListener(new SaisirScoreControlleur(scoreP1,scoreP2,this,this.tournoi,i,terr));
 
 		try{
-			p1j1.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1().toString());
-			p1j2.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2().toString());
-			p2j1.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur1().toString());
-			p2j2.setText( ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur2().toString());
+			Joueur j1 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1();
+			p1j1.setText( j1.getNom()+" "+j1.getPrenom());
+			Joueur j2 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2();
+			p1j2.setText(j2.getNom()+" "+j2.getPrenom());
+			Joueur j3 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur1();
+			p2j1.setText(j3.getNom()+" "+j3.getPrenom());
+			Joueur j4 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur2();
+			p2j2.setText(j4.getNom()+" "+j4.getPrenom());
+			terr.setBackground(couleurPasOK);
+			verif++;
 		}catch(NullPointerException e){
 			p1j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
 			p1j2.setText(" ");
 			p2j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
 			p2j2.setText(" ");
 			scoreBouton.setEnabled(false);
+			terr.setBackground(couleurOK);
+			terr.setFocusable(false);
 
 		}
 		terr.setLayout(new BorderLayout());
 		terr.add(paire1, BorderLayout.NORTH);
 		terr.add(paire2, BorderLayout.SOUTH);
 		terr.add(scoreBouton, BorderLayout.EAST);
-		terr.setBackground(Color.orange);
 		terr.setPreferredSize(new Dimension(200,300));
 
 		JPanel terrain = new JPanel();
 		terrain.add(terr);
+
 		return terrain;
 	}
 	public void actualiserTerrains(){
@@ -246,16 +267,35 @@ public class FenetrePrincipale extends JFrame {
 		this.listeTerrains.repaint();
 		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
 		//On parcours les terrains pour les afficher
+		terrains = new JPanel[tournoi.getNbrTerrains()];
 		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			listeTerrains.add(nouvelAffichageTerrain(i));
+			terrains[i] = nouvelAffichageTerrain(i);
+			listeTerrains.add(terrains[i]);
+		}
+		listeTerrains.add(boutonFinir);
+	}
+
+	public void finirTour(){
+		if (verifFinir()){
+			tournoi.finirTour();
+			boutonFinir.setEnabled(false);
+		}
+		else{
+			JOptionPane.showMessageDialog(this,"Vous devez valider tous les terrains avant de finir le tour.");
 		}
 	}
+
+	public boolean verifFinir(){
+		System.out.println(verif);
+		return verif==0;
+	}
+
 	public void actualiserScoresJoueurs(){
 
 	};
 
 	public void ajouterJoueurTable(){
-		Object[]tJ = {"","",""};
+		Object[]tJ = {"","","","",""};
 		this.listeJoueursModele.addRow(tJ);
 		this.actualiserJoueurs();
 	}
