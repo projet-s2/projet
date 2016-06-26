@@ -43,6 +43,7 @@ public class Tournoi{
 		this.paires= new Liste();
 		this.nbrTerrains= nbrTerrains;
 		this.nom = leNom;
+		initialiserTerrains();
 	}
 	public Tournoi(int nbrTerrains) throws NomVideException, NbTerrainNeg{
 		this(nbrTerrains, "Sans titre");
