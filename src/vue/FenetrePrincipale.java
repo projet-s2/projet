@@ -15,6 +15,7 @@ import liste.Liste;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import controleur.ModifierJoueurControlleur;
 import controleur.SaisirScoreControlleur;
 import exception.TournoiVideException;
 import tournoi.*;
@@ -77,6 +78,15 @@ public class FenetrePrincipale extends JFrame {
 		((Menu) this.getJMenuBar()).enableSave();
 		this.afficherTournoi();
 	}
+	
+	/**
+	 *
+	 * @return le tournoi
+    */
+	
+	public Tournoi getTournoi(){
+		return this.tournoi;
+	}
 
 	/**
 	 * initialise l'affichage de la fenêtre
@@ -90,6 +100,7 @@ public class FenetrePrincipale extends JFrame {
 	    String  title[] = {"ID","Nom", "Prénom", "Score","Ancienneté","Disponible"};
 	    listeJoueursModele = new DefaultTableModel(title,0);
 	    listeJoueurs = new JTable(listeJoueursModele);
+	    listeJoueurs.addMouseListener(new ModifierJoueurControlleur(this,listeJoueursModele,listeJoueurs));
 	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
 	    //Sinon les titres des colonnes ne s'afficheront pas !
 	    listeJoueurs.setAutoCreateRowSorter(true);
@@ -151,7 +162,7 @@ public class FenetrePrincipale extends JFrame {
 	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
-
+	
 	/**
 	 * pour générer les paires et démarrer un tour
 	 * @throws TournoiVideException s'il n'y a pas de joueurs

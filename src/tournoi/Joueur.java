@@ -375,5 +375,15 @@ public class Joueur {
 				+ "	<peutJouer>"+this.peutJouer+"</peutJouer>\n"
 			+ "</joueur>";
 	}
+	public void modifierJoueur(String nom2, String prenom2, int age2, boolean sexe2, boolean nouveau2,
+			int niveau2) {
+		this.setNom(nom2);
+		this.setPrenom(prenom2);
+		this.setAge(age2);
+		this.setSexe(sexe2);
+		this.setNouveau(nouveau2);
+		this.setNiveau(niveau2);
+	}
+	
 
 }

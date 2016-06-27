@@ -51,6 +51,29 @@ public class Tournoi{
 	public Tournoi(int nbrTerrains) throws NomVideException, NbTerrainNeg{
 		this(nbrTerrains, "Sans titre");
 	}
+	
+	/** Retourne le joueur avec son id
+	 * @return 
+	 * 
+	 * @return le joueur avec son id
+	 */
+	
+	public Joueur getJoueur(int Lid){
+		Joueur j = null;
+		for(int i = 0; i<nouveauxJoueurs.size();i++){
+			if(Lid==((Joueur) this.nouveauxJoueurs.get(i)).getId()){
+				j = (Joueur) this.nouveauxJoueurs.get(i);
+			}
+		}
+		for(int i = 0; i<anciensJoueurs.size();i++){
+			if(Lid==((Joueur) this.anciensJoueurs.get(i)).getId()){
+				j = (Joueur) this.anciensJoueurs.get(i);
+			}
+		}
+		return j;
+	}
+	
+	
 
 /** Retourne la liste de nouveaux joueurs
 	*
@@ -767,5 +790,11 @@ public class Tournoi{
 	
 	public void parseTournoi(String tournoiXML){
 		
+	}
+	public void modifierJoueur(int id, String nom, String prenom, int age, boolean sexe,
+			boolean nouveau, int niveau) {
+		Joueur j = null;
+		j = this.getJoueur(id);
+		j.modifierJoueur(nom,prenom,age,sexe,nouveau,niveau);
 	}
 }
