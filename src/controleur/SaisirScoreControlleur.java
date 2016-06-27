@@ -19,6 +19,15 @@ public class SaisirScoreControlleur implements ActionListener{
 	private JPanel terrain;
 	private boolean maj;
 
+	/**
+	 * constructeur du controleur pour entrer les scores sur un terrain
+	 * @param jt1 le champ de saisie du score de la première paire
+	 * @param jt2 le champ de saisie du score de la seconde paire
+	 * @param v la fenetre principale
+	 * @param t le tournoi
+	 * @param numTer le numéro de terrain
+     * @param terr le JPanel associé
+     */
 	public SaisirScoreControlleur(JTextField jt1, JTextField jt2, FenetrePrincipale v, Tournoi t, int numTer, JPanel terr){
 		scoreP1 = jt1;
 		scoreP2 = jt2;
@@ -28,7 +37,11 @@ public class SaisirScoreControlleur implements ActionListener{
 		terrain = terr;
 		maj = false;
 	}
-	
+
+	/**
+	 * pour essayer d'entrer un score
+	 * @param e un clic sur le bouton valider scores
+     */
 	public void actionPerformed(ActionEvent e){
 		if (verifier())
 			tournoi.setScore(numeroTerrain,Integer.parseInt(scoreP1.getText()),Integer.parseInt(scoreP2.getText()));
@@ -40,6 +53,10 @@ public class SaisirScoreControlleur implements ActionListener{
 		}
 	}
 
+	/**
+	 * pour vérifier si on peut entrer les scores
+	 * @return true si les scores sont valables false sinon
+     */
 	private boolean verifier(){
 		try {
 			int test = Integer.parseInt(scoreP1.getText());

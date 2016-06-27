@@ -25,11 +25,14 @@ public class Tournoi{
 	private Liste paires;
 	private int nbrTerrains;
 	private String nom;
-/** Constructeur de la classe tournoi
-	*
-	* @param nbrTerrains le nombre de terrains disponibles pour le tournoi
-	*
-	*/
+
+	/**
+	 * Constructeur d'un tournoi
+	 * @param nbrTerrains le nompbre de terrains disponibles pour le tournoi
+	 * @param leNom le nom du tournoi
+	 * @throws NomVideException s'il n'y a pas de nom
+	 * @throws NbTerrainNeg si le nombre des terrains est <=0
+     */
 	public Tournoi(int nbrTerrains, String leNom) throws NomVideException, NbTerrainNeg{
 		if(leNom.equals("")){
 			throw new NomVideException("Nom vide");
@@ -111,7 +114,7 @@ public class Tournoi{
 		* Comprend un mélange des listes de joueurs,
 		* La création des paires,
 		* La création des matchs à partir des paires
-		* @throws TournoiVideException 
+		* @throws TournoiVideException s'il n'y a pas de joueurs
 		*
 		*/
 	public void demarrerTour() throws TournoiVideException{
@@ -124,6 +127,12 @@ public class Tournoi{
 		this.attribuerMatchs();
 		
 	}
+
+	/**
+	 * Algorithme de tri rapide des nouveaux joueurs en fonction du score
+	 * @param gauche borne inférieure
+	 * @param droite borne supérieure
+     */
 	private void trierNouveauxJoueurs(int gauche, int droite){
 		int pivot;
 		Joueur tmp;
@@ -148,6 +157,11 @@ public class Tournoi{
 			trierNouveauxJoueurs(pivot+1, droite);
 		}
 	}
+	/**
+	 * Algorithme de tri rapide des anciens joueurs en fonction du score
+	 * @param gauche borne inférieure
+	 * @param droite borne supérieure
+	 */
 	private void trierAnciensJoueurs(int gauche, int droite){
 		int pivot;
 		Joueur tmp;
@@ -177,7 +191,7 @@ public class Tournoi{
 		* On cherche d'abord à faire jouer ceux qui ont le moins participé
 		* On cherche ensuite à faire jouer les joueurs qui n'ont pas joué au tour d'avant (les prios)
 		* On fait ensuite jouer les autres joueurs
-		* @throws TournoiVideException 
+		* @throws TournoiVideException  s'il n'y a pas de joueurs
 		*/
 	public void creerPaires() throws TournoiVideException{
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
@@ -381,13 +395,10 @@ public class Tournoi{
 		*
 		*/
 	public void finirTour(){
-		//On demande le score des équipes pour chaque terrain
+		//On vérifie le score des équipes pour chaque terrain
   		for (int i=0; i<this.terrains.size(); i++){
   			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
   			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
-  				//Il faudrait demander de rentrer les scores 
- 				((Terrain)this.terrains.get(i)).getMatch().getPaire1().setScore(0);
- 				((Terrain)this.terrains.get(i)).getMatch().getPaire2().setScore(0);
 				//On détermine les vainqueurs de chaque match
 				((Terrain)this.terrains.get(i)).getMatch().modifierScores();
   			}
@@ -402,17 +413,23 @@ public class Tournoi{
 			((Joueur)this.nouveauxJoueurs.get(i)).setJoue(false);
 		}
 	}
-	
-	
-	//Sert � changer les scores des paires en direct on passant le num�ro
-	//de terrain et les scores des deux �quipes
+
+
+	/**
+	 * pour rentrer les scores d'un match
+	 * @param numTerrain le terrain sur lequel s'est déroulé le match
+	 * @param scoreP1 le score de la première paire
+	 * @param scoreP2 le score de la seconde paire
+     */
 	public void setScore(int numTerrain, int scoreP1, int scoreP2){
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
 	}
-	
+
 	/**
-	 * Tri rapide pour classer les joueurs selon leur score
+	 * Algorithme de tri rapide des anciens joueurs en fonction du score
+	 * @param gauche borne inférieure
+	 * @param droite borne supérieure
 	 */
 	public void calculerClassementAnciens(int gauche, int droite){
 		int pivot;
@@ -448,9 +465,11 @@ public class Tournoi{
 		}
 		return classem2;
 	}
-	
+
 	/**
-	 * Tri rapide pour classer les joueurs selon leur score
+	 * Algorithme de tri rapide des nouveaux joueurs en fonction du score
+	 * @param gauche borne inférieure
+	 * @param droite borne supérieure
 	 */
 	public void calculerClassementNouveaux(int gauche, int droite){
 		int pivot;
@@ -582,8 +601,12 @@ public class Tournoi{
 	    Matcher matcher = pattern.matcher("Hugo Eti�vant");
 	}
 
-	// On passe en paramètre les joueurs que l'on veut intervertir
-	// Pour plus de facilité, le 1er joueur est forcément un joueur déjà sur un terrain
+	/**
+	 * pour intervertir facilement deux joueurs qui jouent déjà
+	 * @param idJ1 l'id du premier joueur
+	 * @param idJ2 l'id du second joueur
+     * @return true si l'opération est un succès, false sinon
+     */
 	public boolean changerJoueurs(int idJ1, int idJ2){
 		Joueur joueurChange2=null;
 		//On cherche d'abord le joueur qui va prendre la place du premier
@@ -710,14 +733,14 @@ public class Tournoi{
 	}
 
 	/**
-	 * @return the nom
+	 * @return le nom du tournoi
 	 */
 	public String getNom() {
 		return this.nom;
 	}
 
 	/**
-	 * @param nom the nom to set
+	 * @param nom le nouveua nom du tournoi
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;

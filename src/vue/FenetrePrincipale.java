@@ -32,6 +32,10 @@ public class FenetrePrincipale extends JFrame {
 	public static Color couleurPasOK = Color.ORANGE;
 	private int verif;
 
+	/**
+	 *
+	 * @param titre le titre que l'on souhaite donner à la fenêtre
+     */
 	public FenetrePrincipale(String titre) {
 		super(titre);
 
@@ -60,6 +64,11 @@ public class FenetrePrincipale extends JFrame {
 		this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 		this.setVisible(true);
 	}
+
+	/**
+	 *
+	 * @param t le tournoi avec lequel la fenêtre va interagir
+     */
 	public void setTournoi(Tournoi t){
 		this.tournoi=t;
 		this.setTitle("Match Point - "+t.getNom());
@@ -67,6 +76,9 @@ public class FenetrePrincipale extends JFrame {
 		this.afficherTournoi();
 	}
 
+	/**
+	 * initialise l'affichage de la fenêtre
+	 */
 	public void afficherTournoi(){
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
 
@@ -123,14 +135,24 @@ public class FenetrePrincipale extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * pour dire que l'on a rentré les résultats d'un match
+	 */
 	public void rentrerVerif(){
 		verif--;
 	}
 
+	/**
+	 * pour créer une fenêtre d'ajout de joueur
+	 */
 	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
 
+	/**
+	 * pour générer les paires et démarrer un tour
+	 * @throws TournoiVideException s'il n'y a pas de joueurs
+     */
 	public void genererPaires() throws TournoiVideException{
 		verif = 0;
 		tournoi.demarrerTour();
@@ -139,14 +161,13 @@ public class FenetrePrincipale extends JFrame {
 
 	}
 
-	//Appelé quand on ajoute un joueur dans la fenêtre ajout joueur
+	/**
+	 * pour actualiser l'affichage de sjoueurs dans l'onglet joueur
+	 */
+
 	public void actualiserJoueurs(){
-		String[] colonnes = {"Nom","Prenom","Score"};
 		Liste classA = tournoi.getAnciensJoueurs();
 		Liste classN = tournoi.getNouveauxJoueurs();
-		int tailleTotale = classA.size()+classN.size();
-		//Joueur[] joueurs = new Joueur[tailleTotale];
-		String[][] data = new String[tailleTotale][3];
 		//On rentre les joueurs anciens dans les X premières cases
 		for(int i =0; i < classA.size(); i++){
 			Joueur j = (Joueur)classA.get(i);
@@ -157,7 +178,6 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(""+j.getScore(),i,3);
 			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i,4);
 			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i,5);
-			data[i] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
 		//On rentre les joueurs nouveaux dans les cases restantes
 		for(int i = 0; i < classN.size(); i++){
@@ -169,31 +189,18 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),3);
 			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i+classA.size(),4);
 			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i+classA.size(),5);
-			data[i+classA.size()] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
-
-
-		/*
-		for(String[] s : data){
-			System.out.println("\nUn joueur");
-			for (String s2 : s)
-				System.out.print("\t"+s2);
-
-		}
-		*/
-		//listeJoueurs = new JTable(data, colonnes);
-		//Nous ajoutons notre tableau à notre contentPane dans un scroll
-		//Sinon les titres des colonnes ne s'afficheront pas !
-		//listeJoueurs.setAutoCreateRowSorter(true);
-		//panJoueurs = new JScrollPane(listeJoueurs);
-
-		//panJoueurs = new JScrollPane(listeJoueurs);
-
 	}
 
-
+	/**
+	 * pour créer un JPanel à partir d'un numéro de terrain
+	 * @param i le numéro de terrain
+	 * @return un JPanel indiquant des informations relatives au terrain
+     */
 	public JPanel nouvelAffichageTerrain(int i){
 		JPanel terr = new JPanel();
+
+		//On crée les différentes parties du JPanel
 
 		JPanel paire1 = new JPanel();
 		paire1.setLayout(new GridLayout(2,2));
@@ -227,10 +234,12 @@ public class FenetrePrincipale extends JFrame {
 		paire2.add(p2j2);
 		paire2.add(scoreP2);
 
+		//Le bouton pour valider les score
 		JButton scoreBouton = new JButton("Valider Scores");
 		scoreBouton.addActionListener(new SaisirScoreControlleur(scoreP1,scoreP2,this,this.tournoi,i,terr));
 
 		try{
+			//S'il ya un match sur le terrain, on indique les 4 joueurs
 			Joueur j1 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1();
 			p1j1.setText( j1.getNom()+" "+j1.getPrenom());
 			Joueur j2 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2();
@@ -240,15 +249,16 @@ public class FenetrePrincipale extends JFrame {
 			Joueur j4 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur2();
 			p2j2.setText(j4.getNom()+" "+j4.getPrenom());
 			terr.setBackground(couleurPasOK);
+			//Il faudra entrer les scores dans un terrain d eplus
 			verif++;
 		}catch(NullPointerException e){
+			//Sinon, on indique que le terrain est libre
 			p1j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
 			p1j2.setText(" ");
 			p2j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
 			p2j2.setText(" ");
 			scoreBouton.setEnabled(false);
 			terr.setBackground(couleurOK);
-			terr.setFocusable(false);
 
 		}
 		terr.setLayout(new BorderLayout());
@@ -262,6 +272,10 @@ public class FenetrePrincipale extends JFrame {
 
 		return terrain;
 	}
+
+	/**
+	 * pour mettre à jour l'affichage des terrains
+	 */
 	public void actualiserTerrains(){
 		//On vide la liste des terrains
 		this.listeTerrains.removeAll();
@@ -277,25 +291,32 @@ public class FenetrePrincipale extends JFrame {
 		listeTerrains.add(boutonFinir);
 	}
 
+	/**
+	 * pour terminer un tour et valider les scores
+	 */
 	public void finirTour(){
 		if (verifFinir()){
 			tournoi.finirTour();
 			boutonFinir.setEnabled(false);
+			actualiserJoueurs();
 		}
 		else{
 			JOptionPane.showMessageDialog(this,"Vous devez valider tous les terrains avant de finir le tour.");
 		}
 	}
 
+	/**
+	 * on vérirife que tous les terrains on eu leur score rentré
+	 * @return vrai si on peut finir le tour faux sinon
+     */
 	public boolean verifFinir(){
 		System.out.println(verif);
 		return verif==0;
 	}
 
-	public void actualiserScoresJoueurs(){
-
-	};
-
+	/**
+	 * pour insérer un joueur dans la liste des joueurs (onglet joueurs)
+	 */
 	public void ajouterJoueurTable(){
 		Object[]tJ = {"","","","","",""};
 		this.listeJoueursModele.addRow(tJ);

@@ -109,10 +109,19 @@ public class Paire {
 		return txt;
 	}
 
+	/**
+	 * modifie si les joueurs de la paire jouent
+	 * @param j vrai s'ils jouent faux sinon
+     */
 	public void joueursJouent(boolean j){
 		this.joueur1.setJoue(j);
 		this.joueur2.setJoue(j);
 	}
+
+	/**
+	 *
+	 * @return vrai si les deux joueurs jouent, faux sinon
+     */
 	public boolean getJoueursJouent(){
 		return (this.joueur1.getJoue() && this.joueur2.getJoue());
 	}
@@ -125,6 +134,13 @@ public class Paire {
 	 * @param joueur2 1 si c'est le premier joueur, autre si c'est le second
      */
 	public void intervertir(int joueur1, Paire autre, int joueur2){
+
+		// Les joueurs originaux ne jouent plus ensemble
+		this.joueur1.getAnciensPart().remove(this.joueur2);
+		this.joueur2.getAnciensPart().remove(this.joueur1);
+		autre.joueur1.getAnciensPart().remove(this.joueur2);
+		autre.joueur2.getAnciensPart().remove(this.joueur1);
+
 		if (joueur1==1){
 			Joueur tmp1 = this.getJoueur1();
 			if (joueur2==1){
@@ -147,8 +163,14 @@ public class Paire {
 				autre.setJoueur2(tmp1);
 			}
 		}
+		// On remet à jour les partenaires
+		this.joueur1.ajouterAnciensPart(this.joueur2);
+		this.joueur2.ajouterAnciensPart(this.joueur1);
+		autre.joueur1.ajouterAnciensPart(this.joueur2);
+		autre.joueur2.ajouterAnciensPart(this.joueur1);
 	}
-	
+
+
 	public void ajouterMatchJoue(){
 		this.joueur1.ajouterMatchJoue();
 		this.joueur2.ajouterMatchJoue();
@@ -170,6 +192,11 @@ public class Paire {
 		this.score = score;
 	}
 
+
+	/**
+	 *
+	 * @return true si au moins un des joueurs est prioritaire false sinon
+     */
 	public boolean estPrio(){
 		return (this.joueur1.getPrio() || this.joueur2.getPrio());
 	}
@@ -177,7 +204,7 @@ public class Paire {
 	/** Redéfinition de la méthode equals()
 		*
 		* @param o l'objet à comparer
-		* @return true si les deux paires sont égales
+		* @return true si les deux paires sont égales false sinon
 		*/
 	@Override
 	public boolean equals(Object o){

@@ -74,8 +74,11 @@ public class Joueur {
 		public Joueur(int id, boolean sexe, boolean nouv){
 			this(id, "Bon", "Jean", (20+id), sexe, nouv, (id%3),true);
 		}
-		
-	
+
+	/**
+	 * pour calculer l'indice de performance d'un joueur
+	 * @return son indice de performance
+     */
 	public int calculerPerf(){
 		int p = 0;
 		p = 80-age;
@@ -120,7 +123,11 @@ public class Joueur {
 	public void setNiveau(int niveau) {
 		this.niveau = niveau;
 	}
-	
+
+	/**
+	 * pour ajouter un joueur dans les partenaires
+	 * @param j le joueur à ajouter dans les partenaires
+     */
 	public void ajouterAnciensPart(Joueur j){
 		this.anciensPart.add(j);
 	}
@@ -180,9 +187,18 @@ public class Joueur {
 		return this.joue;
 	}
 
+	/**
+	 *
+	 * @return la priorité du joueur
+     */
 	public boolean getPrio(){
 		return this.prio;
 	}
+
+	/**
+	 * pour changer la priorité d'un joueur
+	 * @param pr vrai s'il est prioritaire faux sinon
+     */
 	public void setPrio(boolean pr){
 		this.prio = pr;
 	}
@@ -225,10 +241,10 @@ public class Joueur {
 	public boolean peutJouer() {
 		return peutJouer;
 	}
-	
+
 	/** Redéfinit l'attribut "peutJouer"
 	*
-	* @param bool 0 : le joueur ne joue pas / 1 : le joueur joue
+	* @param peutJouer : le joueur ne joue pas / 1 : le joueur joue
 	*/
 	public void setPeutJouer(boolean peutJouer) {
 		this.peutJouer = peutJouer;

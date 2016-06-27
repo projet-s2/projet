@@ -32,11 +32,18 @@ public class FenetreAjoutJoueur extends JFrame {
 	private JRadioButton hom;
 	private JCheckBox nouv;
 
+	/**
+	 * constructeur de la fenêtre d'ajout d'un joueur
+	 * @param titre le titre à donner à la fenêtre
+	 * @param tournoi le tournoi dans lequel on veut ajouter un joueur
+	 * @param vue la vue qui crée la fenêtre
+     */
 	public FenetreAjoutJoueur(String titre, Tournoi tournoi, FenetrePrincipale vue){
 
 		this.tournoi = tournoi;
 		this.vue = vue;
 
+		//Les différents champs de saisie
 		nom = new JTextField();
 		prenom = new JTextField();
 		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
@@ -104,19 +111,35 @@ public class FenetreAjoutJoueur extends JFrame {
 		this.setSize(tailleX,tailleY);
 		this.setResizable(false);
 	}
-	
+
+	/**
+	 *
+	 * @return le champ de saisi du nom
+     */
 	public JTextField getNom() {
 		return nom;
 	}
-	
+
+	/**
+	 *
+	 * @param str la chaine de caractère à écrire dans le champ de saisie du nom
+     */
 	public void setNom(String str){
 		this.nom.setText(str);
 	}
 
+	/**
+	 *
+	 * @returnle champ de saisie du prénom
+     */
 	public JTextField getPrenom() {
 		return prenom;
 	}
 
+	/**
+	 *
+	 * @param str la chaine de caractère à écrire dans le champ de saisie du nom
+     */
 	public void setPrenom(String str){
 		this.prenom.setText(str);
 	}
@@ -125,10 +148,17 @@ public class FenetreAjoutJoueur extends JFrame {
 		return niveau;
 	}
 
+	/**
+	 *
+	 * @return l'outil de séléction de l'âge
+     */
 	public JSpinner getAge() {
 		return age;
 	}
-	
+
+	/**
+	 * réinitialise l'age
+	 */
 	public void setAge(){
 		this.age.setValue(0);
 	}
@@ -142,12 +172,17 @@ public class FenetreAjoutJoueur extends JFrame {
 		return hom;
 	}
 
-
+	/**
+	 *
+	 * @return la case qui indique l'ancienneté
+     */
 	public JCheckBox getNouv() {
 		return nouv;
 	}
 
-
+	/**
+	 * pour ajouter un joueur dans le tournoi et dans la liste de la fenetre principale
+	 */
 	public void ajouterJoueur(){
 		int id = Joueur.nbJoueursCrees;
 		int age = ((int)this.age.getValue());
@@ -164,16 +199,5 @@ public class FenetreAjoutJoueur extends JFrame {
 
 	}
 
-	
-
-	
-	public static void main(String[] args){
-		try {
-			new FenetreAjoutJoueur("Ajout d'un joueur", new Tournoi(5), new FenetrePrincipale("Test"));
-		}
-		catch(Exception e){
-			System.out.println("NUL");
-		}
-	}
 
 }

@@ -90,6 +90,7 @@ public class Match {
 			return(this.paire2);
 		}
 		else{
+			//égalité
 			return null;
 		}
 	}
@@ -97,10 +98,12 @@ public class Match {
 	/** Modifie les scores de la paire gagnante et de la perdante
 		*
 		* (1 pt : défaite |
+	 	* 2 pt : égalité |
 		* 3 pt : victoire)
 		*
 		*/
 		public void modifierScores(){
+			// On regarde le vainqueur et on modifie en conséquence
 				if (this.determinerVainqueur()==null){
 					this.paire1.getJoueur1().setScore(this.paire1.getJoueur1().getScore()+2);
 					this.paire1.getJoueur2().setScore(this.paire1.getJoueur2().getScore()+2);
@@ -137,10 +140,20 @@ public class Match {
 	public boolean getPairesJouent(){
 		return (paire1.getJoueursJouent() && paire2.getJoueursJouent());
 	}
+
+	/**
+	 * modifie si les paires du match jouent
+	 * @param j vrai si les paires jouent faux sinon
+     */
 	public void pairesJouent(boolean j){
 		paire1.joueursJouent(j);
 		paire2.joueursJouent(j);
 	}
+
+	/**
+	 *
+	 * @return vrai si une des paires est prio faux sinon
+     */
 	public boolean estPrio(){
 		return (paire1.estPrio() && paire2.estPrio());
 	}
