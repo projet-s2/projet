@@ -581,37 +581,132 @@ public class Tournoi{
 		Pattern pattern = Pattern.compile("Hugo");
 	    Matcher matcher = pattern.matcher("Hugo Eti�vant");
 	}
-	
-	public void updateJoueur(int id, String nom, String prenom, int age, boolean sexe,
-			boolean nouveau, int niveau, boolean peutJouer){
-		boolean done = false;
-		Joueur test;
-		for (int i = 0; i < anciensJoueurs.size(); i++){
-			test = (Joueur)anciensJoueurs.get(i);
-			if (test.getId()==id){
-				//anciensJoueurs.set(i, new Joueur(id, nom, prenom, age, sexe,
-				//nouveau, niveau, peutJouer));
-				test.setNom(nom);
-				test.setPrenom(prenom);
-				test.setAge(age);
-				test.setSexe(sexe);
-				test.setNouveau(nouveau);
-				test.setNiveau(niveau);
-				test.setPeutJouer(peutJouer);
-				test.setPerf(test.calculerPerf());
-				done = true;
+
+	// On passe en paramètre les joueurs que l'on veut intervertir
+	// Pour plus de facilité, le 1er joueur est forcément un joueur déjà sur un terrain
+	public boolean changerJoueurs(int idJ1, int idJ2){
+		Joueur joueurChange2=null;
+		//On cherche d'abord le joueur qui va prendre la place du premier
+		for(int i = 0; i<anciensJoueurs.size();i++){
+			Joueur tmp = (Joueur)anciensJoueurs.get(i);
+			if(tmp.getId()==idJ2){
+				joueurChange2=tmp;
 				break;
 			}
-			
 		}
-		for (int i = 0; i < nouveauxJoueurs.size(); i++){
-			if (((Joueur)nouveauxJoueurs.get(i)).getId()==id){
-				nouveauxJoueurs.set(i, new Joueur(id, nom, prenom, age, sexe,
-				nouveau, niveau, peutJouer));
-				break;
+		if(joueurChange2==null) {
+			for (int i = 0; i < nouveauxJoueurs.size(); i++) {
+				Joueur tmp = (Joueur) nouveauxJoueurs.get(i);
+				if (tmp.getId() == idJ2) {
+					joueurChange2 = tmp;
+					break;
+				}
 			}
-			
 		}
+		//Précaution si on ne trouve pas le deuxieme joueur
+		if(joueurChange2==null)
+			return false;
+
+		//Différents cas si le joueur 2 joue ou non
+
+		//Si le deuxieme jouer ne joue pas c'est simple
+		if(!joueurChange2.getJoue()) {
+			//On cherche où joue le premier joueur
+			for (int i = 0; i < terrains.size(); i++) {
+				Match m = ((Terrain) terrains.get(i)).getMatch();
+				Joueur j1 = m.getPaire1().getJoueur1();
+				Joueur j2 = m.getPaire1().getJoueur2();
+				Joueur j3 = m.getPaire2().getJoueur1();
+				Joueur j4 = m.getPaire2().getJoueur2();
+				if (j1.getId() == idJ1) {
+					//On met le premier joueur sur le banc de touche et le second sur le terrain
+					j1.setJoue(false);
+					m.getPaire1().setJoueur1(joueurChange2);
+					return true;
+				} else if (j2.getId() == idJ1) {
+					j2.setJoue(false);
+					m.getPaire1().setJoueur2(joueurChange2);
+					return true;
+				} else if (j3.getId() == idJ1) {
+					j3.setJoue(false);
+					m.getPaire2().setJoueur1(joueurChange2);
+					return true;
+				} else if (j4.getId() == idJ1) {
+					j4.setJoue(false);
+					m.getPaire2().setJoueur2(joueurChange2);
+					return true;
+				}
+			}
+			//Si on n'a pas trouvé le joueur1 alors c'est un échec
+			return false;
+		}
+
+		// Si les deux joueurs jouent, on les inverse dans leures paires
+		else {
+			//On aura besoin de la paire des joueurs et de leur position dans celle ci
+			int posJ1=0, posJ2=0;
+			Paire paireJ1=null, paireJ2=null;
+			// On cherche le joueur 1
+			for (int i = 0; i < terrains.size(); i++) {
+				Match m = ((Terrain) terrains.get(i)).getMatch();
+				Joueur j1 = m.getPaire1().getJoueur1();
+				Joueur j2 = m.getPaire1().getJoueur2();
+				Joueur j3 = m.getPaire2().getJoueur1();
+				Joueur j4 = m.getPaire2().getJoueur2();
+				if (j1.getId() == idJ1) {
+					paireJ1 = m.getPaire1();
+					posJ1=1;
+					break;
+				} else if (j2.getId() == idJ1) {
+					paireJ1 = m.getPaire1();
+					posJ1=2;
+					break;
+				} else if (j3.getId() == idJ1) {
+					paireJ1 = m.getPaire2();
+					posJ1=1;
+					break;
+				} else if (j4.getId() == idJ1) {
+					paireJ1 = m.getPaire2();
+					posJ1=2;
+					break;
+				}
+			}
+			//Si on a pas trouvé le joueur 1 rien ne sert de continuer
+			if (posJ1==0)
+				return false;
+			// On cherche le joueur 2
+			for (int i = 0; i < terrains.size(); i++) {
+				Match m = ((Terrain) terrains.get(i)).getMatch();
+				Joueur j1 = m.getPaire1().getJoueur1();
+				Joueur j2 = m.getPaire1().getJoueur2();
+				Joueur j3 = m.getPaire2().getJoueur1();
+				Joueur j4 = m.getPaire2().getJoueur2();
+				if (j1.getId() == idJ1) {
+					paireJ2 = m.getPaire1();
+					posJ2=1;
+					break;
+				} else if(j2.getId() == idJ1) {
+					paireJ2 = m.getPaire1();
+					posJ2=2;
+					break;
+				} else if (j3.getId() == idJ1) {
+					paireJ2 = m.getPaire2();
+					posJ2=1;
+					break;
+				} else if (j4.getId() == idJ1) {
+					paireJ2 = m.getPaire2();
+					posJ2=2;
+					break;
+				}
+			}
+			//Ce cas est normalement impossible mais on ne sait jamais
+			if (posJ2==0)
+				return false;
+			// Une fois les paramètres trouvés on lance la méthode adaptée
+			paireJ1.intervertir(posJ1,paireJ2,posJ2);
+		}
+
+		return true;
 	}
 
 	/**

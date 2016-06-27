@@ -72,7 +72,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
-	    String  title[] = {"Nom", "Prénom", "Score","Ancienneté","Disponible"};
+	    String  title[] = {"ID","Nom", "Prénom", "Score","Ancienneté","Disponible"};
 	    listeJoueursModele = new DefaultTableModel(title,0);
 	    listeJoueurs = new JTable(listeJoueursModele);
 	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
@@ -151,22 +151,24 @@ public class FenetrePrincipale extends JFrame {
 		for(int i =0; i < classA.size(); i++){
 			Joueur j = (Joueur)classA.get(i);
 			System.out.println(i+"\t"+j);
-			listeJoueurs.setValueAt(j.getNom(),i,0);
-			listeJoueurs.setValueAt(j.getPrenom(),i,1);
-			listeJoueurs.setValueAt(""+j.getScore(),i,2);
-			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i,3);
-			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i,4);
+			listeJoueurs.setValueAt(j.getId(),i,0);
+			listeJoueurs.setValueAt(j.getNom(),i,1);
+			listeJoueurs.setValueAt(j.getPrenom(),i,2);
+			listeJoueurs.setValueAt(""+j.getScore(),i,3);
+			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i,4);
+			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i,5);
 			data[i] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
 		//On rentre les joueurs nouveaux dans les cases restantes
 		for(int i = 0; i < classN.size(); i++){
 			Joueur j = (Joueur)classN.get(i);
 			System.out.println(i+"\t"+j);
-			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),0);
-			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),1);
-			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),2);
-			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i+classA.size(),3);
-			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i+classA.size(),4);
+			listeJoueurs.setValueAt(j.getId(),i+classA.size(),0);
+			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),1);
+			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),2);
+			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),3);
+			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i+classA.size(),4);
+			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i+classA.size(),5);
 			data[i+classA.size()] = new String[]{j.getNom(),j.getPrenom(),""+j.getScore()};
 		}
 
@@ -295,7 +297,7 @@ public class FenetrePrincipale extends JFrame {
 	};
 
 	public void ajouterJoueurTable(){
-		Object[]tJ = {"","","","",""};
+		Object[]tJ = {"","","","","",""};
 		this.listeJoueursModele.addRow(tJ);
 		this.actualiserJoueurs();
 	}
