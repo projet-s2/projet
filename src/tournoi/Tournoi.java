@@ -379,7 +379,6 @@ public class Tournoi{
 		for(int i1=0; i1<Math.min(this.terrains.size(),matchs.size());i1++){
 			res+=((Terrain)this.terrains.get(i1)).getMatch().toString()+"\n";
 		}
-		System.out.println(res);
 		//On parcourt les anciens joueurs et on rend prioritaires ceux qui ne jouent pas
 		for(int i1=0; i1<this.anciensJoueurs.size();i1++){
 			((Joueur) this.anciensJoueurs.get(i1)).setPrio(!((Joueur) this.anciensJoueurs.get(i1)).getJoue());
@@ -704,19 +703,19 @@ public class Tournoi{
 				Joueur j2 = m.getPaire1().getJoueur2();
 				Joueur j3 = m.getPaire2().getJoueur1();
 				Joueur j4 = m.getPaire2().getJoueur2();
-				if (j1.getId() == idJ1) {
+				if (j1.getId() == idJ2) {
 					paireJ2 = m.getPaire1();
 					posJ2=1;
 					break;
-				} else if(j2.getId() == idJ1) {
+				} else if(j2.getId() == idJ2) {
 					paireJ2 = m.getPaire1();
 					posJ2=2;
 					break;
-				} else if (j3.getId() == idJ1) {
+				} else if (j3.getId() == idJ2) {
 					paireJ2 = m.getPaire2();
 					posJ2=1;
 					break;
-				} else if (j4.getId() == idJ1) {
+				} else if (j4.getId() == idJ2) {
 					paireJ2 = m.getPaire2();
 					posJ2=2;
 					break;
@@ -730,6 +729,26 @@ public class Tournoi{
 		}
 
 		return true;
+	}
+
+	/**
+	 * pour obtenir l'id d'un joueur à partir de son nom et de son prénom
+	 * @param nomPrenom le nom plus un espace plus le prénom du joueur recherché
+	 * @return l'id du joueur recherché ou -1 si non trouvé
+     */
+	public int chercherJoueur(String nomPrenom) {
+		for (int i = 0; i<anciensJoueurs.size(); i++){
+			Joueur j = (Joueur)anciensJoueurs.get(i);
+			if ((j.getNom()+" "+j.getPrenom()).equals(nomPrenom))
+				return j.getId();
+		}
+		for (int i = 0; i<nouveauxJoueurs.size(); i++){
+			Joueur j = (Joueur)nouveauxJoueurs.get(i);
+			if ((j.getNom()+" "+j.getPrenom()).equals(nomPrenom))
+				return j.getId();
+		}
+		// Le joueur n'existe pas car les ID sont >=0
+		return -1;
 	}
 
 	/**

@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import controleur.InverserJoueurControlleur;
 import liste.Liste;
 
 import javax.swing.*;
@@ -28,6 +29,7 @@ public class FenetrePrincipale extends JFrame {
 	private JPanel listeTerrains;
 	private JPanel[] terrains;
 	private JButton boutonFinir;
+	String[] joueurs;
 	public static Color couleurOK = Color.GRAY;
 	public static Color couleurPasOK = Color.ORANGE;
 	private int verif;
@@ -81,6 +83,7 @@ public class FenetrePrincipale extends JFrame {
 	 */
 	public void afficherTournoi(){
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
+		this.joueurs= new String[]{"Pas de joueur"};
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
@@ -171,7 +174,6 @@ public class FenetrePrincipale extends JFrame {
 		//On rentre les joueurs anciens dans les X premières cases
 		for(int i =0; i < classA.size(); i++){
 			Joueur j = (Joueur)classA.get(i);
-			System.out.println(i+"\t"+j);
 			listeJoueurs.setValueAt(j.getId(),i,0);
 			listeJoueurs.setValueAt(j.getNom(),i,1);
 			listeJoueurs.setValueAt(j.getPrenom(),i,2);
@@ -182,7 +184,6 @@ public class FenetrePrincipale extends JFrame {
 		//On rentre les joueurs nouveaux dans les cases restantes
 		for(int i = 0; i < classN.size(); i++){
 			Joueur j = (Joueur)classN.get(i);
-			System.out.println(i+"\t"+j);
 			listeJoueurs.setValueAt(j.getId(),i+classA.size(),0);
 			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),1);
 			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),2);
@@ -204,30 +205,23 @@ public class FenetrePrincipale extends JFrame {
 
 		JPanel paire1 = new JPanel();
 		paire1.setLayout(new GridLayout(2,2));
-		JTextArea p1j1 = new JTextArea();
-		p1j1.setWrapStyleWord(true);
-		p1j1.setLineWrap(true);
-		p1j1.setEditable(false);
-		JTextArea p1j2 = new JTextArea();
-		p1j2.setWrapStyleWord(true);
-		p1j2.setLineWrap(true);
-		p1j2.setEditable(false);
+
+		JComboBox p1j1 = new JComboBox(joueurs);
+		JComboBox p1j2 = new JComboBox(joueurs);
+
+
 		JTextField scoreP1 = new JTextField();
 		scoreP1.setColumns(3);
 		paire1.add(p1j1);
 		paire1.add(p1j2);
 		paire1.add(scoreP1);
 
+		JComboBox p2j1 = new JComboBox(joueurs);
+		JComboBox p2j2 = new JComboBox(joueurs);
+
 		JPanel paire2 = new JPanel();
 		paire2.setLayout(new GridLayout(2,2));
-		JTextArea p2j1 = new JTextArea();
-		p2j1.setWrapStyleWord(true);
-		p2j1.setLineWrap(true);
-		p2j1.setEditable(false);
-		JTextArea p2j2 = new JTextArea();
-		p2j2.setWrapStyleWord(true);
-		p2j2.setLineWrap(true);
-		p2j2.setEditable(false);
+
 		JTextField scoreP2 = new JTextField();
 		scoreP2.setColumns(3);
 		paire2.add(p2j1);
@@ -241,22 +235,30 @@ public class FenetrePrincipale extends JFrame {
 		try{
 			//S'il ya un match sur le terrain, on indique les 4 joueurs
 			Joueur j1 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1();
-			p1j1.setText( j1.getNom()+" "+j1.getPrenom());
+			p1j1.setSelectedItem(j1.getNom()+" "+j1.getPrenom());
+			p1j1.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
 			Joueur j2 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2();
-			p1j2.setText(j2.getNom()+" "+j2.getPrenom());
+			p1j2.setSelectedItem(j2.getNom()+" "+j2.getPrenom());
+			p1j2.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
 			Joueur j3 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur1();
-			p2j1.setText(j3.getNom()+" "+j3.getPrenom());
+			p2j1.setSelectedItem(j3.getNom()+" "+j3.getPrenom());
+			p2j1.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
 			Joueur j4 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur2();
-			p2j2.setText(j4.getNom()+" "+j4.getPrenom());
+			p2j2.setSelectedItem(j4.getNom()+" "+j4.getPrenom());
+			p2j2.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
 			terr.setBackground(couleurPasOK);
 			//Il faudra entrer les scores dans un terrain d eplus
 			verif++;
 		}catch(NullPointerException e){
 			//Sinon, on indique que le terrain est libre
-			p1j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
-			p1j2.setText(" ");
-			p2j1.setText("Pas assez de joueurs sur le terrain "+(i+1));
-			p2j2.setText(" ");
+			p1j1.setSelectedIndex(joueurs.length-1);
+			p1j1.setEnabled(false);
+			p1j2.setSelectedIndex(joueurs.length-1);
+			p1j2.setEnabled(false);
+			p2j1.setSelectedIndex(joueurs.length-1);
+			p2j1.setEnabled(false);
+			p2j2.setSelectedIndex(joueurs.length-1);
+			p2j2.setEnabled(false);
 			scoreBouton.setEnabled(false);
 			terr.setBackground(couleurOK);
 
@@ -306,12 +308,27 @@ public class FenetrePrincipale extends JFrame {
 	}
 
 	/**
-	 * on vérirife que tous les terrains on eu leur score rentré
+	 * on vérirife que tous les terrains on eu leurs scores rentrés
 	 * @return vrai si on peut finir le tour faux sinon
      */
 	public boolean verifFinir(){
-		System.out.println(verif);
 		return verif==0;
+	}
+
+	/**
+	 * pour mettre à jour la liste des noms de joueurs
+	 */
+	public void actualiserNoms(){
+		joueurs = new String[tournoi.getNouveauxJoueurs().size()+tournoi.getAnciensJoueurs().size()+1];
+		for (int i = 0; i < tournoi.getNouveauxJoueurs().size(); i++){
+			Joueur j = (Joueur)tournoi.getNouveauxJoueurs().get(i);
+			joueurs[i] = j.getNom()+" "+j.getPrenom();
+		}
+		for (int i = 0;i<tournoi.getAnciensJoueurs().size();i++){
+			Joueur j = (Joueur)tournoi.getAnciensJoueurs().get(i);
+			joueurs[i+tournoi.getNouveauxJoueurs().size()] = j.getNom()+" "+j.getPrenom();
+		}
+		joueurs[tournoi.getNouveauxJoueurs().size()+tournoi.getAnciensJoueurs().size()] = "Pas de joueur";
 	}
 
 	/**
@@ -321,6 +338,10 @@ public class FenetrePrincipale extends JFrame {
 		Object[]tJ = {"","","","","",""};
 		this.listeJoueursModele.addRow(tJ);
 		this.actualiserJoueurs();
+		this.actualiserNoms();
 	}
 
+	public void setVerif(int verif) {
+		this.verif = verif;
+	}
 }
