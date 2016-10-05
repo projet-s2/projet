@@ -3,6 +3,7 @@ package vue;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import controleur.ImporterJoueursControlleur;
 import controleur.InverserJoueurControlleur;
@@ -181,8 +182,8 @@ public class FenetrePrincipale extends JFrame {
 	 */
 
 	public void actualiserJoueurs(){
-		Liste classA = tournoi.getAnciensJoueurs();
-		Liste classN = tournoi.getNouveauxJoueurs();
+		ArrayList<Joueur> classA = tournoi.getAnciensJoueurs();
+		ArrayList<Joueur> classN = tournoi.getNouveauxJoueurs();
 		//On rentre les joueurs anciens dans les X premières cases
 		for(int i =0; i < classA.size(); i++){
 			Joueur j = (Joueur)classA.get(i);
