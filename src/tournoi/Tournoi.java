@@ -371,13 +371,13 @@ public class Tournoi{
 		//trierPaires(0, this.paires.size()-1);
 		//On créer une liste de matchs avec les paires couplées par niveau
 		int i;
-		ArrayList matchs = new ArrayList();
+		ArrayList<Match> matchs = new ArrayList<Match>();
 		for(i=0;i<((int)(Math.floor(this.paires.size()/2)));i+=2){
 			matchs.add(new Match((Paire) this.paires.get(i),(Paire) this.paires.get(i+1)));
 		}
 
 		//On mélange cette liste
-		ArrayList melange = new ArrayList();
+		ArrayList<Match> melange = new ArrayList<Match>();
 		int indice;
 		while(matchs.size() > 0)
 		{
