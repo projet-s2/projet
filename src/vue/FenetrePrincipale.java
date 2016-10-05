@@ -1,14 +1,10 @@
 package vue;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import controleur.ImporterJoueursControlleur;
 import controleur.InverserJoueurControlleur;
 import liste.Liste;
 
@@ -38,25 +34,25 @@ public class FenetrePrincipale extends JFrame {
 	/**
 	 *
 	 * @param titre le titre que l'on souhaite donner à la fenêtre
-     */
+	 */
 	public FenetrePrincipale(String titre) {
 		super(titre);
 
 		//On charge le look and feel du syst�me de l'utilisateur (� la place de GTK) auquel il est habitu�
-	    try {
-	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } catch (ClassNotFoundException e) {
-	        e.printStackTrace();
-	    } catch (InstantiationException e) {
-	        e.printStackTrace();
-	    } catch (IllegalAccessException e) {
-	        e.printStackTrace();
-	    } catch (UnsupportedLookAndFeelException e) {
-	        e.printStackTrace();
-	    }
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 
-	    //On assigne le menu � la fenetres
-	    this.setJMenuBar(new Menu(tournoi, this));
+		//On assigne le menu � la fenetres
+		this.setJMenuBar(new Menu(tournoi, this));
 
 		//Les declarations de base
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,19 +67,19 @@ public class FenetrePrincipale extends JFrame {
 	/**
 	 *
 	 * @param t le tournoi avec lequel la fenêtre va interagir
-     */
+	 */
 	public void setTournoi(Tournoi t){
 		this.tournoi=t;
 		this.setTitle("Match Point - "+t.getNom());
 		((Menu) this.getJMenuBar()).enableSave();
 		this.afficherTournoi();
 	}
-	
+
 	/**
 	 *
 	 * @return le tournoi
-    */
-	
+	 */
+
 	public Tournoi getTournoi(){
 		return this.tournoi;
 	}
@@ -97,13 +93,13 @@ public class FenetrePrincipale extends JFrame {
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
-	    String  title[] = {"ID","Nom", "Prénom", "Score","Ancienneté","Disponible"};
-	    listeJoueursModele = new DefaultTableModel(title,0);
-	    listeJoueurs = new JTable(listeJoueursModele);
-	    listeJoueurs.addMouseListener(new ModifierJoueurControlleur(this,listeJoueursModele,listeJoueurs));
-	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
-	    //Sinon les titres des colonnes ne s'afficheront pas !
-	    listeJoueurs.setAutoCreateRowSorter(true);
+		String  title[] = {"ID","Nom", "Prénom", "Score","Ancienneté","Disponible"};
+		listeJoueursModele = new DefaultTableModel(title,0);
+		listeJoueurs = new JTable(listeJoueursModele);
+		listeJoueurs.addMouseListener(new ModifierJoueurControlleur(this,listeJoueursModele,listeJoueurs));
+		//Nous ajoutons notre tableau à notre contentPane dans un scroll
+		//Sinon les titres des colonnes ne s'afficheront pas !
+		listeJoueurs.setAutoCreateRowSorter(true);
 		panJoueurs = new JScrollPane(listeJoueurs);
 		joueurs.add(panJoueurs);
 		//Ajout d'un joueur
@@ -115,6 +111,11 @@ public class FenetrePrincipale extends JFrame {
 			}
 		});
 		joueurs.add(ajouterJoueur);
+
+		//Bouton importation de joueurs : Lucas~Potentiellement instable <3
+		JButton ImporterJoueurs = new JButton("Importer...");
+		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi));
+		joueurs.add(ImporterJoueurs);
 
 		//On veut afficher les terrains et les paires qui jouent dessus
 		this.listeTerrains = new JPanel();
@@ -162,11 +163,11 @@ public class FenetrePrincipale extends JFrame {
 	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
-	
+
 	/**
 	 * pour générer les paires et démarrer un tour
 	 * @throws TournoiVideException s'il n'y a pas de joueurs
-     */
+	 */
 	public void genererPaires() throws TournoiVideException{
 		verif = 0;
 		tournoi.demarrerTour();
@@ -208,7 +209,7 @@ public class FenetrePrincipale extends JFrame {
 	 * pour créer un JPanel à partir d'un numéro de terrain
 	 * @param i le numéro de terrain
 	 * @return un JPanel indiquant des informations relatives au terrain
-     */
+	 */
 	public JPanel nouvelAffichageTerrain(int i){
 		JPanel terr = new JPanel();
 
@@ -321,7 +322,7 @@ public class FenetrePrincipale extends JFrame {
 	/**
 	 * on vérirife que tous les terrains on eu leurs scores rentrés
 	 * @return vrai si on peut finir le tour faux sinon
-     */
+	 */
 	public boolean verifFinir(){
 		return verif==0;
 	}
