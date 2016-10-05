@@ -1,6 +1,6 @@
 package tournoi;
 
-import liste.Liste; 
+import java.util.ArrayList; 
 
 import java.io.*;
 import java.util.regex.*;
@@ -381,7 +381,7 @@ public class Tournoi{
 		int indice;
 		while(matchs.size() > 0)
 		{
-			indice = (int) Math.round(Math.random()*(this.liste.size()-1));
+			indice = (int) Math.round(Math.random()*(matchs.size()-1));
 			Match element = matchs.get(indice);
 			melange.add(element);
 			matchs.remove(element);
