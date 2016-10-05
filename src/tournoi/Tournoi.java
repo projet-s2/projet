@@ -17,12 +17,12 @@ import exception.*;
 
 public class Tournoi{
 
-	private Liste nouveauxJoueurs;
-	private Liste nouveauxJoueursClasses;
-	private Liste anciensJoueurs;
-	private Liste anciensJoueursClasses;
-	private Liste terrains;
-	private Liste paires;
+	private ArrayList nouveauxJoueurs;
+	private ArrayList nouveauxJoueursClasses;
+	private ArrayList anciensJoueurs;
+	private ArrayList anciensJoueursClasses;
+	private ArrayList terrains;
+	private ArrayList paires;
 	private int nbrTerrains;
 	private String nom;
 
@@ -40,10 +40,10 @@ public class Tournoi{
 		else if(nbrTerrains < 1){
 			throw new NbTerrainNeg("Nombre de terrain n�gatif");
 		}
-		this.nouveauxJoueurs= new Liste();
-		this.anciensJoueurs= new Liste();
-		this.terrains= new Liste();
-		this.paires= new Liste();
+		this.nouveauxJoueurs= new ArrayList();
+		this.anciensJoueurs= new ArrayList();
+		this.terrains= new ArrayList();
+		this.paires= new ArrayList();
 		this.nbrTerrains= nbrTerrains;
 		this.nom = leNom;
 		initialiserTerrains();
@@ -80,7 +80,7 @@ public class Tournoi{
 	* @return la liste des nouveaux adhérents joueurs
 	*
 	*/
-	public Liste getNouveauxJoueurs() {
+	public ArrayList getNouveauxJoueurs() {
 		return this.nouveauxJoueurs;
 	}
 
@@ -89,7 +89,7 @@ public class Tournoi{
 		* @return la liste des anciens adhérents joueurs
 		*
 		*/
-	public Liste getAnciensJoueurs() {
+	public ArrayList getAnciensJoueurs() {
 		return this.anciensJoueurs;
 	}
 
@@ -98,7 +98,7 @@ public class Tournoi{
 		* @return la liste des terrains
 		*
 		*/
-	public Liste getTerrains() {
+	public ArrayList getTerrains() {
 		return this.terrains;
 	}
 
@@ -224,8 +224,8 @@ public class Tournoi{
 		if(this.nouveauxJoueurs.size() == 0 && this.anciensJoueurs.size() == 0){
 			throw new TournoiVideException("Il n'y a pas de joueurs dans le tournoi");
 		}
-		Liste nouveauxJoueursActifs = new Liste();
-		Liste anciensJoueursActifs = new Liste();
+		ArrayList nouveauxJoueursActifs = new ArrayList();
+		ArrayList anciensJoueursActifs = new ArrayList();
 		for (int i=0;i<this.nouveauxJoueurs.size();i++){
 			if(((Joueur)this.nouveauxJoueurs.get(i)).peutJouer()){
 				nouveauxJoueursActifs.add((Joueur)this.nouveauxJoueurs.get(i));
@@ -236,7 +236,7 @@ public class Tournoi{
 				anciensJoueursActifs.add((Joueur)this.anciensJoueurs.get(i));
 			}
 		}
-		this.paires = new Liste();
+		this.paires = new ArrayList();
 		//On vérifie si le nombre d'anciens est supérieur au nombre de nouveaux
 		if (anciensJoueursActifs.size()>=nouveauxJoueursActifs.size()){
 			tailleMin=nouveauxJoueursActifs.size();
@@ -371,13 +371,24 @@ public class Tournoi{
 		//trierPaires(0, this.paires.size()-1);
 		//On créer une liste de matchs avec les paires couplées par niveau
 		int i;
-		Liste matchs = new Liste();
+		ArrayList matchs = new ArrayList();
 		for(i=0;i<((int)(Math.floor(this.paires.size()/2)));i+=2){
 			matchs.add(new Match((Paire) this.paires.get(i),(Paire) this.paires.get(i+1)));
 		}
 
 		//On mélange cette liste
-		matchs=matchs.melangerListe();
+		ArrayList melange = new ArrayList();
+		int indice;
+		while(matchs.size() > 0)
+		{
+			indice = (int) Math.round(Math.random()*(this.liste.size()-1));
+			Match element = matchs.get(indice);
+			melange.add(element);
+			matchs.remove(element);
+		}
+		matchs = melange;
+
+
 		//On parcourt les terrains et on leur attribue des matchs prios
 		int p=0;
 		for (i=0; i<Math.min(this.terrains.size(),matchs.size()); i++){
@@ -478,10 +489,10 @@ public class Tournoi{
 			calculerClassementAnciens(pivot+1, droite);
 		}
 	}
-	public Liste getClassementAnciens(){
+	public ArrayList getClassementAnciens(){
 		calculerClassementAnciens(0, this.anciensJoueurs.size()-1);
-		Liste classem = this.anciensJoueursClasses;
-		Liste classem2 = new Liste();
+		ArrayList classem = this.anciensJoueursClasses;
+		ArrayList classem2 = new ArrayList();
 		for(int i=classem.size()-1;i>=0;i--){
 			classem2.add((Joueur)classem.get(i));
 		}
@@ -522,10 +533,10 @@ public class Tournoi{
 	/** Renvoie le classement des nouveaux joueurs
 	 * @return le classement des nouveaux adhérents joueurs
 	 */
-	public Liste getClassementNouveaux(){
+	public ArrayList getClassementNouveaux(){
 		calculerClassementNouveaux(0, this.nouveauxJoueurs.size()-1);
-		Liste classem = this.nouveauxJoueursClasses;
-		Liste classem2 = new Liste();
+		ArrayList classem = this.nouveauxJoueursClasses;
+		ArrayList classem2 = new ArrayList();
 		for(int i=classem.size()-1;i>=0;i--){
 			classem2.add((Joueur)classem.get(i));
 		}
