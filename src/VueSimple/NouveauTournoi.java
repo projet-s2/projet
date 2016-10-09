@@ -1,12 +1,13 @@
-package vue;
+package VueSimple;
 
-import controleur.NouveauTournoiControleur;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import controleur.NouveauTournoiControleur;
 
 public class NouveauTournoi extends JDialog {
 	public NouveauTournoi(FenetrePrincipale o){

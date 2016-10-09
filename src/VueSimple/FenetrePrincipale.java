@@ -1,20 +1,20 @@
-package vue;
+package VueSimple;
 
-import controleur.ImporterJoueursControlleur;
-import controleur.InverserJoueurControlleur;
-import controleur.ModifierJoueurControlleur;
-import controleur.SaisirScoreControlleur;
-import exception.TournoiVideException;
-import tournoi.Joueur;
-import tournoi.Terrain;
-import tournoi.Tournoi;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import controleur.ImporterJoueursControlleur;
+import controleur.InverserJoueurControlleur;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import controleur.ModifierJoueurControlleur;
+import controleur.SaisirScoreControlleur;
+import exception.TournoiVideException;
+import tournoi.*;
 
 public class FenetrePrincipale extends JFrame {
 

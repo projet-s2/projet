@@ -1,10 +1,21 @@
-package vue;
+package VueSimple;
 
-import tournoi.Joueur;
-import tournoi.Tournoi;
+import java.awt.BorderLayout; 
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+
+import tournoi.*;
 
 public class FenetreModifierJoueur extends JFrame {
 

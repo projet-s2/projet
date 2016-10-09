@@ -1,14 +1,17 @@
-package vue;
-
-import exception.TournoiVideException;
-import tournoi.Tournoi;
-
-import javax.swing.*;
-import java.awt.*;
+package VueSimple;
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
+import tournoi.*;
+import javax.swing.*;
+
+import exception.TournoiVideException;
+
+import java.awt.Toolkit;
 
 public class Menu extends JMenuBar{
 	//Il n'est pas possible de proceder à certaines actions tant que le tournoi n'a pas été crée ou affiché
