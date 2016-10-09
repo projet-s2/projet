@@ -1,5 +1,6 @@
 package vue;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import controleur.AjouterJoueurControlleur;
 import controleur.AjouterMatchControlleur;
 import tournoi.Tournoi;
@@ -36,12 +37,15 @@ public class FenetreAjoutMatch extends JFrame {
 
         //menus déroulants des joueurs
         String[] joueurs= new String[200];// voir combiens de gens le tournois acceuille pour adapter
-        for (int i = 0; i < tournoi.getAnciensJoueurs().size(); i++) {
-            joueurs[i] = "" + tournoi.getJoueur(i).getPrenom() + tournoi.getJoueur(i).getNom();
-        }
-        for (int j = tournoi.getAnciensJoueurs().size()+1; j < tournoi.getAnciensJoueurs().size() + tournoi.getNouveauxJoueurs().size(); j++) {
-            joueurs[j] = "" + tournoi.getJoueur(j).getPrenom() + tournoi.getJoueur(j).getNom();
-        }
+        
+        
+        // TODO: 09/10/16  regler le soucis de parcour des joueurs pour les listes déroulantes
+//        for (int i = 0; i < tournoi.getAnciensJoueurs().size()-1; i++) {
+//            joueurs[i] = "" + tournoi.getJoueur(i).getPrenom() + tournoi.getJoueur(i).getNom();
+//        }
+//        for (int j = tournoi.getAnciensJoueurs().size(); j < -1+tournoi.getAnciensJoueurs().size() + tournoi.getNouveauxJoueurs().size(); j++) {
+//            joueurs[j] = "" + tournoi.getJoueur(j).getPrenom() + tournoi.getJoueur(j).getNom();
+//        }
 
         JComboBox joueur1 = new JComboBox(joueurs);
         JComboBox joueur2 = new JComboBox(joueurs);
@@ -77,6 +81,7 @@ public class FenetreAjoutMatch extends JFrame {
         valider.addActionListener(new AjouterMatchControlleur(this));
         JPanel sud = new JPanel();
         sud.add(valider);
+        // TODO: 09/10/16 action listener du bouton valider pour actualiser les scores 
 
         corePanel.add(sud,BorderLayout.SOUTH);
 

@@ -114,9 +114,14 @@ public class FenetrePrincipale extends JFrame {
 
 		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
 		JButton newMatch = new JButton("Nouveau match");
-		newMatch.addActionListener(new newMatchController(tournoi));
+		newMatch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fenetreAjoutMatch();
+			}
+		});
 		joueurs.add(newMatch);
-			//JButton ajouterJoueur = new JButton("Ajouter un joueur");
+
 
 
 
@@ -146,6 +151,9 @@ public class FenetrePrincipale extends JFrame {
 	 */
 	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
+	}
+	public void fenetreAjoutMatch(){
+		new FenetreAjoutMatch("Entrer nouveau Match",tournoi,this);
 	}
 
 
