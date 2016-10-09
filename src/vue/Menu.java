@@ -79,22 +79,8 @@ public class Menu extends JMenuBar{
 	    this.aAutoriser.add(exporter);
 	    
 	   //Dans le menu édition
-	    JMenuItem creerPaires = new JMenuItem("Générer les paires");
-	    creerPaires.setAccelerator(KeyStroke.getKeyStroke('G', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
-	    creerPaires.addActionListener(new ActionListener(){
-	    	@Override
-	    	public void actionPerformed(ActionEvent e){
-	    		try {
-					fen.genererPaires();
-				} catch (TournoiVideException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-	    	}
-	    });
-	    creerPaires.setEnabled(false);
-	    menuEdition.add(creerPaires);
-	    this.aAutoriser.add(creerPaires);
+
+
 	    
 	    JMenuItem ajouterJoueur = new JMenuItem("Nouveau joueur");
 	    ajouterJoueur.setAccelerator(KeyStroke.getKeyStroke('J', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));

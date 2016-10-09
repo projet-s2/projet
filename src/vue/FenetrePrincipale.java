@@ -1,9 +1,6 @@
 package vue;
 
-import controleur.ImporterJoueursControlleur;
-import controleur.InverserJoueurControlleur;
-import controleur.ModifierJoueurControlleur;
-import controleur.SaisirScoreControlleur;
+import controleur.*;
 import exception.TournoiVideException;
 import tournoi.Joueur;
 import tournoi.Terrain;
@@ -23,12 +20,8 @@ public class FenetrePrincipale extends JFrame {
 	private JScrollPane panJoueurs;
 	private DefaultTableModel listeJoueursModele;
 	private JTable listeJoueurs;
-	private JPanel listeTerrains;
-	private JPanel[] terrains;
-	private JButton boutonFinir;
 	String[] joueurs;
-	public static Color couleurOK = Color.GRAY;
-	public static Color couleurPasOK = Color.ORANGE;
+
 	private int verif;
 
 	/**
@@ -40,7 +33,9 @@ public class FenetrePrincipale extends JFrame {
 
 		//On charge le look and feel du syst�me de l'utilisateur (� la place de GTK) auquel il est habitu�
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager. setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			SwingUtilities. updateComponentTreeUI(this);
+			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
@@ -117,27 +112,16 @@ public class FenetrePrincipale extends JFrame {
 		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi));
 		joueurs.add(ImporterJoueurs);
 
-		//On veut afficher les terrains et les paires qui jouent dessus
-		this.listeTerrains = new JPanel();
-		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
-		//On parcours les terrains pour les afficher
-		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			listeTerrains.add(nouvelAffichageTerrain(i));
-		}
-		JScrollPane terrains = new JScrollPane(listeTerrains);
-		boutonFinir = new JButton("Finir tour");
-		boutonFinir.setEnabled(false);
-		boutonFinir.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				finirTour();
-			}
-		});
-		listeTerrains.add(boutonFinir);
+		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
+		JButton newMatch = new JButton("Nouveau match");
+		newMatch.addActionListener(new newMatchController(tournoi));
+		joueurs.add(newMatch);
+			//JButton ajouterJoueur = new JButton("Ajouter un joueur");
+
+
 
 
 		//On ajoute tous les onglets
-		onglets.addTab("Terrains", terrains);
 		onglets.addTab("Joueurs", joueurs);
 
 		onglets.setOpaque(true);
@@ -164,17 +148,7 @@ public class FenetrePrincipale extends JFrame {
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
 
-	/**
-	 * pour générer les paires et démarrer un tour
-	 * @throws TournoiVideException s'il n'y a pas de joueurs
-	 */
-	public void genererPaires() throws TournoiVideException{
-		verif = 0;
-		tournoi.demarrerTour();
-		this.actualiserTerrains();
-		boutonFinir.setEnabled(true);
 
-	}
 
 	/**
 	 * pour actualiser l'affichage de sjoueurs dans l'onglet joueur
@@ -205,119 +179,7 @@ public class FenetrePrincipale extends JFrame {
 		}
 	}
 
-	/**
-	 * pour créer un JPanel à partir d'un numéro de terrain
-	 * @param i le numéro de terrain
-	 * @return un JPanel indiquant des informations relatives au terrain
-	 */
-	public JPanel nouvelAffichageTerrain(int i){
-		JPanel terr = new JPanel();
 
-		//On crée les différentes parties du JPanel
-
-		JPanel paire1 = new JPanel();
-		paire1.setLayout(new GridLayout(2,2));
-
-		JComboBox p1j1 = new JComboBox(joueurs);
-		JComboBox p1j2 = new JComboBox(joueurs);
-
-
-		JTextField scoreP1 = new JTextField();
-		scoreP1.setColumns(3);
-		paire1.add(p1j1);
-		paire1.add(p1j2);
-		paire1.add(scoreP1);
-
-		JComboBox p2j1 = new JComboBox(joueurs);
-		JComboBox p2j2 = new JComboBox(joueurs);
-
-		JPanel paire2 = new JPanel();
-		paire2.setLayout(new GridLayout(2,2));
-
-		JTextField scoreP2 = new JTextField();
-		scoreP2.setColumns(3);
-		paire2.add(p2j1);
-		paire2.add(p2j2);
-		paire2.add(scoreP2);
-
-		//Le bouton pour valider les score
-		JButton scoreBouton = new JButton("Valider Scores");
-		scoreBouton.addActionListener(new SaisirScoreControlleur(scoreP1,scoreP2,this,this.tournoi,i,terr));
-
-		try{
-			//S'il ya un match sur le terrain, on indique les 4 joueurs
-			Joueur j1 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1();
-			p1j1.setSelectedItem(j1.getNom()+" "+j1.getPrenom());
-			p1j1.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			Joueur j2 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2();
-			p1j2.setSelectedItem(j2.getNom()+" "+j2.getPrenom());
-			p1j2.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			Joueur j3 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur1();
-			p2j1.setSelectedItem(j3.getNom()+" "+j3.getPrenom());
-			p2j1.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			Joueur j4 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur2();
-			p2j2.setSelectedItem(j4.getNom()+" "+j4.getPrenom());
-			p2j2.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			terr.setBackground(couleurPasOK);
-			//Il faudra entrer les scores dans un terrain d eplus
-			verif++;
-		}catch(NullPointerException e){
-			//Sinon, on indique que le terrain est libre
-			p1j1.setSelectedIndex(joueurs.length-1);
-			p1j1.setEnabled(false);
-			p1j2.setSelectedIndex(joueurs.length-1);
-			p1j2.setEnabled(false);
-			p2j1.setSelectedIndex(joueurs.length-1);
-			p2j1.setEnabled(false);
-			p2j2.setSelectedIndex(joueurs.length-1);
-			p2j2.setEnabled(false);
-			scoreBouton.setEnabled(false);
-			terr.setBackground(couleurOK);
-
-		}
-		terr.setLayout(new BorderLayout());
-		terr.add(paire1, BorderLayout.NORTH);
-		terr.add(paire2, BorderLayout.SOUTH);
-		terr.add(scoreBouton, BorderLayout.EAST);
-		terr.setPreferredSize(new Dimension(200,300));
-
-		JPanel terrain = new JPanel();
-		terrain.add(terr);
-
-		return terrain;
-	}
-
-	/**
-	 * pour mettre à jour l'affichage des terrains
-	 */
-	public void actualiserTerrains(){
-		//On vide la liste des terrains
-		this.listeTerrains.removeAll();
-		this.listeTerrains.revalidate();
-		this.listeTerrains.repaint();
-		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
-		//On parcours les terrains pour les afficher
-		terrains = new JPanel[tournoi.getNbrTerrains()];
-		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			terrains[i] = nouvelAffichageTerrain(i);
-			listeTerrains.add(terrains[i]);
-		}
-		listeTerrains.add(boutonFinir);
-	}
-
-	/**
-	 * pour terminer un tour et valider les scores
-	 */
-	public void finirTour(){
-		if (verifFinir()){
-			tournoi.finirTour();
-			boutonFinir.setEnabled(false);
-			actualiserJoueurs();
-		}
-		else{
-			JOptionPane.showMessageDialog(this,"Vous devez valider tous les terrains avant de finir le tour.");
-		}
-	}
 
 	/**
 	 * on vérirife que tous les terrains on eu leurs scores rentrés

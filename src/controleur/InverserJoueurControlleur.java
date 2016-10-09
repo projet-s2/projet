@@ -42,6 +42,6 @@ public class InverserJoueurControlleur implements ActionListener{
             JOptionPane.showMessageDialog(vue,"Erreur");
         vue.setVerif(0);
         vue.actualiserJoueurs();
-        vue.actualiserTerrains();
+        //vue.actualiserTerrains();
     }
 }
