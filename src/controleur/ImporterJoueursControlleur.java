@@ -47,12 +47,15 @@ public class ImporterJoueursControlleur implements ActionListener {
                     vue.ajouterJoueurTable();
                 }
             } catch (java.io.FileNotFoundException e2) {
-                e2.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Le fichier demandé n'a pas été trouvé", "Erreur", JOptionPane.ERROR_MESSAGE);
             } catch (java.io.IOException e3) {
                 e3.printStackTrace();
-            } catch (Exception e4) {
-                e4.printStackTrace();
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e4) {
+                JOptionPane.showMessageDialog(null, "Fichier erroné", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e6) {
+                e6.printStackTrace();
             }
+
         }
 
     }
