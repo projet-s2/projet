@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Liste
 {
   private ArrayList<Object> liste;
-  
+
   public Liste(Liste l1){
 	   this.liste = new ArrayList(l1.getArrayList());
   }
@@ -13,12 +13,12 @@ public class Liste
   {
     this.liste = new ArrayList();
   }
-  
+
   public void add(Object paramObject)
   {
     this.liste.add(paramObject);
   }
-  
+
   public Object get(int paramInt)
   {
     try
@@ -28,7 +28,7 @@ public class Liste
     catch (IndexOutOfBoundsException localIndexOutOfBoundsException) {}
     return null;
   }
-  
+
   public boolean remove(Object paramObject)
   {
     return this.liste.remove(paramObject);
@@ -37,11 +37,11 @@ public class Liste
   {
     return this.liste.size();
   }
-  
+
   public void set(int i, Object o){
 	  this.liste.set(i, o);
   }
-  
+
   public Liste melangerListe(){
 	  Liste melange = new Liste();
 	  int indice;
@@ -55,7 +55,7 @@ public class Liste
   public ArrayList<Object> getArrayList(){
 	  return this.liste;
   }
- 
+
   public String toString()
   {
     return this.liste.toString();

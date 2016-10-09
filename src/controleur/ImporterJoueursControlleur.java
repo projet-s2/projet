@@ -2,6 +2,7 @@ package controleur;
 
 import tournoi.Joueur;
 import tournoi.Tournoi;
+import vue.FenetrePrincipale;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,32 +19,32 @@ import javax.swing.*;
 public class ImporterJoueursControlleur implements ActionListener {
 
     Tournoi tournoi;
+    FenetrePrincipale vue;
 
     public ImporterJoueursControlleur(Tournoi tournoi) {
         this.tournoi = tournoi;
     }
 
+    public ImporterJoueursControlleur(Tournoi tournoi , FenetrePrincipale vue) {
+        this.tournoi = tournoi;
+        this.vue = vue;
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("AAA");
         Frame fr = new Frame("Choississez un répertoire");
         FileDialog dial = new FileDialog(fr, "Importer un fichier", FileDialog.LOAD);
         dial.setFile("*.csv");
         dial.setVisible(true);
         fr.setVisible(false);
-
-        try{
-            System.out.println(dial.getDirectory() + dial.getFile());
-        }catch(NullPointerException e1){
-            System.out.println("Fichier pas importé");
-        }
         if (dial.getFile() != null) {
             String cvsFile = dial.getDirectory().concat(dial.getFile());
             try {
                 ArrayList<Joueur> listeJoueur = cvsReader(cvsFile);
-                System.out.println(listeJoueur);
                 for (Joueur j: listeJoueur) {
                     tournoi.ajouterJoueur(j);  //Oui oui ya un ptit pb ici :'(
+                    vue.ajouterJoueurTable();
                 }
             } catch (java.io.FileNotFoundException e2) {
                 e2.printStackTrace();

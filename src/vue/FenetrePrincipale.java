@@ -109,7 +109,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//Bouton importation de joueurs : Lucas~Potentiellement instable <3
 		JButton ImporterJoueurs = new JButton("Importer...");
-		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi));
+		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi,this));
 		joueurs.add(ImporterJoueurs);
 
 		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
@@ -159,7 +159,7 @@ public class FenetrePrincipale extends JFrame {
 		ArrayList<Joueur> classN = tournoi.getNouveauxJoueurs();
 		//On rentre les joueurs anciens dans les X premières cases
 		for(int i =0; i < classA.size(); i++){
-			Joueur j = (Joueur)classA.get(i);
+			Joueur j = classA.get(i);
 			listeJoueurs.setValueAt(j.getId(),i,0);
 			listeJoueurs.setValueAt(j.getNom(),i,1);
 			listeJoueurs.setValueAt(j.getPrenom(),i,2);

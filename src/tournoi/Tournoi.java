@@ -1,6 +1,6 @@
 package tournoi;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
 import java.io.*;
 import java.util.regex.*;
@@ -51,13 +51,13 @@ public class Tournoi{
 	public Tournoi(int nbrTerrains) throws NomVideException, NbTerrainNeg{
 		this(nbrTerrains, "Sans titre");
 	}
-	
+
 	/** Retourne le joueur avec son id
-	 * @return 
-	 * 
+	 * @return
+	 *
 	 * @return le joueur avec son id
 	 */
-	
+
 	public Joueur getJoueur(int Lid){
 		Joueur j = null;
 		for(int i = 0; i<nouveauxJoueurs.size();i++){
@@ -72,8 +72,8 @@ public class Tournoi{
 		}
 		return j;
 	}
-	
-	
+
+
 
 /** Retourne la liste de nouveaux joueurs
 	*
@@ -103,7 +103,7 @@ public class Tournoi{
 	}
 
 	/** Initialise les terrains disponibles
-	 * 
+	 *
 	*/
 	public void initialiserTerrains(){
 		for (int i=0; i<this.nbrTerrains; i++){
@@ -148,7 +148,7 @@ public class Tournoi{
 			((Terrain)this.terrains.get(i)).setMatch(null);
 		}
 		this.attribuerMatchs();
-		
+
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class Tournoi{
 			trierAnciensJoueurs(pivot+1, droite);
 		}
 	}
-	/** Appelée pour créer la liste des paires d'un tournoi 
+	/** Appelée pour créer la liste des paires d'un tournoi
 	 	* On attribue un partenaire uniquement aux joueurs actifs (ceux qui sont disponibles pour jouer)
 		* On cherche d'abord à faire jouer ceux qui ont le moins participé
 		* On cherche ensuite à faire jouer les joueurs qui n'ont pas joué au tour d'avant (les prios)
@@ -327,13 +327,13 @@ public class Tournoi{
 	}
 
 	/** Algorithme de tri rapide adapté pour ranger les performances des paires
-	 * 
+	 *
 	 * @param gauche L'indice minimal de la liste à trier
-	 * 
+	 *
 	 * @param droite L'indice maximal de la liste à trier
-	 * 
+	 *
 	 */
-	
+
 	private void trierPaires(int gauche, int droite){
 		int pivot;
 		Paire tmp;
@@ -529,7 +529,7 @@ public class Tournoi{
 			calculerClassementNouveaux(pivot+1, droite);
 		}
 	}
-	
+
 	/** Renvoie le classement des nouveaux joueurs
 	 * @return le classement des nouveaux adhérents joueurs
 	 */
@@ -542,7 +542,7 @@ public class Tournoi{
 		}
 		return classem2;
 	}
-	
+
 	/** Redéfinition la méthode public toString
 	 * @return L'état de toutes les paires à un moment donné
 	 */
@@ -555,7 +555,7 @@ public class Tournoi{
 		return res;
 	}
 	/** Méthode permettant d'enregistrer un tournoi dans un fichier
-	 * 
+	 *
 	 * @return Booléen qui permet de savoir si le fichier à été enregistré avec succès
 	 */
 	public boolean save(String chemin, String nomFichier){
@@ -606,7 +606,7 @@ public class Tournoi{
 		}
 		anc = anc.replaceAll("(?m)^", "\t");
 		anc = "<ancienJoueurs>"+anc+"\n</anciensJoueurs>";
-		
+
 		//On ins�re les nouveaux joueurs
 		String nouv = "";
 		for(int i = 0;i<this.nouveauxJoueurs.size();i++){
@@ -614,7 +614,7 @@ public class Tournoi{
 		}
 		nouv = nouv.replaceAll("(?m)^", "\t");
 		nouv = "<nouveauxJoueurs>"+nouv+"\n</nouveauxJoueurs>";
-		
+
 		//On ins�re les terrains
 		String terr = "";
 		for(int i = 0;i<this.terrains.size();i++){
@@ -625,9 +625,9 @@ public class Tournoi{
 		str = "<?xml version = \"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>\n"+anc+"\n"+nouv+"\n"+terr;
 		return str;
 	}
-	
+
 	public void load(){
-		
+
 	}
 	public void parserMPF(String str){
 		Pattern pattern = Pattern.compile("Hugo");
@@ -798,9 +798,9 @@ public class Tournoi{
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
+
 	public void parseTournoi(String tournoiXML){
-		
+
 	}
 	public void modifierJoueur(int id, String nom, String prenom, int age, boolean sexe,
 			boolean nouveau, int niveau) {
