@@ -3,10 +3,12 @@ package vue;
 import com.sun.xml.internal.bind.v2.TODO;
 import controleur.AjouterJoueurControlleur;
 import controleur.AjouterMatchControlleur;
+import tournoi.Joueur;
 import tournoi.Tournoi;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by lea on 09/10/16.
@@ -36,23 +38,33 @@ public class FenetreAjoutMatch extends JFrame {
         playerPanel.setLayout(new GridLayout(2,2));
 
         //menus déroulants des joueurs
-        String[] joueurs= new String[200];// voir combiens de gens le tournois acceuille pour adapter
-        
-        
-        // TODO: 09/10/16  regler le soucis de parcour des joueurs pour les listes déroulantes
-//        for (int i = 0; i < tournoi.getAnciensJoueurs().size()-1; i++) {
-//            joueurs[i] = "" + tournoi.getJoueur(i).getPrenom() + tournoi.getJoueur(i).getNom();
-//        }
-//        for (int j = tournoi.getAnciensJoueurs().size(); j < -1+tournoi.getAnciensJoueurs().size() + tournoi.getNouveauxJoueurs().size(); j++) {
-//            joueurs[j] = "" + tournoi.getJoueur(j).getPrenom() + tournoi.getJoueur(j).getNom();
-//        }
+        ArrayList<Joueur> classA = tournoi.getAnciensJoueurs();
+        ArrayList<Joueur> classN = tournoi.getNouveauxJoueurs();
+        String[] joueurs= new String[classA.size()+classN.size()];// voir combiens de gens le tournois acceuille pour adapter
+        //On rentre les joueurs anciens dans les X premières cases
+        for(int i =0; i < classA.size(); i++){
+            Joueur j = classA.get(i);
+            joueurs[i] = "" + j.getPrenom() + "    " +j.getNom();
+
+        }
+        //On rentre les joueurs nouveaux dans les cases restantes
+        for(int i = 0; i < classN.size(); i++){
+            Joueur j = (Joueur)classN.get(i);
+            joueurs[classA.size()+i] = "" + j.getPrenom() + "    " +j.getNom();
+
+        }
+
 
         JComboBox joueur1 = new JComboBox(joueurs);
         JComboBox joueur2 = new JComboBox(joueurs);
+        JComboBox joueur3 = new JComboBox(joueurs);
+        JComboBox joueur4 = new JComboBox(joueurs);
         JPanel j1 = new JPanel();
         JPanel j2 = new JPanel();
         j1.add(joueur1);
         j2.add(joueur2);
+        j1.add(joueur3);
+        j2.add(joueur4);
         playerPanel.add(j1);
         playerPanel.add(j2);
 
