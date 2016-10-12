@@ -3,6 +3,7 @@ package vue;
 import com.sun.xml.internal.bind.v2.TODO;
 import controleur.AjouterJoueurControlleur;
 import controleur.AjouterMatchControlleur;
+import controleur.SaisirScoreControlleur;
 import tournoi.Joueur;
 import tournoi.Tournoi;
 
@@ -16,10 +17,50 @@ import java.util.ArrayList;
 public class FenetreAjoutMatch extends JFrame {
 
     private Tournoi tournoi;
-    FenetrePrincipale vue;
-
+    private FenetrePrincipale vue;
     private JTextField nom;
     private JTextField prenom;
+    JComboBox joueur1 ;
+
+    public Tournoi getTournoi() {
+        return tournoi;
+    }
+
+    JComboBox joueur2;
+    JComboBox joueur3 ;
+
+    public JComboBox getJoueur1() {
+        return joueur1;
+    }
+
+    public JComboBox getJoueur2() {
+        return joueur2;
+    }
+
+    public JComboBox getJoueur3() {
+        return joueur3;
+    }
+
+    public JComboBox getJoueur4() {
+        return joueur4;
+    }
+
+    public JSpinner getScore1() {
+        return score1;
+    }
+
+    public JSpinner getScore2() {
+        return score2;
+    }
+
+    public JSpinner getTerain() {
+        return terain;
+    }
+
+    JComboBox joueur4;
+    JSpinner score1;
+    JSpinner score2;
+    JSpinner terain;
 
 
     /**
@@ -44,21 +85,21 @@ public class FenetreAjoutMatch extends JFrame {
         //On rentre les joueurs anciens dans les X premières cases
         for(int i =0; i < classA.size(); i++){
             Joueur j = classA.get(i);
-            joueurs[i] = "" + j.getPrenom() + "    " +j.getNom();
+            joueurs[i] = "" + j.getId() + j.getPrenom() + "    " +j.getNom();
 
         }
         //On rentre les joueurs nouveaux dans les cases restantes
         for(int i = 0; i < classN.size(); i++){
             Joueur j = (Joueur)classN.get(i);
-            joueurs[classA.size()+i] = "" + j.getPrenom() + "    " +j.getNom();
+            joueurs[classA.size()+i] = "" + j.getId()+ "  " + j.getPrenom() + "    " +j.getNom();
 
         }
 
 
-        JComboBox joueur1 = new JComboBox(joueurs);
-        JComboBox joueur2 = new JComboBox(joueurs);
-        JComboBox joueur3 = new JComboBox(joueurs);
-        JComboBox joueur4 = new JComboBox(joueurs);
+         joueur1 = new JComboBox(joueurs);
+         joueur2 = new JComboBox(joueurs);
+         joueur3 = new JComboBox(joueurs);
+         joueur4 = new JComboBox(joueurs);
         JPanel j1 = new JPanel();
         JPanel j2 = new JPanel();
         j1.add(joueur1);
@@ -69,9 +110,9 @@ public class FenetreAjoutMatch extends JFrame {
         playerPanel.add(j2);
 
         //entrage des scores
-        JSpinner score1 = new JSpinner();
+         score1 = new JSpinner();
         JLabel l1= new JLabel("Score :");
-        JSpinner score2 = new JSpinner();
+         score2 = new JSpinner();
         JLabel l2= new JLabel("Score ;");
         JPanel s1 = new JPanel();
         JPanel s2 = new JPanel();
@@ -84,16 +125,19 @@ public class FenetreAjoutMatch extends JFrame {
         playerPanel.add(s2);
 
 
-
         corePanel.add(playerPanel,BorderLayout.CENTER);
 
+        terain = new JSpinner();
+        JLabel t1= new JLabel("Terrain :");
+        s2.add(t1);
+        s1.add(terain);
 
         ///bouton valider en bas
         JButton valider = new JButton("Valider");
-        valider.addActionListener(new AjouterMatchControlleur(this));
+        valider.addActionListener(new SaisirScoreControlleur(score1,score2,vue,tournoi,joueur1,joueur2,joueur3,joueur4,terain ));
+
         JPanel sud = new JPanel();
         sud.add(valider);
-        // TODO: 09/10/16 action listener du bouton valider pour actualiser les scores 
 
         corePanel.add(sud,BorderLayout.SOUTH);
 
