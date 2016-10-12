@@ -107,10 +107,15 @@ public class FenetrePrincipale extends JFrame {
 		});
 		joueurs.add(ajouterJoueur);
 
-		//Bouton importation de joueurs : Lucas~Potentiellement instable <3
+		//Bouton pour importer des joueurs
 		JButton ImporterJoueurs = new JButton("Importer...");
 		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi,this));
 		joueurs.add(ImporterJoueurs);
+
+		//Bouton pour exporter les joueurs
+		JButton ExporterJoueurs = new JButton("Exporter...");
+		ExporterJoueurs.addActionListener(new ExporterJoueursControlleur(tournoi,this));
+		joueurs.add(ExporterJoueurs);
 
 		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
 		JButton newMatch = new JButton("Nouveau match");
