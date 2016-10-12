@@ -17,10 +17,10 @@ import exception.*;
 
 public class Tournoi{
 
-	private ArrayList nouveauxJoueurs;
-	private ArrayList nouveauxJoueursClasses;
-	private ArrayList anciensJoueurs;
-	private ArrayList anciensJoueursClasses;
+	private ArrayList<Joueur> nouveauxJoueurs;
+	private ArrayList<Joueur> nouveauxJoueursClasses;
+	private ArrayList<Joueur> anciensJoueurs;
+	private ArrayList<Joueur> anciensJoueursClasses;
 	private ArrayList terrains;
 	private ArrayList paires;
 	private int nbrTerrains;
@@ -40,8 +40,8 @@ public class Tournoi{
 		else if(nbrTerrains < 1){
 			throw new NbTerrainNeg("Nombre de terrain n�gatif");
 		}
-		this.nouveauxJoueurs= new ArrayList();
-		this.anciensJoueurs= new ArrayList();
+		this.nouveauxJoueurs= new ArrayList<Joueur>();
+		this.anciensJoueurs= new ArrayList<Joueur>();
 		this.terrains= new ArrayList();
 		this.paires= new ArrayList();
 		this.nbrTerrains= nbrTerrains;
@@ -61,13 +61,13 @@ public class Tournoi{
 	public Joueur getJoueur(int Lid){
 		Joueur j = null;
 		for(int i = 0; i<nouveauxJoueurs.size();i++){
-			if(Lid==((Joueur) this.nouveauxJoueurs.get(i)).getId()){
-				j = (Joueur) this.nouveauxJoueurs.get(i);
+			if(Lid==(this.nouveauxJoueurs.get(i)).getId()){
+				j = this.nouveauxJoueurs.get(i);
 			}
 		}
 		for(int i = 0; i<anciensJoueurs.size();i++){
-			if(Lid==((Joueur) this.anciensJoueurs.get(i)).getId()){
-				j = (Joueur) this.anciensJoueurs.get(i);
+			if(Lid==(this.anciensJoueurs.get(i)).getId()){
+				j = this.anciensJoueurs.get(i);
 			}
 		}
 		return j;
@@ -133,6 +133,15 @@ public class Tournoi{
 		}
 	}
 
+	public void supprimerJoueur(Joueur joueur)
+	{
+		if (joueur.getNouveau()){
+			this.nouveauxJoueurs.remove(joueur);}
+		else{
+			this.anciensJoueurs.remove(joueur);
+		}
+	}
+
 	/** Appelée pour démarrer un tour,
 		* Comprend un mélange des listes de joueurs,
 		* La création des paires,
@@ -161,20 +170,20 @@ public class Tournoi{
 		Joueur tmp;
 		if(droite > gauche){
 			pivot = (gauche+droite)/2;
-			tmp = ((Joueur) this.nouveauxJoueurs.get(gauche));
-			this.nouveauxJoueurs.set(gauche, ((Joueur) this.nouveauxJoueurs.get(pivot))) ;
+			tmp = (this.nouveauxJoueurs.get(gauche));
+			this.nouveauxJoueurs.set(gauche, (this.nouveauxJoueurs.get(pivot))) ;
 			this.nouveauxJoueurs.set(pivot, tmp) ;
 			pivot = gauche;
 			for(int i = gauche+1; i<=droite;i++){
-				if(((Joueur)this.nouveauxJoueurs.get(i)).getNbMatchJoues() < ((Joueur)this.nouveauxJoueurs.get(gauche)).getNbMatchJoues()){
+				if((this.nouveauxJoueurs.get(i)).getNbMatchJoues() < (this.nouveauxJoueurs.get(gauche)).getNbMatchJoues()){
 					pivot++;
-					tmp = (Joueur) this.nouveauxJoueurs.get(i);
-					this.nouveauxJoueurs.set(i, ((Joueur) this.nouveauxJoueurs.get(pivot)) );
+					tmp = this.nouveauxJoueurs.get(i);
+					this.nouveauxJoueurs.set(i, ( this.nouveauxJoueurs.get(pivot)) );
 					this.nouveauxJoueurs.set(pivot, tmp);
 				}
 			}
-			tmp = (Joueur) this.nouveauxJoueurs.get(pivot);
-			this.nouveauxJoueurs.set(pivot, ((Joueur) this.nouveauxJoueurs.get(gauche)));
+			tmp = this.nouveauxJoueurs.get(pivot);
+			this.nouveauxJoueurs.set(pivot, ( this.nouveauxJoueurs.get(gauche)));
 			this.nouveauxJoueurs.set(gauche, tmp);
 			trierNouveauxJoueurs(gauche, pivot-1);
 			trierNouveauxJoueurs(pivot+1, droite);
@@ -190,20 +199,20 @@ public class Tournoi{
 		Joueur tmp;
 		if(droite > gauche){
 			pivot = (gauche+droite)/2;
-			tmp = ((Joueur) this.anciensJoueurs.get(gauche));
-			this.anciensJoueurs.set(gauche, ((Joueur) this.anciensJoueurs.get(pivot))) ;
+			tmp = ( this.anciensJoueurs.get(gauche));
+			this.anciensJoueurs.set(gauche, (this.anciensJoueurs.get(pivot))) ;
 			this.anciensJoueurs.set(pivot, tmp) ;
 			pivot = gauche;
 			for(int i = gauche+1; i<=droite;i++){
-				if(((Joueur)this.anciensJoueurs.get(i)).getNbMatchJoues() < ((Joueur)this.anciensJoueurs.get(gauche)).getNbMatchJoues()){
+				if((this.anciensJoueurs.get(i)).getNbMatchJoues() < (this.anciensJoueurs.get(gauche)).getNbMatchJoues()){
 					pivot++;
-					tmp = (Joueur) this.anciensJoueurs.get(i);
-					this.anciensJoueurs.set(i, ((Joueur) this.anciensJoueurs.get(pivot)) );
+					tmp =  this.anciensJoueurs.get(i);
+					this.anciensJoueurs.set(i, (this.anciensJoueurs.get(pivot)) );
 					this.anciensJoueurs.set(pivot, tmp);
 				}
 			}
-			tmp = (Joueur) this.anciensJoueurs.get(pivot);
-			this.anciensJoueurs.set(pivot, ((Joueur) this.anciensJoueurs.get(gauche)));
+			tmp =  this.anciensJoueurs.get(pivot);
+			this.anciensJoueurs.set(pivot, (this.anciensJoueurs.get(gauche)));
 			this.anciensJoueurs.set(gauche, tmp);
 			trierAnciensJoueurs(gauche, pivot-1);
 			trierAnciensJoueurs(pivot+1, droite);
@@ -227,13 +236,13 @@ public class Tournoi{
 		ArrayList nouveauxJoueursActifs = new ArrayList();
 		ArrayList anciensJoueursActifs = new ArrayList();
 		for (int i=0;i<this.nouveauxJoueurs.size();i++){
-			if(((Joueur)this.nouveauxJoueurs.get(i)).peutJouer()){
-				nouveauxJoueursActifs.add((Joueur)this.nouveauxJoueurs.get(i));
+			if((this.nouveauxJoueurs.get(i)).peutJouer()){
+				nouveauxJoueursActifs.add(this.nouveauxJoueurs.get(i));
 			}
 		}
 		for (int i=0;i<this.anciensJoueurs.size();i++){
-			if(((Joueur)this.anciensJoueurs.get(i)).peutJouer()){
-				anciensJoueursActifs.add((Joueur)this.anciensJoueurs.get(i));
+			if((this.anciensJoueurs.get(i)).peutJouer()){
+				anciensJoueursActifs.add(this.anciensJoueurs.get(i));
 			}
 		}
 		this.paires = new ArrayList();
@@ -392,18 +401,18 @@ public class Tournoi{
 		//On parcourt les terrains et on leur attribue des matchs prios
 		int p=0;
 		for (i=0; i<Math.min(this.terrains.size(),matchs.size()); i++){
-			if(((Match) matchs.get(i)).estPrio()){
-				((Match) matchs.get(i)).pairesJouent(true);
-				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i));
+			if((matchs.get(i)).estPrio()){
+				( matchs.get(i)).pairesJouent(true);
+				((Terrain)this.terrains.get(p)).setMatch( matchs.get(i));
 				p++;
 			}
 		}
 
 		//On parcourt les matchs restants et on leur attribue les terrains restants
 		for (i=0; i<Math.min(this.terrains.size(),matchs.size()); i++){
-			if(!((Match) matchs.get(i)).estPrio()){
-				((Match) matchs.get(i)).pairesJouent(true);
-				((Terrain)this.terrains.get(p)).setMatch((Match) matchs.get(i));
+			if(!( matchs.get(i)).estPrio()){
+				( matchs.get(i)).pairesJouent(true);
+				((Terrain)this.terrains.get(p)).setMatch( matchs.get(i));
 				p++;
 			}
 		}
@@ -415,10 +424,10 @@ public class Tournoi{
 		}
 		//On parcourt les anciens joueurs et on rend prioritaires ceux qui ne jouent pas
 		for(int i1=0; i1<this.anciensJoueurs.size();i1++){
-			((Joueur) this.anciensJoueurs.get(i1)).setPrio(!((Joueur) this.anciensJoueurs.get(i1)).getJoue());
+			( this.anciensJoueurs.get(i1)).setPrio(!( this.anciensJoueurs.get(i1)).getJoue());
 		}
 		for(int i1=0; i1<this.nouveauxJoueurs.size();i1++){
-			((Joueur) this.nouveauxJoueurs.get(i1)).setPrio(!((Joueur) this.nouveauxJoueurs.get(i1)).getJoue());
+			( this.nouveauxJoueurs.get(i1)).setPrio(!( this.nouveauxJoueurs.get(i1)).getJoue());
 		}
 	}
 
@@ -438,12 +447,12 @@ public class Tournoi{
   		}
 		//On remet tous les joueurs en attente d'une paire
 		for (int i=0; i<this.anciensJoueurs.size(); i++){
-			((Joueur)this.anciensJoueurs.get(i)).setDansPaire(false);
-			((Joueur)this.anciensJoueurs.get(i)).setJoue(false);
+			(this.anciensJoueurs.get(i)).setDansPaire(false);
+			(this.anciensJoueurs.get(i)).setJoue(false);
 		}
 		for (int i=0; i<this.nouveauxJoueurs.size(); i++){
-			((Joueur)this.nouveauxJoueurs.get(i)).setDansPaire(false);
-			((Joueur)this.nouveauxJoueurs.get(i)).setJoue(false);
+			(this.nouveauxJoueurs.get(i)).setDansPaire(false);
+			(this.nouveauxJoueurs.get(i)).setJoue(false);
 		}
 	}
 
@@ -470,20 +479,20 @@ public class Tournoi{
 		this.anciensJoueursClasses = this.anciensJoueurs;
 		if(droite > gauche){
 			pivot = (gauche+droite)/2;
-			tmp = ((Joueur) this.anciensJoueursClasses.get(gauche));
-			this.anciensJoueursClasses.set(gauche, ((Joueur) this.anciensJoueursClasses.get(pivot))) ;
+			tmp = ( this.anciensJoueursClasses.get(gauche));
+			this.anciensJoueursClasses.set(gauche, (this.anciensJoueursClasses.get(pivot))) ;
 			this.anciensJoueursClasses.set(pivot, tmp) ;
 			pivot = gauche;
 			for(int i = gauche+1; i<=droite;i++){
-				if(((Joueur)this.anciensJoueursClasses.get(i)).getScore() < ((Joueur)this.anciensJoueursClasses.get(gauche)).getScore()){
+				if((this.anciensJoueursClasses.get(i)).getScore() < (this.anciensJoueursClasses.get(gauche)).getScore()){
 					pivot++;
-					tmp = (Joueur) this.anciensJoueursClasses.get(i);
-					this.anciensJoueursClasses.set(i, ((Joueur) this.anciensJoueursClasses.get(pivot)) );
+					tmp =  this.anciensJoueursClasses.get(i);
+					this.anciensJoueursClasses.set(i, (this.anciensJoueursClasses.get(pivot)) );
 					this.anciensJoueursClasses.set(pivot, tmp);
 				}
 			}
-			tmp = (Joueur) this.anciensJoueursClasses.get(pivot);
-			this.anciensJoueursClasses.set(pivot, ((Joueur) this.anciensJoueursClasses.get(gauche)));
+			tmp =this.anciensJoueursClasses.get(pivot);
+			this.anciensJoueursClasses.set(pivot, (this.anciensJoueursClasses.get(gauche)));
 			this.anciensJoueursClasses.set(gauche, tmp);
 			calculerClassementAnciens(gauche, pivot-1);
 			calculerClassementAnciens(pivot+1, droite);
@@ -510,20 +519,20 @@ public class Tournoi{
 		this.nouveauxJoueursClasses = this.nouveauxJoueurs;
 		if(droite > gauche){
 			pivot = (gauche+droite)/2;
-			tmp = ((Joueur) this.nouveauxJoueursClasses.get(gauche));
-			this.nouveauxJoueursClasses.set(gauche, ((Joueur) this.nouveauxJoueursClasses.get(pivot))) ;
+			tmp = ( this.nouveauxJoueursClasses.get(gauche));
+			this.nouveauxJoueursClasses.set(gauche, ( this.nouveauxJoueursClasses.get(pivot))) ;
 			this.nouveauxJoueursClasses.set(pivot, tmp) ;
 			pivot = gauche;
 			for(int i = gauche+1; i<=droite;i++){
-				if(((Joueur)this.nouveauxJoueursClasses.get(i)).getScore() < ((Joueur)this.nouveauxJoueursClasses.get(gauche)).getScore()){
+				if((this.nouveauxJoueursClasses.get(i)).getScore() < (this.nouveauxJoueursClasses.get(gauche)).getScore()){
 					pivot++;
 					tmp = (Joueur) this.nouveauxJoueursClasses.get(i);
-					this.nouveauxJoueursClasses.set(i, ((Joueur) this.nouveauxJoueursClasses.get(pivot)) );
+					this.nouveauxJoueursClasses.set(i, ( this.nouveauxJoueursClasses.get(pivot)) );
 					this.nouveauxJoueursClasses.set(pivot, tmp);
 				}
 			}
-			tmp = (Joueur) this.nouveauxJoueursClasses.get(pivot);
-			this.nouveauxJoueursClasses.set(pivot, ((Joueur) this.nouveauxJoueursClasses.get(gauche)));
+			tmp = this.nouveauxJoueursClasses.get(pivot);
+			this.nouveauxJoueursClasses.set(pivot, ( this.nouveauxJoueursClasses.get(gauche)));
 			this.nouveauxJoueursClasses.set(gauche, tmp);
 			calculerClassementNouveaux(gauche, pivot-1);
 			calculerClassementNouveaux(pivot+1, droite);
@@ -602,7 +611,7 @@ public class Tournoi{
 		//On insère les anciens joueurs
 		String anc = "";
 		for(int i = 0;i<this.anciensJoueurs.size();i++){
-			anc += ((Joueur)this.anciensJoueurs.get(i)).readyToBeSaved();
+			anc += (this.anciensJoueurs.get(i)).readyToBeSaved();
 		}
 		anc = anc.replaceAll("(?m)^", "\t");
 		anc = "<ancienJoueurs>"+anc+"\n</anciensJoueurs>";
@@ -610,7 +619,7 @@ public class Tournoi{
 		//On ins�re les nouveaux joueurs
 		String nouv = "";
 		for(int i = 0;i<this.nouveauxJoueurs.size();i++){
-			nouv += ((Joueur)this.nouveauxJoueurs.get(i)).readyToBeSaved();
+			nouv += (this.nouveauxJoueurs.get(i)).readyToBeSaved();
 		}
 		nouv = nouv.replaceAll("(?m)^", "\t");
 		nouv = "<nouveauxJoueurs>"+nouv+"\n</nouveauxJoueurs>";
@@ -644,7 +653,7 @@ public class Tournoi{
 		Joueur joueurChange2=null;
 		//On cherche d'abord le joueur qui va prendre la place du premier
 		for(int i = 0; i<anciensJoueurs.size();i++){
-			Joueur tmp = (Joueur)anciensJoueurs.get(i);
+			Joueur tmp = anciensJoueurs.get(i);
 			if(tmp.getId()==idJ2){
 				joueurChange2=tmp;
 				break;
@@ -652,7 +661,7 @@ public class Tournoi{
 		}
 		if(joueurChange2==null) {
 			for (int i = 0; i < nouveauxJoueurs.size(); i++) {
-				Joueur tmp = (Joueur) nouveauxJoueurs.get(i);
+				Joueur tmp = nouveauxJoueurs.get(i);
 				if (tmp.getId() == idJ2) {
 					joueurChange2 = tmp;
 					break;
@@ -772,12 +781,12 @@ public class Tournoi{
      */
 	public int chercherJoueur(String nomPrenom) {
 		for (int i = 0; i<anciensJoueurs.size(); i++){
-			Joueur j = (Joueur)anciensJoueurs.get(i);
+			Joueur j = anciensJoueurs.get(i);
 			if ((j.getNom()+" "+j.getPrenom()).equals(nomPrenom))
 				return j.getId();
 		}
 		for (int i = 0; i<nouveauxJoueurs.size(); i++){
-			Joueur j = (Joueur)nouveauxJoueurs.get(i);
+			Joueur j = nouveauxJoueurs.get(i);
 			if ((j.getNom()+" "+j.getPrenom()).equals(nomPrenom))
 				return j.getId();
 		}
