@@ -18,12 +18,8 @@ import javax.swing.*;
  */
 public class ImporterJoueursControlleur implements ActionListener {
 
-    Tournoi tournoi;
-    FenetrePrincipale vue;
-
-    public ImporterJoueursControlleur(Tournoi tournoi) {
-        this.tournoi = tournoi;
-    }
+    private Tournoi tournoi;
+    private FenetrePrincipale vue;
 
     public ImporterJoueursControlleur(Tournoi tournoi , FenetrePrincipale vue) {
         this.tournoi = tournoi;
