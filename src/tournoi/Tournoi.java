@@ -133,6 +133,15 @@ public class Tournoi{
 		}
 	}
 
+	public void supprimerJoueur(Joueur joueur)
+	{
+		if (joueur.getNouveau()){
+			this.nouveauxJoueurs.remove(joueur);}
+		else{
+			this.anciensJoueurs.remove(joueur);
+		}
+	}
+
 	/** Appelée pour démarrer un tour,
 		* Comprend un mélange des listes de joueurs,
 		* La création des paires,
