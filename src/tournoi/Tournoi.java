@@ -135,9 +135,12 @@ public class Tournoi{
 
 	public void supprimerJoueur(Joueur joueur)
 	{
-		if (joueur.getNouveau()){
-			this.nouveauxJoueurs.remove(joueur);}
-		else{
+		if (joueur.getNouveau())
+		{
+			this.nouveauxJoueurs.remove(joueur);
+		}
+			else
+		{
 			this.anciensJoueurs.remove(joueur);
 		}
 	}

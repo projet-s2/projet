@@ -21,6 +21,6 @@ public class SupprimerJoueurBoutonControlleur implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        fmj.supprimerJoueur(this.id);
+       fmj.supprimerJoueur(this.id);
     }
 }

@@ -134,7 +134,7 @@ public class FenetreAjoutMatch extends JFrame {
 
         ///bouton valider en bas
         JButton valider = new JButton("Valider");
-        valider.addActionListener(new SaisirScoreControlleur(score1,score2,vue,tournoi,joueur1,joueur2,joueur3,joueur4,terain ));
+        //valider.addActionListener(new SaisirScoreControlleur(score1,score2,vue,tournoi,joueur1,joueur2,joueur3,joueur4,terain ));
 
         JPanel sud = new JPanel();
         sud.add(valider);
