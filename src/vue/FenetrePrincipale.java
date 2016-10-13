@@ -228,6 +228,19 @@ public class FenetrePrincipale extends JFrame {
 		this.actualiserNoms();
 	}
 
+
+	/**
+	 * pour supprimer un joueur dans la liste des joueurs (onglet joueurs)
+	 */
+	public void supprimerJoueurTable()
+	{
+		int i = listeJoueursModele.getRowCount();
+		this.listeJoueursModele.removeRow(i-1);
+		this.actualiserJoueurs();
+		this.actualiserNoms();
+	}
+
+
 	public void setVerif(int verif) {
 		this.verif = verif;
 	}
