@@ -80,7 +80,7 @@ public class Tournoi{
 	* @return la liste des nouveaux adhérents joueurs
 	*
 	*/
-	public ArrayList getNouveauxJoueurs() {
+	public ArrayList<Joueur> getNouveauxJoueurs() {
 		return this.nouveauxJoueurs;
 	}
 
@@ -89,7 +89,7 @@ public class Tournoi{
 		* @return la liste des anciens adhérents joueurs
 		*
 		*/
-	public ArrayList getAnciensJoueurs() {
+	public ArrayList<Joueur> getAnciensJoueurs() {
 		return this.anciensJoueurs;
 	}
 
