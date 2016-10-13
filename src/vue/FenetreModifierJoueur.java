@@ -190,7 +190,7 @@ public class FenetreModifierJoueur extends JFrame {
 		int niveau = this.niveau.getSelectedIndex();
 		this.tournoi.modifierJoueur(id, nom, prenom, age, sexe, nouve, niveau);
 		this.vue.actualiserJoueurs();
-
+		dispose();
 	}
 
 	public void supprimerJoueur(int id)
@@ -234,7 +234,7 @@ public class FenetreModifierJoueur extends JFrame {
 		this.vue.supprimerJoueurTable();
 		this.vue.actualiserJoueurs();
 		this.vue.actualiserNoms();
-
+		dispose();
 
 	}
 
