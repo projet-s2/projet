@@ -49,7 +49,7 @@ public class FenetreModifierJoueur extends JFrame {
 		nouv.setSelected(true);
 		
 		JButton modifier = new JButton("Modifier le joueur");
-		modifier.addActionListener(new ModifierJoueurBoutonControlleur(this));
+		modifier.addActionListener(new ModifierJoueurBoutonControlleur(this, id));
 		JButton supprimer = new JButton("Supprimer le joueur");
 		supprimer.addActionListener(new SupprimerJoueurBoutonControlleur(this, id));
 		
@@ -181,8 +181,8 @@ public class FenetreModifierJoueur extends JFrame {
 	/**
 	 * pour ajouter un joueur dans le tournoi et dans la liste de la fenetre principale
 	 */
-	public void modifierJoueur(){
-		int id = Joueur.nbJoueursCrees;
+	public void modifierJoueur(int id)
+	{
 		int age = ((int)this.age.getValue());
 		String nom = this.nom.getText(), prenom = this.prenom.getText();
 		boolean sexe = fem.isSelected();
