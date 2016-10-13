@@ -197,16 +197,12 @@ public class FenetreModifierJoueur extends JFrame {
 	{
 		ArrayList nouveauxJoueurs = this.tournoi.getNouveauxJoueurs();
 		ArrayList anciensJoueurs = this.tournoi.getAnciensJoueurs();
-		System.out.println(nouveauxJoueurs);
-		System.out.println(anciensJoueurs);
 
 		boolean trouve = false;
 		int tailleNouveauxJoueurs = nouveauxJoueurs.size();
 		int tailleAnciensJoueurs = anciensJoueurs.size();
 		int i = 0;
 		Joueur aSupprimer = new Joueur(id, true, true);
-		System.out.println("tailleNouveauxJoueurs : "+tailleNouveauxJoueurs);
-		System.out.println("tailleAnciensJoueurs : "+tailleAnciensJoueurs);
 		while(!trouve && i < tailleNouveauxJoueurs)
 		{
 			Joueur j = (Joueur) nouveauxJoueurs.get(i);
@@ -235,9 +231,11 @@ public class FenetreModifierJoueur extends JFrame {
 
 
 		this.tournoi.supprimerJoueur(aSupprimer);
+		this.vue.supprimerJoueurTable();
 		this.vue.actualiserJoueurs();
+		this.vue.actualiserNoms();
 
-		
+
 	}
 
 
