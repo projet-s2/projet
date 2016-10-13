@@ -6,14 +6,18 @@ import java.awt.event.ActionListener;
 public class ModifierJoueurBoutonControlleur implements ActionListener {
 
 	private FenetreModifierJoueur fmj;
+	private int id;
 	
-	public ModifierJoueurBoutonControlleur(FenetreModifierJoueur fmj){
+	public ModifierJoueurBoutonControlleur(FenetreModifierJoueur fmj, int id)
+	{
 		this.fmj = fmj;
+		this.id = id;
 	}
 		
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		fmj.modifierJoueur();
+	public void actionPerformed(ActionEvent e)
+	{
+		fmj.modifierJoueur(this.id);
 		
 	}
 }
