@@ -71,8 +71,8 @@ public class ExporterJoueursControlleur implements ActionListener {
         chaine.append(joueur.getNom() + ",");
         chaine.append(joueur.getPrenom() + ",");
         chaine.append(Integer.toString(joueur.getAge()) + ",");
-        chaine.append(joueur.getSexe() ? "1" : "0" + ",");
-        chaine.append(joueur.getNouveau() ? "1" : "0" + ",");
+        chaine.append(joueur.getSexe() ? "1," : "0,");
+        chaine.append(joueur.getNouveau() ? "1," : "0,");
         chaine.append(Integer.toString(joueur.getNiveau()) + ",");
         chaine.append(joueur.peutJouer() ? "1" : "0");
         return chaine.toString();
