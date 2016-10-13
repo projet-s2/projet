@@ -2,9 +2,11 @@ package vue;
 
 import tournoi.Joueur;
 import tournoi.Tournoi;
+import controleur.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class FenetreModifierJoueur extends JFrame {
 
@@ -47,6 +49,8 @@ public class FenetreModifierJoueur extends JFrame {
 		
 		JButton modifier = new JButton("Modifier le joueur");
 		modifier.addActionListener(new ModifierJoueurBoutonControlleur(this));
+		JButton supprimer = new JButton("Supprimer le joueur");
+		supprimer.addActionListener(new SupprimerJoueurBoutonControlleur(this, id));
 		
 		JPanel corePanel = new JPanel();
 		corePanel.setLayout(new BorderLayout());
@@ -87,8 +91,13 @@ public class FenetreModifierJoueur extends JFrame {
 		droite.add(age);
 		
 		corePanel.add(droite,BorderLayout.EAST);
-		
-		corePanel.add(modifier,BorderLayout.SOUTH);
+
+		JPanel panelBouton = new JPanel();
+		panelBouton.setLayout(new GridLayout(2,1));
+		panelBouton.add(modifier);
+		panelBouton.add(supprimer);
+
+		corePanel.add(panelBouton,BorderLayout.SOUTH);
 		
 		this.setContentPane(corePanel);
 		this.pack();
@@ -181,6 +190,43 @@ public class FenetreModifierJoueur extends JFrame {
 		this.tournoi.modifierJoueur(id, nom, prenom, age, sexe, nouve, niveau);
 		this.vue.actualiserJoueurs();
 
+	}
+
+	public void supprimerJoueur(int id)
+	{
+		ArrayList nouveauxJoueurs = this.tournoi.getNouveauxJoueurs();
+		ArrayList anciensJoueurs = this.tournoi.getAnciensJoueurs();
+		boolean trouve = false;
+		int tailleNouveauxJoueurs = nouveauxJoueurs.size();
+		int tailleAnciensJoueurs = anciensJoueurs.size();
+		int i = 0;
+		Joueur aSupprimer = new Joueur(id, true, true);
+		while(!trouve && i < tailleNouveauxJoueurs)
+		{
+			Joueur j = (Joueur) nouveauxJoueurs.get(i);
+			int a = j.getId();
+			if (a == id)
+			{
+				aSupprimer = j;
+				trouve = true;
+			}
+		}
+
+		while(!trouve && i < tailleAnciensJoueurs)
+		{
+			Joueur j = (Joueur) anciensJoueurs.get(i);
+			int a = j.getId();
+			if (a == id)
+			{
+				aSupprimer = j;
+				trouve = true;
+			}
+		}
+
+
+
+		this.tournoi.supprimerJoueur(aSupprimer);
+		this.vue.actualiserJoueurs();
 	}
 
 
