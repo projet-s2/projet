@@ -45,12 +45,12 @@ public class AjouterMatchControlleur implements ActionListener {
             Joueur j12 = tournoi.getJoueur(tournoi.chercherJoueur(j2));
             Joueur j21 = tournoi.getJoueur(tournoi.chercherJoueur(j3));
             Joueur j22 = tournoi.getJoueur(tournoi.chercherJoueur(j4));
-            //TODO   recuperation des joueurs foireuses
+
 
             paire1 = new Paire(j11, j12);
             paire2 = new Paire(j21,j22);
 
-            System.out.println(paire1.toString());
+           
             tournoi.setScoreManuel(paire1, paire2, score1, score2);
             vue.getVue().actualiserJoueurs();
 
