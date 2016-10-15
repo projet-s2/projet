@@ -18,7 +18,8 @@ public class NouveauTournoi extends JDialog {
 		
 		//on cr�er les �l�ments
 		JTextField nom = new JTextField();
-		JSpinner nbTerrains = new JSpinner();
+		//On crée un Jspinner ayant pour valeur de base 1, un minimum de 1, un maximum de Integer.MAX_VALUE et un pas de 1
+		JSpinner nbTerrains = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
 		JLabel nomLabel = new JLabel("Nom : ", SwingConstants.RIGHT);
 		JLabel nbTerrainsLabel = new JLabel("Nombre de terrains : ", SwingConstants.RIGHT);
 		
