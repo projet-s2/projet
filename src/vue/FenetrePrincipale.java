@@ -114,7 +114,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//Bouton pour exporter les joueurs
 		JButton ExporterJoueurs = new JButton("Exporter...");
-		ExporterJoueurs.addActionListener(new ExporterJoueursControlleur(tournoi,this));
+		ExporterJoueurs.addActionListener(new ExporterJoueursControlleur(tournoi));
 		joueurs.add(ExporterJoueurs);
 
 		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
