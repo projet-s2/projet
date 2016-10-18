@@ -63,6 +63,10 @@ public class FenetreAjoutMatch extends JFrame {
     JSpinner terain;
 
 
+    public FenetrePrincipale getVue() {
+        return vue;
+    }
+
     /**
      * constructeur de la fenêtre d'ajout d'un joueur
      * @param titre le titre à donner à la fenêtre
@@ -70,8 +74,11 @@ public class FenetreAjoutMatch extends JFrame {
      * @param vue la vue qui crée la fenêtre
      */
     public FenetreAjoutMatch(String titre, Tournoi tournoi, FenetrePrincipale vue){
-
+        super(titre);
+        this.tournoi = tournoi;
+        this.vue =vue;
         JPanel corePanel = new JPanel();
+
         corePanel.setLayout(new BorderLayout());
 
         //gridLayout avec les joueurs et leurs socres
@@ -85,13 +92,13 @@ public class FenetreAjoutMatch extends JFrame {
         //On rentre les joueurs anciens dans les X premières cases
         for(int i =0; i < classA.size(); i++){
             Joueur j = classA.get(i);
-            joueurs[i] = "" + j.getId() + j.getPrenom() + "    " +j.getNom();
+            joueurs[i] = "" + j.getNom()+" "+ j.getPrenom();
 
         }
         //On rentre les joueurs nouveaux dans les cases restantes
         for(int i = 0; i < classN.size(); i++){
             Joueur j = (Joueur)classN.get(i);
-            joueurs[classA.size()+i] = "" + j.getId()+ "  " + j.getPrenom() + "    " +j.getNom();
+            joueurs[classA.size()+i] =  "" + j.getNom()+" "+ j.getPrenom();
 
         }
 
@@ -127,18 +134,20 @@ public class FenetreAjoutMatch extends JFrame {
 
         corePanel.add(playerPanel,BorderLayout.CENTER);
 
-        terain = new JSpinner();
-        JLabel t1= new JLabel("Terrain :");
-        s2.add(t1);
-        s1.add(terain);
+
 
         ///bouton valider en bas
         JButton valider = new JButton("Valider");
-        //valider.addActionListener(new SaisirScoreControlleur(score1,score2,vue,tournoi,joueur1,joueur2,joueur3,joueur4,terain ));
+        valider.addActionListener(new AjouterMatchControlleur(this));
+
+        JLabel t1= new JLabel("Terrain :");
+        terain = new JSpinner();
+
 
         JPanel sud = new JPanel();
+        sud.add(t1);
+        sud.add(terain);
         sud.add(valider);
-
         corePanel.add(sud,BorderLayout.SOUTH);
 
 

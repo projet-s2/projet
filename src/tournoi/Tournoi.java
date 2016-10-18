@@ -80,7 +80,7 @@ public class Tournoi{
 	* @return la liste des nouveaux adhérents joueurs
 	*
 	*/
-	public ArrayList getNouveauxJoueurs() {
+	public ArrayList<Joueur> getNouveauxJoueurs() {
 		return this.nouveauxJoueurs;
 	}
 
@@ -89,7 +89,7 @@ public class Tournoi{
 		* @return la liste des anciens adhérents joueurs
 		*
 		*/
-	public ArrayList getAnciensJoueurs() {
+	public ArrayList<Joueur> getAnciensJoueurs() {
 		return this.anciensJoueurs;
 	}
 
@@ -469,6 +469,17 @@ public class Tournoi{
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
 	}
+	public void setScoreManuel(Paire paire,Paire paire2, int scoreP1, int scoreP2){
+		this.paires.add(paire);
+		this.paires.add(paire2);
+		Match match = new Match(paire,paire2);
+		match.getPaire1().setScore(scoreP1);
+		match.getPaire2().setScore(scoreP2);
+		match.determinerVainqueur();
+		match.modifierScores();
+
+	}
+
 
 	/**
 	 * Algorithme de tri rapide des anciens joueurs en fonction du score
