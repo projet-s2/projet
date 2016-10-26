@@ -54,8 +54,6 @@ public class ExporterJoueursControlleur implements ActionListener {
                     }
                     fichier.close();
                 }
-                else
-                    JOptionPane.showMessageDialog(null, "Veuillez spécifier un nom de fichier", "Erreur", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
