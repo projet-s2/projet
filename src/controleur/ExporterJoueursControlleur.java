@@ -32,7 +32,7 @@ public class ExporterJoueursControlleur implements ActionListener {
         if (!(tournoi.getAnciensJoueurs().isEmpty() && tournoi.getNouveauxJoueurs().isEmpty())) {
             //Ouverture de la fenetre "enregistrer sous"
             Frame fr = new Frame("Choississez un répertoire");
-            FileDialog dial = new FileDialog(fr, "Importer un fichier", FileDialog.SAVE);
+            FileDialog dial = new FileDialog(fr, "Enregistrer sous", FileDialog.SAVE);
             dial.setFile(".csv"); //Pré-écrit l'extension .csv dans la fenêtre de dialogue
             dial.setVisible(true);
             fr.setVisible(false);
