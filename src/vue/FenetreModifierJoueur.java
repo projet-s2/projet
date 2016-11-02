@@ -40,6 +40,8 @@ public class FenetreModifierJoueur extends JFrame {
 		nom = new JTextField(joueur.getNom());
 		prenom = new JTextField(joueur.getPrenom());
 		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
+		System.out.println(joueur.getNiveau());
+		niveau.setSelectedIndex(joueur.getNiveau());
 		age = new JSpinner(new SpinnerNumberModel(joueur.getAge(),1,120,1));
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
