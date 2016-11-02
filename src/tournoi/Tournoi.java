@@ -475,7 +475,7 @@ public class Tournoi{
 		Match match = new Match(paire,paire2);
 		match.getPaire1().setScore(scoreP1);
 		match.getPaire2().setScore(scoreP2);
-		match.determinerVainqueur();
+		match.determinerVainqueur(scoreP1,scoreP2);
 		match.modifierScores();
 
 	}
