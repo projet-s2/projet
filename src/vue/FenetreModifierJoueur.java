@@ -35,18 +35,39 @@ public class FenetreModifierJoueur extends JFrame {
 		this.id = id;
 
 		//Les différents champs de saisie
-		nom = new JTextField();
-		prenom = new JTextField();
+		Joueur joueur = this.tournoi.getJoueur(id);
+
+		nom = new JTextField(joueur.getNom());
+		prenom = new JTextField(joueur.getPrenom());
 		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
-		age = new JSpinner(new SpinnerNumberModel(25,1,120,1));
+		System.out.println(joueur.getNiveau());
+		niveau.setSelectedIndex(joueur.getNiveau());
+		age = new JSpinner(new SpinnerNumberModel(joueur.getAge(),1,120,1));
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
-		hom.setSelected(true);
+		if(joueur.getSexe())
+		{
+			hom.setSelected(false);
+			fem.setSelected(true);
+		}
+		else
+		{
+			hom.setSelected(true);
+			fem.setSelected(false);
+		}
+
 		ButtonGroup grSexe = new ButtonGroup();
 		grSexe.add(hom);
 		grSexe.add(fem);
 		nouv = new JCheckBox("Nouveau");
-		nouv.setSelected(true);
+		if(joueur.getNouveau())
+		{
+			nouv.setSelected(true);
+		}
+		else
+		{
+			nouv.setSelected(false);
+		}
 		
 		JButton modifier = new JButton("Modifier le joueur");
 		modifier.addActionListener(new ModifierJoueurBoutonControlleur(this, id));
@@ -195,40 +216,46 @@ public class FenetreModifierJoueur extends JFrame {
 
 	public void supprimerJoueur(int id)
 	{
-		ArrayList nouveauxJoueurs = this.tournoi.getNouveauxJoueurs();
-		ArrayList anciensJoueurs = this.tournoi.getAnciensJoueurs();
-
+		Joueur jou = this.tournoi.getJoueur(id);
 		boolean trouve = false;
-		int tailleNouveauxJoueurs = nouveauxJoueurs.size();
-		int tailleAnciensJoueurs = anciensJoueurs.size();
 		int i = 0;
 		Joueur aSupprimer = new Joueur(id, true, true);
-		while(!trouve && i < tailleNouveauxJoueurs)
+
+		if(jou.getNouveau())
 		{
-			Joueur j = (Joueur) nouveauxJoueurs.get(i);
-			int a = j.getId();
-			if (a == id)
+			ArrayList nouveauxJoueurs = this.tournoi.getNouveauxJoueurs();
+			int tailleNouveauxJoueurs = nouveauxJoueurs.size();
+
+			while(!trouve && i < tailleNouveauxJoueurs)
 			{
-				aSupprimer = j;
-				trouve = true;
+				Joueur j = (Joueur) nouveauxJoueurs.get(i);
+				int a = j.getId();
+				if (a == id)
+				{
+					aSupprimer = j;
+					trouve = true;
+				}
+				i++;
 			}
-			i++;
 		}
 
-		i = 0;
-		while(!trouve && i < tailleAnciensJoueurs)
+		else
 		{
-			Joueur j = (Joueur) anciensJoueurs.get(i);
-			int a = j.getId();
-			if (a == id)
+			ArrayList anciensJoueurs = this.tournoi.getAnciensJoueurs();
+			int tailleAnciensJoueurs = anciensJoueurs.size();
+
+			while(!trouve && i < tailleAnciensJoueurs)
 			{
-				aSupprimer = j;
-				trouve = true;
+				Joueur j = (Joueur) anciensJoueurs.get(i);
+				int a = j.getId();
+				if (a == id)
+				{
+					aSupprimer = j;
+					trouve = true;
+				}
+				i++;
 			}
-			i++;
 		}
-
-
 
 		this.tournoi.supprimerJoueur(aSupprimer);
 		this.vue.supprimerJoueurTable();

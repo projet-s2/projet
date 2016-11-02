@@ -139,8 +139,7 @@ public class Tournoi{
 		{
 			this.nouveauxJoueurs.remove(joueur);
 		}
-			else
-		{
+			else {
 			this.anciensJoueurs.remove(joueur);
 		}
 	}
