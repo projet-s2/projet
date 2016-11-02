@@ -266,7 +266,7 @@ public class Joueur {
 		* @param score le score d'un joueur
 		*/
 	public void setScore(int score){
-		this.score=score;
+		this.score+=score;
 	}
 
 	/** Retourne tous les anciens partenaires d'un joueur

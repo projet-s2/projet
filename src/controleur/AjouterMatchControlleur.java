@@ -27,10 +27,14 @@ public class AjouterMatchControlleur implements ActionListener {
      * constructeur du controleur
      * @param vue la fenetre principale
      */
-    public AjouterMatchControlleur(FenetreAjoutMatch vue){
+    public AjouterMatchControlleur(FenetreAjoutMatch vue,int s1,int s2){
         this.vue = vue;
-        score1 = (int)vue.getScore1().getValue();
-        score2 = (int)vue.getScore2().getValue();
+    //todo  les jspinner ne renvoie as les valeurs contenues!!!! -> le controleur se lance a la creation de la fenetre au lieu du  l'appyie sur valider
+        score1 = s1;
+        score2 = s2;
+        System.out.println(score1);
+        System.out.println(score2);
+        System.out.println("scores controlleur: "+score1+score2);
         tournoi = vue.getTournoi();
     }
     @Override

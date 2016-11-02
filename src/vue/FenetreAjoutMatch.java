@@ -21,46 +21,16 @@ public class FenetreAjoutMatch extends JFrame {
     private JTextField nom;
     private JTextField prenom;
     JComboBox joueur1 ;
-
-    public Tournoi getTournoi() {
-        return tournoi;
-    }
-
     JComboBox joueur2;
     JComboBox joueur3 ;
-
-    public JComboBox getJoueur1() {
-        return joueur1;
-    }
-
-    public JComboBox getJoueur2() {
-        return joueur2;
-    }
-
-    public JComboBox getJoueur3() {
-        return joueur3;
-    }
-
-    public JComboBox getJoueur4() {
-        return joueur4;
-    }
-
-    public JSpinner getScore1() {
-        return score1;
-    }
-
-    public JSpinner getScore2() {
-        return score2;
-    }
-
-    public JSpinner getTerain() {
-        return terain;
-    }
-
     JComboBox joueur4;
     JSpinner score1;
     JSpinner score2;
     JSpinner terain;
+
+
+
+
 
 
     public FenetrePrincipale getVue() {
@@ -117,9 +87,9 @@ public class FenetreAjoutMatch extends JFrame {
         playerPanel.add(j2);
 
         //entrage des scores
-         score1 = new JSpinner();
+         score1 = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
         JLabel l1= new JLabel("Score :");
-         score2 = new JSpinner();
+         score2 = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
         JLabel l2= new JLabel("Score ;");
         JPanel s1 = new JPanel();
         JPanel s2 = new JPanel();
@@ -138,7 +108,9 @@ public class FenetreAjoutMatch extends JFrame {
 
         ///bouton valider en bas
         JButton valider = new JButton("Valider");
-        valider.addActionListener(new AjouterMatchControlleur(this));
+
+
+        valider.addActionListener(new AjouterMatchControlleur(this,(int)score1.getValue(),(int)score2.getValue()));
 
         JLabel t1= new JLabel("Terrain :");
         terain = new JSpinner();
@@ -160,5 +132,38 @@ public class FenetreAjoutMatch extends JFrame {
         this.setSize(tailleX,tailleY);
         this.setResizable(false);
 
+    }
+
+    public Tournoi getTournoi() {
+        return tournoi;
+    }
+
+
+    public JComboBox getJoueur1() {
+        return joueur1;
+    }
+
+    public JComboBox getJoueur2() {
+        return joueur2;
+    }
+
+    public JComboBox getJoueur3() {
+        return joueur3;
+    }
+
+    public JComboBox getJoueur4() {
+        return joueur4;
+    }
+
+    public JSpinner getScore1() {
+        return score1;
+    }
+
+    public JSpinner getScore2() {
+        return score2;
+    }
+
+    public JSpinner getTerain() {
+        return terain;
     }
 }
