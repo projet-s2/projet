@@ -190,8 +190,9 @@ public class Paire {
 		*/
 	public void setScore(int score) {
 		this.score = score;
-		this.joueur1.setScore(score);
-		this.joueur2.setScore(score);
+		//on incrémente le score a partir du score que le joueur avais deja a la base
+		this.joueur1.setScore(score+this.joueur1.getScore());
+		this.joueur2.setScore(score+this.joueur2.getScore());
 	}
 
 

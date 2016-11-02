@@ -23,5 +23,6 @@ public class ResetControlleur  implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         tournoi.resetAll();
+        vue.actualiserJoueurs();
     }
 }

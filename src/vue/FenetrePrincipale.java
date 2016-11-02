@@ -125,10 +125,6 @@ public class FenetrePrincipale extends JFrame {
 		});
 		joueurs.add(ajouterJoueur);
 
-		//Bouton reset tout les scores a zero
-		JButton reset = new JButton("reset scores");
-		reset.addActionListener(new ResetControlleur(this));
-		joueurs.add(reset);
 
 		//Bouton pour importer des joueurs
 		JButton ImporterJoueurs = new JButton("Importer...");
@@ -149,6 +145,12 @@ public class FenetrePrincipale extends JFrame {
 			}
 		});
 		joueurs.add(newMatch);
+
+		//Bouton reset tout les scores a zero
+		JButton reset = new JButton("reset scores");
+		reset.addActionListener(new ResetControlleur(this));
+		joueurs.add(reset);
+
 
 
 

@@ -837,5 +837,20 @@ public class Tournoi{
 	 */
 	public void resetAll(){
 		//TODO retour vers le passé
+		//clear historique des paires
+		this.paires.clear();
+		//clear scores
+		for (int i = 0; i<anciensJoueurs.size(); i++){
+			Joueur j = anciensJoueurs.get(i);
+			j.setScore(0);
+
+
+		}
+		for (int i = 0; i<nouveauxJoueurs.size(); i++){
+			Joueur j = nouveauxJoueurs.get(i);
+			j.setScore(0);
+
+
+		}
 	}
 }
