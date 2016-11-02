@@ -88,6 +88,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
+		joueurs.setLayout(new BorderLayout());
 		String  title[] = {"ID","Nom", "Prénom", "Score"};
 		listeJoueursModele = new DefaultTableModel(title,0){
 			@Override
@@ -114,7 +115,13 @@ public class FenetrePrincipale extends JFrame {
 		//Sinon les titres des colonnes ne s'afficheront pas !
 		listeJoueurs.setAutoCreateRowSorter(true);
 		panJoueurs = new JScrollPane(listeJoueurs);
-		joueurs.add(panJoueurs);
+
+		joueurs.add(panJoueurs,BorderLayout.CENTER);
+
+
+		//pannel south qui contiens les boutons
+		JPanel southpan = new JPanel();
+		southpan.setLayout(new BoxLayout(southpan,BoxLayout.Y_AXIS));
 		//Ajout d'un joueur
 		JButton ajouterJoueur = new JButton("Ajouter un joueur");
 		ajouterJoueur.addActionListener(new ActionListener() {
@@ -123,18 +130,20 @@ public class FenetrePrincipale extends JFrame {
 				fenetreAjout();
 			}
 		});
-		joueurs.add(ajouterJoueur);
+		southpan.add(ajouterJoueur);
+
 
 
 		//Bouton pour importer des joueurs
 		JButton ImporterJoueurs = new JButton("Importer...");
-		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi,this));
-		joueurs.add(ImporterJoueurs);
+		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi, this));
+		southpan.add(ImporterJoueurs);
+
 
 		//Bouton pour exporter les joueurs
 		JButton ExporterJoueurs = new JButton("Exporter...");
 		ExporterJoueurs.addActionListener(new ExporterJoueursControlleur(tournoi));
-		joueurs.add(ExporterJoueurs);
+		southpan.add(ExporterJoueurs);
 
 		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
 		JButton newMatch = new JButton("Nouveau match");
@@ -144,12 +153,17 @@ public class FenetrePrincipale extends JFrame {
 				fenetreAjoutMatch();
 			}
 		});
-		joueurs.add(newMatch);
+		southpan.add(newMatch);
 
 		//Bouton reset tout les scores a zero
 		JButton reset = new JButton("reset scores");
 		reset.addActionListener(new ResetControlleur(this));
-		joueurs.add(reset);
+		southpan.add(reset);
+
+
+
+
+		joueurs.add(southpan,BorderLayout.EAST);
 
 
 
