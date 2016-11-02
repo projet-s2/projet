@@ -13,20 +13,21 @@ public class Joueur {
 	private int id;
 	private String nom;
 	private String prenom;
+	// 0 : -18 jeune
+	// 1 : 18-35 senior
+	// 2 : 35+ veteran
 	private int age;
-	// 0 : homme
-	// 1 : femme
+	// 0 : femme
+	// 1 : homme
 	private boolean sexe;
 	private boolean nouveau;
 	private int score;
 	private boolean joue;
 	private boolean dansPaire;
 	private int perf;
-	/*
-		0 : Débutant
-		1 : Intermédiaire
-		2 : Confirmé
-	 */
+	//0 : Débutant
+	//1 : Intermédiaire
+	//2 : Confirmé
 	private int niveau;
 	private Liste anciensPart;
 	private boolean prio;
@@ -41,10 +42,10 @@ public class Joueur {
 		* @param id l'id du joueur
 		* @param nom le nom du joueur
 		* @param prenom le prénom du joueur
-		* @param age l'âge du joueur
-		* @param sexe le sexe du joueur
-		* @param nouveau 0 : joueur ancien / 1 : joueur nouveau
-		* @param niveau le niveau du joueur ()
+		* @param age l'âge du joueur (0 : -18 jeune / 1 : 18-35 senior / 2 : 35+ veteran)
+		* @param sexe le sexe du joueur (0 : homme / 1 : femme)
+		* @param nouveau (0 : joueur ancien / 1 : joueur nouveau)
+		* @param niveau le niveau du joueur (0 : débutant / 1 : intermédiaire / 2 : confirmé)
 		* @param peutJouer si le joueur peut jouer
 		*
 		*/
@@ -61,7 +62,7 @@ public class Joueur {
 		this.setDansPaire(false);
 		this.niveau = niveau;
 		this.perf = this.calculerPerf();
-		//on calcule la performance en fonction de l'age
+		//on calcule la performance en fonction de l'age, du sexe et du niveau
 		
 		this.prio = true;
 		this.anciensPart = new Liste();
@@ -76,24 +77,26 @@ public class Joueur {
 		}
 
 	/**
-	 * pour calculer l'indice de performance d'un joueur
+	 * pour calculer l'indice de performance d'un joueur en fonction de son âge, son niveau et son sexe
 	 * @return son indice de performance
      */
 	public int calculerPerf(){
-		int p = 0;
-		p = 80-age;
-		p+= niveau*10;
-		if(sexe){
-			p-=40;
-		}
-		return p;
+		int perf = 0;
+		perf += niveau; // On ajoute des points à l'indice de performance selon le niveau du joueur
+		if (sexe) //Si le joueur est un homme on augmente son indice
+			perf += 1;
+		if (age == 1) //Si le joueur a entre 18 et 35ans
+			perf+=2;
+		else if (age == 2) //Si le joueur a plus de 35ans
+			perf += 1;
+		return perf;
 	}
 	
 
 	/** Retourne l'id d'un joueur
-		*
-		* @return id l'id du joueur
-		*/
+	 *
+	 * @return id l'id du joueur
+	 */
 	public int getId(){
 		return this.id;
 	}
@@ -132,57 +135,57 @@ public class Joueur {
 		this.anciensPart.add(j);
 	}
 	/** Retourne le nom d'un joueur
-		*
-		* @return nom le nom du joueur
-		*/
+	 *
+	 * @return nom le nom du joueur
+	 */
 	public String getNom(){
 		return this.nom;
 	}
 
 	/** Retourne le prénom d'un joueur
-		*
-		* @return prenom le prénom du joueur
-		*/
+	 *
+	 * @return prenom le prénom du joueur
+	 */
 	public String getPrenom(){
 		return this.prenom;
 	}
 
 	/** Retourne l'âge d'un joueur
-		*
-		* @return age l'âge du joueur
-		*/
+	 *
+	 * @return age l'âge du joueur
+	 */
 	public int getAge(){
 		return this.age;
 	}
 
 	/** Retourne le sexe d'un joueur
-		*
-		* @return sexe le sexe du joueur
-		*/
+	 *
+	 * @return sexe le sexe du joueur
+	 */
 	public boolean getSexe(){
 		return this.sexe;
 	}
 
 	/** Retourne le score d'un joueur
-		*
-		* @return score le score du joueur
-		*/
+	 *
+	 * @return score le score du joueur
+	 */
 	public int getScore(){
 		return this.score;
 	}
 
 	/** Retourne l'ancienneté d'un joueur
-		*
-		* @return nouveau 0 : joueur ancien / 1 : joueur nouveau
-		*/
+	 *
+	 * @return nouveau 0 : joueur ancien / 1 : joueur nouveau
+	 */
 	public boolean getNouveau(){
 		return this.nouveau;
 	}
 
 	/** Retourne si le joueur joue ou non
-		*
-		* @return joue 0 : ne joue pas / 1 : joue
-		*/
+	 *
+	 * @return joue 0 : ne joue pas / 1 : joue
+	 */
 	public boolean getJoue(){
 		return this.joue;
 	}
@@ -203,9 +206,9 @@ public class Joueur {
 		this.prio = pr;
 	}
 	/** Retourne le niveau d'un joueur
-		*
-		* @return niveau le niveau du joueur
-		*/
+	 *
+	 * @return niveau le niveau du joueur
+	 */
 	public int getNiveau(){
 		return this.niveau;
 	}
@@ -218,9 +221,9 @@ public class Joueur {
 	}
 	
 	/** Redéfinition de la méthode toString()
-		*
-		* @return txt l'affichage d'un joueur
-		*/
+	 *
+	 * @return txt l'affichage d'un joueur
+	 */
 	@Override
 	public String toString(){
 		String sx="un homme";
@@ -231,7 +234,14 @@ public class Joueur {
 		if(this.prio){
 			prio= "n'a pas joué au tour précédent";
 		}
-		String txt = this.prenom + " " + this.nom +" ("+sx+" de "+this.age+ " ans a une perf de "+this.perf+") " +prio+" et a joué "+this.nbMatchJoues+" fois au total";
+		String ageString = "";
+		if (age == 0)
+			ageString = "qui a moins de 18";
+		else if (age == 1)
+			ageString = "qui a entre 18 et 35";
+		else
+			ageString = "qui a plus de 35";
+		String txt = this.prenom + " " + this.nom +" ("+sx+ ageString + " ans a une perf de "+this.perf+") " +prio+" et a joué "+this.nbMatchJoues+" fois au total";
 		return txt;
 	}
 	/** Retourne si le joueur peut jouer ou non
@@ -251,9 +261,9 @@ public class Joueur {
 	}
 	
 	/** Redéfinit l'attribut "joue"
-		*
-		* @param bool 0 : le joueur ne joue pas / 1 : le joueur joue
-		*/
+	 *
+	 * @param bool 0 : le joueur ne joue pas / 1 : le joueur joue
+	 */
 	public void setJoue(boolean bool){
 		this.joue=bool;
 		if(bool){
@@ -262,26 +272,26 @@ public class Joueur {
 	}
 
 	/** Redéfinit l'attribut "score"
-		*
-		* @param score le score d'un joueur
-		*/
+	 *
+	 * @param score le score d'un joueur
+	 */
 	public void setScore(int score){
 		this.score+=score;
 	}
 
 	/** Retourne tous les anciens partenaires d'un joueur
-		*
-		* @return anciensPart la liste de tous les anciens partenaires d'un joueur
-		*/
+	 *
+	 * @return anciensPart la liste de tous les anciens partenaires d'un joueur
+	 */
 	public Liste getAnciensPart(){
 		return this.anciensPart;
 	}
 
 	/** Retourne si le joueur a déjà joué avec un autre (en paramètre)
-		*
-		* @param j1 le joueur à tester
-		* @return res 0 : ils n'ont jamais joué ensemble / 1 : ils ont joué ensemble
-		*/
+	 *
+	 * @param j1 le joueur à tester
+	 * @return res 0 : ils n'ont jamais joué ensemble / 1 : ils ont joué ensemble
+	 */
 	private boolean aJoueAvec(Joueur j1){
 		boolean res = false;
 		for (int i=0;i<this.getAnciensPart().size() ; i++) {
@@ -293,10 +303,10 @@ public class Joueur {
 	}
 
 	/** Retourne si le joueur est compatible avec un autre (en paramètre)
-		*
-		* @param joueur le joueur à tester
-		* @return booléen 0 : n'est pas compatible / 1 : est compatible
-		*/
+	 *
+	 * @param joueur le joueur à tester
+	 * @return booléen 0 : n'est pas compatible / 1 : est compatible
+	 */
 	public boolean estCompatibleAvec(Joueur joueur){
 		//On vérifie si les joueurs ont déjà joué ensemble
 		if(this.aJoueAvec(joueur)){
@@ -306,10 +316,10 @@ public class Joueur {
 	}
 
 	/** Redéfinition de la méthode equals()
-		*
-		* @param o l'objet à comparer
-		* @return booléen 0 : ils ne sont pas égaux / 1 : ils sont égaux
-		*/
+	 *
+	 * @param o l'objet à comparer
+	 * @return booléen 0 : ils ne sont pas égaux / 1 : ils sont égaux
+	 */
 	@Override
 	public boolean equals(Object o){
 		if (o instanceof Joueur){
