@@ -444,7 +444,7 @@ public class Tournoi{
   			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
   			if (((Terrain)this.terrains.get(i)).getMatch()!=null){
 				//On détermine les vainqueurs de chaque match
-				((Terrain)this.terrains.get(i)).getMatch().modifierScores();
+				//((Terrain)this.terrains.get(i)).getMatch().modifierScores();
   			}
   		}
 		//On remet tous les joueurs en attente d'une paire
@@ -473,10 +473,7 @@ public class Tournoi{
 		this.paires.add(paire);
 		this.paires.add(paire2);
 		Match match = new Match(paire,paire2);
-		match.getPaire1().setScore(scoreP1);
-		match.getPaire2().setScore(scoreP2);
-		match.determinerVainqueur(scoreP1,scoreP2);
-		match.modifierScores();
+		match.modifierScores(scoreP1,scoreP2);
 
 	}
 
