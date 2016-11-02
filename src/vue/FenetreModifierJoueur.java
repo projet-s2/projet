@@ -195,40 +195,46 @@ public class FenetreModifierJoueur extends JFrame {
 
 	public void supprimerJoueur(int id)
 	{
-		ArrayList nouveauxJoueurs = this.tournoi.getNouveauxJoueurs();
-		ArrayList anciensJoueurs = this.tournoi.getAnciensJoueurs();
-
+		Joueur jou = this.tournoi.getJoueur(id);
 		boolean trouve = false;
-		int tailleNouveauxJoueurs = nouveauxJoueurs.size();
-		int tailleAnciensJoueurs = anciensJoueurs.size();
 		int i = 0;
 		Joueur aSupprimer = new Joueur(id, true, true);
-		while(!trouve && i < tailleNouveauxJoueurs)
+
+		if(jou.getNouveau())
 		{
-			Joueur j = (Joueur) nouveauxJoueurs.get(i);
-			int a = j.getId();
-			if (a == id)
+			ArrayList nouveauxJoueurs = this.tournoi.getNouveauxJoueurs();
+			int tailleNouveauxJoueurs = nouveauxJoueurs.size();
+
+			while(!trouve && i < tailleNouveauxJoueurs)
 			{
-				aSupprimer = j;
-				trouve = true;
+				Joueur j = (Joueur) nouveauxJoueurs.get(i);
+				int a = j.getId();
+				if (a == id)
+				{
+					aSupprimer = j;
+					trouve = true;
+				}
+				i++;
 			}
-			i++;
 		}
 
-		i = 0;
-		while(!trouve && i < tailleAnciensJoueurs)
+		else
 		{
-			Joueur j = (Joueur) anciensJoueurs.get(i);
-			int a = j.getId();
-			if (a == id)
+			ArrayList anciensJoueurs = this.tournoi.getAnciensJoueurs();
+			int tailleAnciensJoueurs = anciensJoueurs.size();
+
+			while(!trouve && i < tailleAnciensJoueurs)
 			{
-				aSupprimer = j;
-				trouve = true;
+				Joueur j = (Joueur) anciensJoueurs.get(i);
+				int a = j.getId();
+				if (a == id)
+				{
+					aSupprimer = j;
+					trouve = true;
+				}
+				i++;
 			}
-			i++;
 		}
-
-
 
 		this.tournoi.supprimerJoueur(aSupprimer);
 		this.vue.supprimerJoueurTable();
