@@ -89,7 +89,21 @@ public class FenetrePrincipale extends JFrame {
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
 		String  title[] = {"Nom", "Prénom", "Score"};
-		listeJoueursModele = new DefaultTableModel(title,0);
+		listeJoueursModele = new DefaultTableModel(title,0){
+			@Override
+			public Class getColumnClass(int column) {
+				switch (column) {
+					case 0:
+						return String.class;
+					case 1:
+						return String.class;
+					case 2:
+						return Integer.class;
+					default:
+						return String.class;
+				}
+			}
+		};
 		listeJoueurs = new JTable(listeJoueursModele);
 		//modif d'un joueur en cliquant sur le joueur
 			listeJoueurs.addMouseListener(new ModifierJoueurControlleur(this,listeJoueursModele,listeJoueurs));
