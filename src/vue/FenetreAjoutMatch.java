@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 /**
  * Created by lea on 09/10/16.
+ * @author DERNONCOURT Cyril , DROUARD Antoine, LE BERT Lea, MARTINEAU Lucas
  */
 public class FenetreAjoutMatch extends JFrame {
 
@@ -20,17 +21,13 @@ public class FenetreAjoutMatch extends JFrame {
     private FenetrePrincipale vue;
     private JTextField nom;
     private JTextField prenom;
-    JComboBox joueur1 ;
+    JComboBox joueur1;
     JComboBox joueur2;
-    JComboBox joueur3 ;
+    JComboBox joueur3;
     JComboBox joueur4;
     JSpinner score1;
     JSpinner score2;
     JSpinner terain;
-
-
-
-
 
 
     public FenetrePrincipale getVue() {
@@ -39,44 +36,45 @@ public class FenetreAjoutMatch extends JFrame {
 
     /**
      * constructeur de la fenêtre d'ajout d'un joueur
-     * @param titre le titre à donner à la fenêtre
+     *
+     * @param titre   le titre à donner à la fenêtre
      * @param tournoi le tournoi dans lequel on veut ajouter un joueur
-     * @param vue la vue qui crée la fenêtre
+     * @param vue     la vue qui crée la fenêtre
      */
-    public FenetreAjoutMatch(String titre, Tournoi tournoi, FenetrePrincipale vue){
+    public FenetreAjoutMatch(String titre, Tournoi tournoi, FenetrePrincipale vue) {
         super(titre);
         this.tournoi = tournoi;
-        this.vue =vue;
+        this.vue = vue;
         JPanel corePanel = new JPanel();
 
         corePanel.setLayout(new BorderLayout());
 
         //gridLayout avec les joueurs et leurs socres
         JPanel playerPanel = new JPanel();
-        playerPanel.setLayout(new GridLayout(2,2));
+        playerPanel.setLayout(new GridLayout(2, 2));
 
         //menus déroulants des joueurs
         ArrayList<Joueur> classA = tournoi.getAnciensJoueurs();
         ArrayList<Joueur> classN = tournoi.getNouveauxJoueurs();
-        String[] joueurs= new String[classA.size()+classN.size()];// voir combiens de gens le tournois acceuille pour adapter
+        String[] joueurs = new String[classA.size() + classN.size()];// voir combiens de gens le tournois acceuille pour adapter
         //On rentre les joueurs anciens dans les X premières cases
-        for(int i =0; i < classA.size(); i++){
+        for (int i = 0; i < classA.size(); i++) {
             Joueur j = classA.get(i);
-            joueurs[i] = "" + j.getNom()+" "+ j.getPrenom();
+            joueurs[i] = "" + j.getNom() + " " + j.getPrenom();
 
         }
         //On rentre les joueurs nouveaux dans les cases restantes
-        for(int i = 0; i < classN.size(); i++){
-            Joueur j = (Joueur)classN.get(i);
-            joueurs[classA.size()+i] =  "" + j.getNom()+" "+ j.getPrenom();
+        for (int i = 0; i < classN.size(); i++) {
+            Joueur j = (Joueur) classN.get(i);
+            joueurs[classA.size() + i] = "" + j.getNom() + " " + j.getPrenom();
 
         }
 
 
-         joueur1 = new JComboBox(joueurs);
-         joueur2 = new JComboBox(joueurs);
-         joueur3 = new JComboBox(joueurs);
-         joueur4 = new JComboBox(joueurs);
+        joueur1 = new JComboBox(joueurs);
+        joueur2 = new JComboBox(joueurs);
+        joueur3 = new JComboBox(joueurs);
+        joueur4 = new JComboBox(joueurs);
         JPanel j1 = new JPanel();
         JPanel j2 = new JPanel();
         j1.add(joueur1);
@@ -87,10 +85,10 @@ public class FenetreAjoutMatch extends JFrame {
         playerPanel.add(j2);
 
         //entrage des scores
-         score1 = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
-        JLabel l1= new JLabel("Score :");
-         score2 = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
-        JLabel l2= new JLabel("Score ;");
+        score1 = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        JLabel l1 = new JLabel("Score :");
+        score2 = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        JLabel l2 = new JLabel("Score ;");
         JPanel s1 = new JPanel();
         JPanel s2 = new JPanel();
         s1.add(l1);
@@ -102,8 +100,7 @@ public class FenetreAjoutMatch extends JFrame {
         playerPanel.add(s2);
 
 
-        corePanel.add(playerPanel,BorderLayout.CENTER);
-
+        corePanel.add(playerPanel, BorderLayout.CENTER);
 
 
         ///bouton valider en bas
@@ -112,14 +109,13 @@ public class FenetreAjoutMatch extends JFrame {
         try {
             score1.commitEdit();
             score2.commitEdit();
-        }
-        catch (Exception pe) {
+        } catch (Exception pe) {
 
         }
 
         valider.addActionListener(new AjouterMatchControlleur(this, score1, score2));
 
-        JLabel t1= new JLabel("Terrain :");
+        JLabel t1 = new JLabel("Terrain :");
         terain = new JSpinner();
 
 
@@ -127,7 +123,7 @@ public class FenetreAjoutMatch extends JFrame {
         sud.add(t1);
         sud.add(terain);
         sud.add(valider);
-        corePanel.add(sud,BorderLayout.SOUTH);
+        corePanel.add(sud, BorderLayout.SOUTH);
 
 
         this.setContentPane(corePanel);
@@ -135,8 +131,8 @@ public class FenetreAjoutMatch extends JFrame {
         this.setVisible(true);
         this.setTitle(titre);
         int tailleX = 600, tailleY = 200;
-        this.setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-tailleX)/2,(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-tailleY)/2);
-        this.setSize(tailleX,tailleY);
+        this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() - tailleX) / 2, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() - tailleY) / 2);
+        this.setSize(tailleX, tailleY);
         this.setResizable(false);
 
     }
@@ -162,15 +158,6 @@ public class FenetreAjoutMatch extends JFrame {
         return joueur4;
     }
 
-    public JSpinner getScore1() {
-        return score1;
-    }
-
-    public JSpinner getScore2() {
-        return score2;
-    }
-
-    public JSpinner getTerain() {
-        return terain;
-    }
 }
+
+
