@@ -35,18 +35,37 @@ public class FenetreModifierJoueur extends JFrame {
 		this.id = id;
 
 		//Les différents champs de saisie
-		nom = new JTextField();
-		prenom = new JTextField();
+		Joueur joueur = this.tournoi.getJoueur(id);
+
+		nom = new JTextField(joueur.getNom());
+		prenom = new JTextField(joueur.getPrenom());
 		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
-		age = new JSpinner(new SpinnerNumberModel(25,1,120,1));
+		age = new JSpinner(new SpinnerNumberModel(joueur.getAge(),1,120,1));
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
-		hom.setSelected(true);
+		if(joueur.getSexe())
+		{
+			hom.setSelected(false);
+			fem.setSelected(true);
+		}
+		else
+		{
+			hom.setSelected(true);
+			fem.setSelected(false);
+		}
+
 		ButtonGroup grSexe = new ButtonGroup();
 		grSexe.add(hom);
 		grSexe.add(fem);
 		nouv = new JCheckBox("Nouveau");
-		nouv.setSelected(true);
+		if(joueur.getNouveau())
+		{
+			nouv.setSelected(true);
+		}
+		else
+		{
+			nouv.setSelected(false);
+		}
 		
 		JButton modifier = new JButton("Modifier le joueur");
 		modifier.addActionListener(new ModifierJoueurBoutonControlleur(this, id));
