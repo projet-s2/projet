@@ -15,7 +15,7 @@ public class FenetreAjoutJoueur extends JFrame {
 	private JTextField nom;
 	private JTextField prenom;
 	private JComboBox niveau;
-	private JSpinner age;
+	private JComboBox age;
 	private JRadioButton fem;
 	private JRadioButton hom;
 	private JCheckBox nouv;
@@ -35,7 +35,10 @@ public class FenetreAjoutJoueur extends JFrame {
 		nom = new JTextField();
 		prenom = new JTextField();
 		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
-		age = new JSpinner(new SpinnerNumberModel(25,1,120,1));
+
+		//Il faut bien laisser les âges dans cet ordre pour correspondre avec l'ajout du joueur
+		// (0 : -18 jeune / 1 : 18-35 senior / 2 : 35+ veteran)
+		age = new JComboBox(new String[]{"-18 ans (Jeune)","18-35 ans (Senior)", "35 ans et + (Veteran)"});
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
 		hom.setSelected(true);
@@ -140,7 +143,7 @@ public class FenetreAjoutJoueur extends JFrame {
 	 *
 	 * @return l'outil de séléction de l'âge
      */
-	public JSpinner getAge() {
+	public JComboBox getAge() {
 		return age;
 	}
 
@@ -148,7 +151,7 @@ public class FenetreAjoutJoueur extends JFrame {
 	 * réinitialise l'age
 	 */
 	public void setAge(){
-		this.age.setValue(0);
+		this.age.setSelectedIndex(0);
 	}
 
 	public JRadioButton getFem() {
@@ -173,7 +176,7 @@ public class FenetreAjoutJoueur extends JFrame {
 	 */
 	public void ajouterJoueur(){
 		int id = Joueur.nbJoueursCrees;
-		int age = ((int)this.age.getValue());
+		int age = this.age.getSelectedIndex(); // 0 : -18 jeune / 1 : 18-35 senior / 2 : 35+ veteran
 		String nom = this.nom.getText(), prenom = this.prenom.getText();
 		boolean sexe = fem.isSelected();
 		boolean nouveau = nouv.isSelected();

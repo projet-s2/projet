@@ -49,11 +49,6 @@ public class AjouterJoueurControlleur implements ActionListener {
 			JOptionPane.showMessageDialog(vue,"Le nom et le prénom doivent être composé de lettres non accentuées\n avec éventuellement des tirets -, espaces ou apostrophes '");
 			return false;
 		}
-		//Verification sur l'age
-		if ((int)vue.getAge().getValue()<=0){
-			JOptionPane.showMessageDialog(vue,"L'age doit etre un entier positif");
-			return false;
-		}
 	return true;
 	}
 }
