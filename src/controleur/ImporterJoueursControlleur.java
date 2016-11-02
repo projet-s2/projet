@@ -1,5 +1,6 @@
 package controleur;
 
+import exception.ImportExportException;
 import tournoi.Joueur;
 import tournoi.Tournoi;
 import vue.FenetrePrincipale;
@@ -54,23 +55,21 @@ public class ImporterJoueursControlleur implements ActionListener {
                 }
             } catch (java.io.FileNotFoundException e2) {
                 JOptionPane.showMessageDialog(null, "Le fichier demandé n'a pas été trouvé", "Erreur", JOptionPane.ERROR_MESSAGE);
-            } catch (java.io.IOException e3) {
-                e3.printStackTrace();
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e4) {
                 JOptionPane.showMessageDialog(null, "Fichier erroné", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } catch (ImportExportException e4) {
+                JOptionPane.showMessageDialog(null, "Fichier erroné : " + e4.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e6) {
                 e6.printStackTrace();
             }
-
         }
-
     }
 
     /** Retourne la liste des joueurs qu'on peut trouver dans le CSV
      * @param fileDirectory le chemin pour accèder au CSV
      * @return une ArrayList avec tous les joueurs
      */
-    private ArrayList<Joueur> csvReader(String fileDirectory) throws java.io.IOException{
+    private ArrayList<Joueur> csvReader(String fileDirectory) throws java.io.IOException, ImportExportException {
         ArrayList listeRetour = new ArrayList<Joueur>();
 
         BufferedReader br = new BufferedReader(new FileReader(fileDirectory));
@@ -97,13 +96,30 @@ public class ImporterJoueursControlleur implements ActionListener {
             id = Integer.parseInt(joueurCourant[0]);
             nom = joueurCourant[1];
             prenom = joueurCourant[2];
-            age = Integer.parseInt(joueurCourant[3]);
 
-            //Si joueurCourant[4] == 0, alors sexe = false (homme); sinon femmme
-            sexe = Integer.parseInt(joueurCourant[4]) != 0;
-            //Si joueurCourant[5] == 0, alors nouveau = false (ancien); sinon nouveau
-            nouveau = Integer.parseInt(joueurCourant[5]) != 0;
+            age = Integer.parseInt(joueurCourant[3]);
+            //Si ce n'est pas un 0, 1 ou 2
+            if (age < 0 || age > 2)
+                throw new ImportExportException("Problème avec un âge");
+
+            //Si ce n'est pas un 1 ou un 0
+            if (Integer.parseInt(joueurCourant[4]) != 1 && Integer.parseInt(joueurCourant[4]) != 0)
+                throw new ImportExportException("Problème avec un genre");
+            sexe = Integer.parseInt(joueurCourant[4]) != 0; //Si joueurCourant[4] == 0, alors sexe = false (homme); sinon femmme
+
+            //Si ce n'est pas un 1 ou un 0
+            if (Integer.parseInt(joueurCourant[5]) != 1 && Integer.parseInt(joueurCourant[5]) != 0)
+                throw new ImportExportException("Problème avec une ancienneté");
+            nouveau = Integer.parseInt(joueurCourant[5]) != 0; //Si joueurCourant[5] == 0, alors nouveau = false (ancien); sinon nouveau
+
+            //Si ce n'est pas un 0, 1 ou 2
+            if (Integer.parseInt(joueurCourant[5]) < 0 && Integer.parseInt(joueurCourant[5]) > 2)
+                throw new ImportExportException("Problème avec un niveau");
             niveau = Integer.parseInt(joueurCourant[6]);
+
+            //Si ce n'est pas un 1 ou un 0
+            if (Integer.parseInt(joueurCourant[7]) != 1 && Integer.parseInt(joueurCourant[7]) != 0)
+                throw new ImportExportException("Problème avec la possibilité de jouer");
             peutJouer = Integer.parseInt(joueurCourant[7]) != 0;
             listeRetour.add(new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, peutJouer));
         }
