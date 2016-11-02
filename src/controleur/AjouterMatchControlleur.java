@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 
 /**
  * Created by lea on 09/10/16.
+ * @author DERNONCOURT Cyril , DROUARD Antoine, LE BERT Lea, MARTINEAU Lucas
  */
 public class AjouterMatchControlleur implements ActionListener {
     private JSpinner sp_score1;
@@ -26,7 +27,9 @@ public class AjouterMatchControlleur implements ActionListener {
 
     /**
      * constructeur du controleur
-     * @param vue la fenetre principale
+     * @param vue la fenetre FenetreAjoutMatch
+     * @param s1 JSpinner du score de la paire1
+     * @param s2 JSpinner du score de la paire1
      */
     public AjouterMatchControlleur(FenetreAjoutMatch vue,JSpinner s1,JSpinner s2){
         this.vue = vue;
@@ -39,6 +42,7 @@ public class AjouterMatchControlleur implements ActionListener {
         score1 = (int)sp_score1.getValue();
         score2 = (int)sp_score2.getValue();
 
+        //rappatriement des joueurs
         if (verifier()) {
             String j1 = ((String) vue.getJoueur1().getSelectedItem());
             String j2 = ((String) vue.getJoueur2().getSelectedItem());
@@ -50,7 +54,7 @@ public class AjouterMatchControlleur implements ActionListener {
             Joueur j21 = tournoi.getJoueur(tournoi.chercherJoueur(j3));
             Joueur j22 = tournoi.getJoueur(tournoi.chercherJoueur(j4));
 
-
+            //creation des paires
             paire1 = new Paire(j11, j12);
             paire2 = new Paire(j21,j22);
 

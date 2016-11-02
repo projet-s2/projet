@@ -82,8 +82,8 @@ public class Match {
 	}
 
 	/** Détermine le vainqueur d'un match
-	 * * @param s1 le score de la paire 1
-	 * * @param s2 le score de la paire 2
+	  * @param s1 le score de la paire 1
+	  * @param s2 le score de la paire 2
 		*
 		*/
 	public void determinerVainqueur(int s1,int s2){
@@ -104,6 +104,8 @@ public class Match {
 	/** Modifie les scores de la paire gagnante et de la perdante
 		*
 		* le gagnant gagne la différence entre lui et le perdant
+	 	* @param s1 score de la paire 1
+	 	* @param s2 score de la paire 2
 		*
 		*/
 		public void modifierScores(int s1,int s2){

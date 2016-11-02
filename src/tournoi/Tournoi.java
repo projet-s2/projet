@@ -216,8 +216,8 @@ public class Tournoi{
 			tmp =  this.anciensJoueurs.get(pivot);
 			this.anciensJoueurs.set(pivot, (this.anciensJoueurs.get(gauche)));
 			this.anciensJoueurs.set(gauche, tmp);
-			trierAnciensJoueurs(gauche, pivot-1);
-			trierAnciensJoueurs(pivot+1, droite);
+			trierAnciensJoueurs(gauche, pivot - 1);
+			trierAnciensJoueurs(pivot + 1, droite);
 		}
 	}
 	/** Appelée pour créer la liste des paires d'un tournoi
@@ -434,9 +434,6 @@ public class Tournoi{
 	}
 
 	/** Appelée pour finir un tour et mettre à jour les scores
-		*
-		*
-		*
 		*/
 	public void finirTour(){
 		//On vérifie le score des équipes pour chaque terrain
@@ -460,7 +457,7 @@ public class Tournoi{
 
 
 	/**
-	 * pour rentrer les scores d'un match
+	 * pour rentrer les scores d'un match lors qu'il est cré de manière automatique
 	 * @param numTerrain le terrain sur lequel s'est déroulé le match
 	 * @param scoreP1 le score de la première paire
 	 * @param scoreP2 le score de la seconde paire
@@ -469,11 +466,18 @@ public class Tournoi{
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
 		((Terrain)this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
 	}
+	/**
+	 * pour rentrer les scores d'un match lorsqu'il est ajouté de manière manuelle
+	 * @param paire la première paire (celle de droite dans la vue)
+	 * @param paire2 la deuxième paire (celle de gauche dans la vue)
+	 * @param scoreP1 le score de la première paire
+	 * @param scoreP2 le score de la seconde paire
+	 */
 	public void setScoreManuel(Paire paire,Paire paire2, int scoreP1, int scoreP2){
 		this.paires.add(paire);
 		this.paires.add(paire2);
 		Match match = new Match(paire,paire2);
-		match.modifierScores(scoreP1,scoreP2);
+		match.modifierScores(scoreP1, scoreP2);
 
 	}
 
@@ -826,5 +830,12 @@ public class Tournoi{
 		Joueur j = null;
 		j = this.getJoueur(id);
 		j.modifierJoueur(nom,prenom,age,sexe,nouveau,niveau);
+	}
+
+	/**
+	 * remet a zero toutes les données de jeux (matches paires scores ect)
+	 */
+	public void resetAll(){
+		//TODO retour vers le passé
 	}
 }

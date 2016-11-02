@@ -185,7 +185,7 @@ public class Paire {
 	}
 
 	/** Redéfinition de l'attribut "score"
-		*
+		* et mise a jour des scores des jouerus de la paire
 		* @param score le score de la paire
 		*/
 	public void setScore(int score) {

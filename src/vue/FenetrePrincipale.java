@@ -88,16 +88,19 @@ public class FenetrePrincipale extends JFrame {
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
-		String  title[] = {"Nom", "Prénom", "Score"};
+		String  title[] = {"ID","Nom", "Prénom", "Score"};
 		listeJoueursModele = new DefaultTableModel(title,0){
 			@Override
+			//bien redefinir les types des colones pour que l'autosort marche
 			public Class getColumnClass(int column) {
 				switch (column) {
 					case 0:
-						return String.class;
+						return Integer.class;
 					case 1:
 						return String.class;
 					case 2:
+						return String.class;
+					case 3:
 						return Integer.class;
 					default:
 						return String.class;
@@ -121,6 +124,11 @@ public class FenetrePrincipale extends JFrame {
 			}
 		});
 		joueurs.add(ajouterJoueur);
+
+		//Bouton reset tout les scores a zero
+		JButton reset = new JButton("reset scores");
+		reset.addActionListener(new ResetControlleur(this));
+		joueurs.add(reset);
 
 		//Bouton pour importer des joueurs
 		JButton ImporterJoueurs = new JButton("Importer...");
@@ -188,17 +196,19 @@ public class FenetrePrincipale extends JFrame {
 		//On rentre les joueurs anciens dans les X premières cases
 		for(int i =0; i < classA.size(); i++){
 			Joueur j = classA.get(i);
-			listeJoueurs.setValueAt(j.getNom(),i,0);
-			listeJoueurs.setValueAt(j.getPrenom(),i,1);
-			listeJoueurs.setValueAt(""+j.getScore(),i,2);
+			listeJoueurs.setValueAt(j.getId(),i,0);
+			listeJoueurs.setValueAt(j.getNom(),i,1);
+			listeJoueurs.setValueAt(j.getPrenom(),i,2);
+			listeJoueurs.setValueAt(""+j.getScore(),i,3);
 
 		}
 		//On rentre les joueurs nouveaux dans les cases restantes
 		for(int i = 0; i < classN.size(); i++){
 			Joueur j = (Joueur)classN.get(i);
-			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),0);
-			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),1);
-			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),2);
+			listeJoueurs.setValueAt(j.getId(),i+classA.size(),0);
+			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),1);
+			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),2);
+			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),3);
 
 		}
 	}
