@@ -45,7 +45,7 @@ public class ImporterJoueursControlleur implements ActionListener {
         if (dial.getFile() != null) {
             String cvsFile = dial.getDirectory().concat(dial.getFile());
             try {
-                ArrayList<Joueur> listeJoueur = cvsReader(cvsFile);
+                ArrayList<Joueur> listeJoueur = csvReader(cvsFile);
                 for (Joueur j: listeJoueur) {
                     if (!tournoi.getAnciensJoueurs().contains(j) && !tournoi.getNouveauxJoueurs().contains(j)) {
                         tournoi.ajouterJoueur(j);
@@ -70,7 +70,7 @@ public class ImporterJoueursControlleur implements ActionListener {
      * @param fileDirectory le chemin pour accèder au CSV
      * @return une ArrayList avec tous les joueurs
      */
-    private ArrayList<Joueur> cvsReader(String fileDirectory) throws java.io.IOException{
+    private ArrayList<Joueur> csvReader(String fileDirectory) throws java.io.IOException{
         ArrayList listeRetour = new ArrayList<Joueur>();
 
         BufferedReader br = new BufferedReader(new FileReader(fileDirectory));

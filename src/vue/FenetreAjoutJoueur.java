@@ -35,7 +35,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		nom = new JTextField();
 		prenom = new JTextField();
 		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
-		age = new JSpinner();
+		age = new JSpinner(new SpinnerNumberModel(25,1,120,1));
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
 		hom.setSelected(true);
