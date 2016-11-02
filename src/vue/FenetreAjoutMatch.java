@@ -109,8 +109,15 @@ public class FenetreAjoutMatch extends JFrame {
         ///bouton valider en bas
         JButton valider = new JButton("Valider");
 
+        try {
+            score1.commitEdit();
+            score2.commitEdit();
+        }
+        catch (Exception pe) {
 
-        valider.addActionListener(new AjouterMatchControlleur(this,(int)score1.getValue(),(int)score2.getValue()));
+        }
+
+        valider.addActionListener(new AjouterMatchControlleur(this, score1, score2));
 
         JLabel t1= new JLabel("Terrain :");
         terain = new JSpinner();

@@ -106,7 +106,8 @@ public class Match {
 		* le gagnant gagne la différence entre lui et le perdant
 		*
 		*/
-		public void modifierScores(){
+		public void modifierScores(int s1,int s2){
+			this.determinerVainqueur(s1,s2);
 			// On regarde le vainqueur et on modifie en conséquence
 				if (this.vainqueur==null){//egalitee
 					paire1.setScore(0);

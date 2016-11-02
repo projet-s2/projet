@@ -14,7 +14,8 @@ import java.awt.event.ActionListener;
  * Created by lea on 09/10/16.
  */
 public class AjouterMatchControlleur implements ActionListener {
-
+    private JSpinner sp_score1;
+    private JSpinner sp_score2;
     private FenetreAjoutMatch vue;
     private Tournoi tournoi;
     private int score1;
@@ -27,18 +28,17 @@ public class AjouterMatchControlleur implements ActionListener {
      * constructeur du controleur
      * @param vue la fenetre principale
      */
-    public AjouterMatchControlleur(FenetreAjoutMatch vue,int s1,int s2){
+    public AjouterMatchControlleur(FenetreAjoutMatch vue,JSpinner s1,JSpinner s2){
         this.vue = vue;
-    //todo  les jspinner ne renvoie as les valeurs contenues!!!! -> le controleur se lance a la creation de la fenetre au lieu du  l'appyie sur valider
-        score1 = s1;
-        score2 = s2;
-        System.out.println(score1);
-        System.out.println(score2);
-        System.out.println("scores controlleur: "+score1+score2);
-        tournoi = vue.getTournoi();
+        this.sp_score1 = s1;
+        this.sp_score2 = s2;
+        this.tournoi = vue.getTournoi();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
+        score1 = (int)sp_score1.getValue();
+        score2 = (int)sp_score2.getValue();
+
         if (verifier()) {
             String j1 = ((String) vue.getJoueur1().getSelectedItem());
             String j2 = ((String) vue.getJoueur2().getSelectedItem());
@@ -57,6 +57,8 @@ public class AjouterMatchControlleur implements ActionListener {
            
             tournoi.setScoreManuel(paire1, paire2, score1, score2);
             vue.getVue().actualiserJoueurs();
+            //fermeture de la fenètre
+            vue.dispose();
 
         }
     }

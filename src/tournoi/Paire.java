@@ -191,7 +191,7 @@ public class Paire {
 	public void setScore(int score) {
 		this.score = score;
 		this.joueur1.setScore(score);
-		this.joueur1.setScore(score);
+		this.joueur2.setScore(score);
 	}
 
 
