@@ -1,6 +1,7 @@
 package vue;
 
 import controleur.*;
+import tournoi.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
