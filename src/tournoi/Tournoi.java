@@ -869,10 +869,24 @@ public class Tournoi {
 
 		}
 	}
-
 	public void statusJoueur(Joueur j){
 		j.setPeutJouer(!j.peutJouer());
 	}
+
+	/**
+	 * @return le nouveau avec le meilleur score
+	 */
+	public Joueur meilleurNouveau(){
+		return (Joueur)this.getClassementNouveaux().get(0);
+		//todo revoir ces deux methodes caca
+	}
+	/**
+	 * @return l' ancien avec le pire score
+	 */
+	public Joueur meilleurAncien(){
+		return (Joueur)this.getClassementAnciens().get(this.getClassementAnciens().size()-1);
+	}
+
 
 }
 
