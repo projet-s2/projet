@@ -54,7 +54,7 @@ public class FenetrePrincipale extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		this.setTitle(titre);
-		this.setLocation(0,0);
+		this.setLocation(0, 0);
 		this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 		this.setVisible(true);
 	}
@@ -65,7 +65,7 @@ public class FenetrePrincipale extends JFrame {
 	 */
 	public void setTournoi(Tournoi t){
 		this.tournoi=t;
-		this.setTitle("Match Point - "+t.getNom());
+		this.setTitle("Match Point - " + t.getNom());
 		((Menu) this.getJMenuBar()).enableSave();
 		this.afficherTournoi();
 	}
@@ -89,7 +89,7 @@ public class FenetrePrincipale extends JFrame {
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
 		joueurs.setLayout(new BorderLayout());
-		String  title[] = {"ID","Nom", "Prénom", "Score"};
+		String  title[] = {"ID","Nom", "Prénom", "Score","Present"};
 		listeJoueursModele = new DefaultTableModel(title,0){
 			@Override
 			//bien redefinir les types des colones pour que l'autosort marche
@@ -103,6 +103,8 @@ public class FenetrePrincipale extends JFrame {
 						return String.class;
 					case 3:
 						return Integer.class;
+					case 4:
+						return String.class;
 					default:
 						return String.class;
 				}
@@ -121,7 +123,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//pannel south qui contiens les boutons
 		JPanel southpan = new JPanel();
-		southpan.setLayout(new BoxLayout(southpan,BoxLayout.Y_AXIS));
+		southpan.setLayout(new BoxLayout(southpan, BoxLayout.Y_AXIS));
 		//Ajout d'un joueur
 		JButton ajouterJoueur = new JButton("Ajouter un joueur");
 		ajouterJoueur.addActionListener(new ActionListener() {
@@ -159,6 +161,14 @@ public class FenetrePrincipale extends JFrame {
 		JButton reset = new JButton("reset scores");
 		reset.addActionListener(new ResetControlleur(this));
 		southpan.add(reset);
+
+		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
+		JButton status = new JButton("Présence/Absence");
+		status.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { fenetreStatJoeur();
+				}});
+		southpan.add(status);
 
 
 
@@ -199,6 +209,8 @@ public class FenetrePrincipale extends JFrame {
 	public void fenetreAjoutMatch(){
 		new FenetreAjoutMatch("Entrer nouveau Match",tournoi,this);
 	}
+	public void fenetreStatJoeur(){ new FenetreStatJoueur("Modifier diponibiliter Joueur",this);}
+
 
 
 
@@ -216,6 +228,7 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(j.getNom(),i,1);
 			listeJoueurs.setValueAt(j.getPrenom(),i,2);
 			listeJoueurs.setValueAt(""+j.getScore(),i,3);
+			listeJoueurs.setValueAt(""+j.statut(),i,4);
 
 		}
 		//On rentre les joueurs nouveaux dans les cases restantes
@@ -225,6 +238,7 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),1);
 			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),2);
 			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),3);
+			listeJoueurs.setValueAt(""+j.statut(),i+classA.size(),4);
 
 		}
 	}

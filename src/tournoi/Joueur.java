@@ -252,6 +252,15 @@ public class Joueur {
 		return peutJouer;
 	}
 
+	/** Retourne si le joueur peut jouer ou non
+	 *
+	 * @return non : le joueur ne peut pas jouer / oui : le joueur peut jouer
+	 */
+	public String statut() {
+		return (peutJouer) ? "Oui" : "Non";
+
+	}
+
 	/** Redéfinit l'attribut "peutJouer"
 	*
 	* @param peutJouer : le joueur ne joue pas / 1 : le joueur joue
