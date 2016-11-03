@@ -99,8 +99,8 @@ public class ImporterJoueursControlleur implements ActionListener {
 
             age = Integer.parseInt(joueurCourant[3]);
             //Si ce n'est pas un 0, 1 ou 2
-            if (age < 0 || age > 2)
-                throw new ImportExportException("Problème avec un âge");
+            if (age < 0 || age > 3)
+                age = 0;
 
             //Si ce n'est pas un 1 ou un 0
             if (Integer.parseInt(joueurCourant[4]) != 1 && Integer.parseInt(joueurCourant[4]) != 0)
@@ -113,9 +113,10 @@ public class ImporterJoueursControlleur implements ActionListener {
             nouveau = Integer.parseInt(joueurCourant[5]) != 0; //Si joueurCourant[5] == 0, alors nouveau = false (ancien); sinon nouveau
 
             //Si ce n'est pas un 0, 1 ou 2
-            if (Integer.parseInt(joueurCourant[5]) < 0 && Integer.parseInt(joueurCourant[5]) > 2)
-                throw new ImportExportException("Problème avec un niveau");
-            niveau = Integer.parseInt(joueurCourant[6]);
+            if (Integer.parseInt(joueurCourant[5]) < 0 && Integer.parseInt(joueurCourant[5]) > 3)
+                niveau = 0;
+            else
+                niveau = Integer.parseInt(joueurCourant[6]);
 
             //Si ce n'est pas un 1 ou un 0
             if (Integer.parseInt(joueurCourant[7]) != 1 && Integer.parseInt(joueurCourant[7]) != 0)
