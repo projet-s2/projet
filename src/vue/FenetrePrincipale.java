@@ -123,7 +123,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//pannel south qui contiens les boutons
 		JPanel southpan = new JPanel();
-		southpan.setLayout(new BoxLayout(southpan, BoxLayout.Y_AXIS));
+		southpan.setLayout(new GridLayout(25,1));
 		//Ajout d'un joueur
 		JButton ajouterJoueur = new JButton("Ajouter un joueur");
 		ajouterJoueur.addActionListener(new ActionListener() {
