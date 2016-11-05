@@ -5,6 +5,7 @@ import exception.TournoiVideException;
 import tournoi.Joueur;
 import tournoi.Terrain;
 import tournoi.Tournoi;
+import tournoi.Chrono;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -173,9 +174,23 @@ public class FenetrePrincipale extends JFrame {
 
 
 
-		joueurs.add(southpan,BorderLayout.EAST);
+		joueurs.add(southpan,BorderLayout.WEST);
 
+		JPanel chrono = new JPanel();
+		chrono.setLayout(new FlowLayout(FlowLayout.CENTER));
+		Chrono chronometre = new Chrono(300);
+		chrono.add(chronometre);
+		chronometre.stop();
 
+		JButton start;
+		JButton restart;
+		start = new JButton("Lancer");
+		restart = new JButton("Redémarrer");
+		chrono.add(start);
+		chrono.add(restart);
+
+		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
+		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
 
 
 
@@ -189,6 +204,7 @@ public class FenetrePrincipale extends JFrame {
 		JPanel principal = new JPanel();
 		principal.setLayout(new BorderLayout());
 		principal.add(onglets, BorderLayout.CENTER);
+		principal.add(chrono, BorderLayout.EAST);
 		this.setContentPane(principal);
 		this.setVisible(true);
 	}
