@@ -1,5 +1,6 @@
 package controleur;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import exception.ImportExportException;
 import tournoi.Joueur;
 import tournoi.Tournoi;
@@ -87,10 +88,10 @@ public class ImporterJoueursControlleur implements ActionListener {
         int id, age, niveau;
         String nom, prenom;
         for (String ligne : resultatRead) {
-            /* [0] : id / [1] : nom / [2] : prenom / [3] : age / [4] : sexe (0 : homme / 1 : femme)
-               [5] : nouveau (0 : ancien / 1 : nouveau) / [6] : niveau  (0 : débutant / 1 : Intérmédiaire / 2 : confirmé)
-               [7] : peutJouer
-            */
+            // Ordre d'une ligne du fichier CSV
+            // [0] : id / [1] : nom / [2] : prenom / [3] : age (0 : Indéfini / 1 : -18 jeune / 2 : 18-35 senior / 3 : 35+ veteran)
+            // [4] : sexe (0 : femme / 1 : homme) / [5] : nouveau (0 : ancien / 1 : nouveau)
+            // [6] : niveau  (0 : Indéfini / 1 : débutant / 2 : Intérmédiaire / 3 : confirmé) / [7] : peutJouer
             joueurCourant = ligne.split(",");
 
             id = Integer.parseInt(joueurCourant[0]);
@@ -98,9 +99,9 @@ public class ImporterJoueursControlleur implements ActionListener {
             prenom = joueurCourant[2];
 
             age = Integer.parseInt(joueurCourant[3]);
-            //Si ce n'est pas un 0, 1 ou 2
+            //Si ce n'est pas un 0, 1, 2 ou 3
             if (age < 0 || age > 3)
-                age = 0;
+                age = 0; //On considère que l'âge est indéfini
 
             //Si ce n'est pas un 1 ou un 0
             if (Integer.parseInt(joueurCourant[4]) != 1 && Integer.parseInt(joueurCourant[4]) != 0)
@@ -112,9 +113,9 @@ public class ImporterJoueursControlleur implements ActionListener {
                 throw new ImportExportException("Problème avec une ancienneté");
             nouveau = Integer.parseInt(joueurCourant[5]) != 0; //Si joueurCourant[5] == 0, alors nouveau = false (ancien); sinon nouveau
 
-            //Si ce n'est pas un 0, 1 ou 2
+            //Si ce n'est pas un 0, 1, 2 ou 3
             if (Integer.parseInt(joueurCourant[5]) < 0 && Integer.parseInt(joueurCourant[5]) > 3)
-                niveau = 0;
+                niveau = 0; //On considère que le niveau est indéfini
             else
                 niveau = Integer.parseInt(joueurCourant[6]);
 

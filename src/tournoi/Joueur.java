@@ -13,9 +13,10 @@ public class Joueur {
 	private int id;
 	private String nom;
 	private String prenom;
-	// 0 : -18 jeune
-	// 1 : 18-35 senior
-	// 2 : 35+ veteran
+	// 0 : indéfini
+	// 1 : -18 jeune
+	// 2 : 18-35 senior
+	// 3 : 35+ veteran
 	private int age;
 	// 0 : femme
 	// 1 : homme
@@ -25,9 +26,10 @@ public class Joueur {
 	private boolean joue;
 	private boolean dansPaire;
 	private int perf;
-	//0 : Débutant
-	//1 : Intermédiaire
-	//2 : Confirmé
+	// 0 : indéfini
+	// 1 : Débutant
+	// 2 : Intermédiaire
+	// 3 : Confirmé
 	private int niveau;
 	private Liste anciensPart;
 	private boolean prio;
@@ -77,18 +79,30 @@ public class Joueur {
 		}
 
 	/**
-	 * pour calculer l'indice de performance d'un joueur en fonction de son âge, son niveau et son sexe
+	 * Pour calculer un indice de performance d'un joueur en fonction de son âge, son niveau et son sexe
+	 * La performance est calculée en fonction du niveau, du sexe ainsi que de l'âge du joueur
 	 * @return son indice de performance
      */
 	public int calculerPerf(){
 		int perf = 0;
-		perf += niveau; // On ajoute des points à l'indice de performance selon le niveau du joueur
+
+		if (niveau == 0) //Si le niveau n'est pas défini on considère que le joueur est de niveau intermédiaire
+			perf += 2;
+		else if (niveau == 1 || niveau == 2 || niveau == 3) // sinon on lui ajoute son niveau en indice
+			perf += niveau;
 		if (sexe) //Si le joueur est un homme on augmente son indice
 			perf += 1;
-		if (age == 1) //Si le joueur a entre 18 et 35ans
-			perf+=2;
-		else if (age == 2) //Si le joueur a plus de 35ans
+
+		if (age == 0) //Si l'âge n'est pas défini on considère qu'il a entre 18 et 35 ans
+						// (on trouve sur internet une moyenne d'environ 26 ans pour les joueurs de badminton)
+			perf += 2;
+		else if (age == 1) //Si le joueur a moins de 18 ans, on lui ajoute le moins de point à son indice
 			perf += 1;
+		else if (age == 2) //Si le joueur a entre 18 et 35 ans on lui ajoute le plus de points à son indice
+			perf += 3;
+		else if (age == 3) //Si le joueur a plus de 35 ans on lui ajoute un nombre moyen de point à son indice
+			perf += 2;
+
 		return perf;
 	}
 	
@@ -226,22 +240,26 @@ public class Joueur {
 	 */
 	@Override
 	public String toString(){
-		String sx="un homme";
-		String prio="a joué au tour précédent";
+		String sx = "une femme";
 		if(this.sexe){
-			sx= "une femme";
+			sx = "un homme";
 		}
+
+		String prio = "a joué au tour précédent";
 		if(this.prio){
-			prio= "n'a pas joué au tour précédent";
+			prio = "n'a pas joué au tour précédent";
 		}
 		String ageString = "";
 		if (age == 0)
-			ageString = "qui a moins de 18";
+			ageString = "dont l'âge n'est pas défini";
 		else if (age == 1)
+			ageString = "qui a moins de 18";
+		else if (age == 2)
 			ageString = "qui a entre 18 et 35";
-		else
+		else if (age == 3)
 			ageString = "qui a plus de 35";
-		String txt = this.prenom + " " + this.nom +" ("+sx+ ageString + " ans a une perf de "+this.perf+") " +prio+" et a joué "+this.nbMatchJoues+" fois au total";
+		String txt = this.prenom + " " + this.nom +" ("+ sx + " " + ageString + " ans a une perf de "+this.perf+") " +
+						prio + " et a joué "+this.nbMatchJoues+" fois au total";
 		return txt;
 	}
 	/** Retourne si le joueur peut jouer ou non

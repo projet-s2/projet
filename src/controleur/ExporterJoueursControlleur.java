@@ -68,10 +68,10 @@ public class ExporterJoueursControlleur implements ActionListener {
      * @return La chaine de caractère correspondant à une ligne CSV représentant le joueur découpé
      */
     private String decouperJoueur(Joueur joueur) {
-        // Ordre du fichier CSV :
-        // [0] : id / [1] : nom / [2] : prenom / [3] : age / [4] : sexe (0 : homme / 1 : femme)
-        // [5] : nouveau (0 : ancien / 1 : nouveau) / [6] : niveau  (0 : débutant / 1 : Intérmédiaire / 2 : confirmé)
-        // [7] : peutJouer
+        // Ordre d'une ligne du fichier CSV
+        // [0] : id / [1] : nom / [2] : prenom / [3] : age (0 : Indéfini / 1 : -18 jeune / 2 : 18-35 senior / 3 : 35+ veteran)
+        // [4] : sexe (0 : femme / 1 : homme) / [5] : nouveau (0 : ancien / 1 : nouveau)
+        // [6] : niveau  (0 : Indéfini / 1 : débutant / 2 : Intérmédiaire / 3 : confirmé) / [7] : peutJouer
 
         return Integer.toString(joueur.getId()) + "," +
                 joueur.getNom() + "," +
