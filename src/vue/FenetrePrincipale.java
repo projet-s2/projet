@@ -184,14 +184,17 @@ public class FenetrePrincipale extends JFrame {
 
 		JButton start;
 		JButton restart;
+		//JButton classement;
+		//classement = new JButton("Classement");
 		start = new JButton("Lancer");
 		restart = new JButton("Redémarrer");
 		chrono.add(start);
 		chrono.add(restart);
+		chrono.add(classement);
 
 		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
 		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
-
+		//classement.addActionListener(new VoirClassementControleur(tournoi));
 
 
 
