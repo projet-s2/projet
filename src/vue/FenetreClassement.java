@@ -38,6 +38,7 @@ public class FenetreClassement extends JFrame
         JPanel a = new JPanel();
         categorie = new JComboBox(new String[]{"Tous", "Nouveaux", "Anciens"});
         categorie.setSelectedIndex(0);
+        //categorie.addActionListener(new AfficherClassementControleur(this, categorie));
         a.add(categorie);
         joueurs.add(a);
 
