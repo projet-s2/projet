@@ -13,6 +13,7 @@ public class FenetreClassement extends JFrame
     private JScrollPane panJoueurs;
     private DefaultTableModel listeJoueursModele;
     private JTable listeJoueurs;
+    private JComboBox categorie;
     String[] joueurs;
 
 
@@ -26,17 +27,19 @@ public class FenetreClassement extends JFrame
         this.tournoi = t;
 
         JPanel joueurs = new JPanel();
-        String  title[] = {"ID","Nom", "Prénom", "Score","Ancienneté"};
+        joueurs.setLayout(new GridLayout(1, 2));
+        String  title[] = {"Nom", "Prénom", "Score","Ancienneté"};
         listeJoueursModele = new DefaultTableModel(title,0);
         listeJoueurs = new JTable(listeJoueursModele);
         listeJoueurs.setAutoCreateRowSorter(true);
         panJoueurs = new JScrollPane(listeJoueurs);
         joueurs.add(panJoueurs);
 
-
-
-
-
+        JPanel a = new JPanel();
+        categorie = new JComboBox(new String[]{"Tous", "Nouveaux", "Anciens"});
+        categorie.setSelectedIndex(0);
+        a.add(categorie);
+        joueurs.add(a);
 
         this.setContentPane(joueurs);
         this.pack();
