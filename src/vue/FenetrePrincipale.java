@@ -190,7 +190,7 @@ public class FenetrePrincipale extends JFrame {
 		restart = new JButton("Redémarrer");
 		chrono.add(start);
 		chrono.add(restart);
-		chrono.add(classement);
+		//chrono.add(classement);
 
 		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
 		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
