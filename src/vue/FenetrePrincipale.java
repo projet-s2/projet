@@ -22,6 +22,7 @@ public class FenetrePrincipale extends JFrame {
 	private DefaultTableModel listeJoueursModele;
 	private JTable listeJoueurs;
 	String[] joueurs;
+	private JPanel[] terrains;
 
 	private int verif;
 
@@ -124,7 +125,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//pannel south qui contiens les boutons
 		JPanel southpan = new JPanel();
-		southpan.setLayout(new GridLayout(25,1));
+		southpan.setLayout(new GridLayout(25, 1));
 		//Ajout d'un joueur
 		JButton ajouterJoueur = new JButton("Ajouter un joueur");
 		ajouterJoueur.addActionListener(new ActionListener() {
@@ -171,6 +172,11 @@ public class FenetrePrincipale extends JFrame {
 				}});
 		southpan.add(status);
 
+		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
+		JButton setPaires = new JButton("Nouveau Tour");
+		//setPaires.addActionListener(//todo generer paires et matches);
+				southpan.add(setPaires);
+
 
 
 
@@ -196,12 +202,31 @@ public class FenetrePrincipale extends JFrame {
 		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
 		//classement.addActionListener(new VoirClassementControleur(tournoi));
 
+		////Onglet Tournoi
+		JPanel tournois = new JPanel();
+		tournois.setLayout(new BorderLayout());
+		JPanel panTour = new JPanel();
+
+
+
+		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
+		//On parcours les terrains pour les afficher
+		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
+			panTour.add(nouveauTerrain(i));
+		}
+		JScrollPane terrains = new JScrollPane(panTour);
+
+		tournois.add(panTour, BorderLayout.CENTER);
+
+
 
 
 		//On ajoute tous les onglets
 		onglets.addTab("Joueurs", joueurs);
+		onglets.addTab("Tournois", terrains);
 
 		onglets.setOpaque(true);
+
 
 
 		JPanel principal = new JPanel();
@@ -314,4 +339,27 @@ public class FenetrePrincipale extends JFrame {
 	public void setVerif(int verif) {
 		this.verif = verif;
 	}
+
+
+	public JPanel nouveauTerrain(int i){
+		JPanel terrain = new JPanel();
+		terrain.setLayout(new BorderLayout());
+		JLabel numTer = new JLabel("Terrain "+i);
+		terrain.add(numTer,BorderLayout.NORTH);
+		JLabel j1 = new JLabel(this.getTournoi().getTerrain(i).j1());
+		JLabel j2 = new JLabel(this.getTournoi().getTerrain(i).j2());
+		JLabel j3 = new JLabel(this.getTournoi().getTerrain(i).j3());
+		JLabel j4 = new JLabel(this.getTournoi().getTerrain(i).j4());
+		terrain.add(j1,BorderLayout.EAST);
+		terrain.add(j2,BorderLayout.EAST);
+		terrain.add(j3,BorderLayout.WEST);
+		terrain.add(j4,BorderLayout.WEST);
+		JPanel espace = new JPanel();
+		terrain.add(espace,BorderLayout.CENTER);
+		JTextField score = new JTextField();
+		JButton valider = new JButton("Valider");
+		terrain.add(score,BorderLayout.SOUTH);
+		terrain.add(valider,BorderLayout.SOUTH);
+
+		return  terrain;}
 }

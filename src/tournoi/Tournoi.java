@@ -102,6 +102,15 @@ public class Tournoi {
 	public ArrayList getTerrains() {
 		return this.terrains;
 	}
+	/**
+	 * Retourne la liste des terrains
+	 * @param i l'index du terrain voulu
+	 *
+	 * @return un terrain a un index
+	 */
+	public Terrain getTerrain(int i) {
+		return this.terrains.get(i);
+	}
 
 	/**
 	 * Initialise les terrains disponibles
