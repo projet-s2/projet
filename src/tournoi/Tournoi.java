@@ -50,6 +50,11 @@ public class Tournoi {
 		initialiserTerrains();
 	}
 
+	public Boolean tournoisVide(){
+		return this.nouveauxJoueurs.size() == 0 && this.anciensJoueurs.size() == 0;
+
+	}
+
 	public Tournoi(int nbrTerrains) throws NomVideException, NbTerrainNeg {
 		this(nbrTerrains, "Sans titre");
 	}
@@ -74,6 +79,7 @@ public class Tournoi {
 		}
 		return j;
 	}
+
 
 
 	/**
@@ -195,7 +201,7 @@ public class Tournoi {
 	 *
 	 * @throws TournoiVideException s'il n'y a pas de joueurs
 	 */
-	public void creerPaires() throws TournoiVideException {
+	private void creerPaires() throws TournoiVideException {
 		//On met tout les joueurs comme n'appartenant pas a une paire
 		this.viderGetDansPaire();
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
@@ -347,6 +353,15 @@ public class Tournoi {
 	}
 
 	/**
+	 * Lance les methodes de créations de paires
+	 */
+	public void nouveauTour() throws TournoiVideException {
+		this.creerPaires();
+		this.trierPaires();
+		this.attribuerMatchs();
+	}
+
+	/**
 	 * Appelée pour finir un tour et mettre à jour les scores
 	 */
 	public void finirTour() {
@@ -449,7 +464,10 @@ public class Tournoi {
 	 * @param idJ2 l'id du second joueur
 	 * @return true si l'opération est un succès, false sinon
 	 */
-	public void changerJoueurs(int idJ1, int idJ2) {
+	public Boolean changerJoueurs(int idJ1, int idJ2) {
+		if(idJ1==idJ2){
+			return false;
+		}
 		//On regarde si le joueur de remplacement est attribué a une paire
 		if(this.getJoueur(idJ2).getDansPaire()){
 			//si le deuxieme joeur est J1 dans sa paire
@@ -492,13 +510,14 @@ public class Tournoi {
 			}
 
 		}
+		return true;
 
 	}
 
 	/**
 	 * renvoie la paire contenant un joueur donné null sinon
 	 * @param idJ l'id du  joueur
-	 
+
 	 * @return null si le joueur n'est pas dans une paire la paire sinon
 	 */
 	public Paire getPaireContenant(int idJ){
