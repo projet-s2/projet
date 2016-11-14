@@ -1,6 +1,5 @@
 package controleur;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import exception.ImportExportException;
 import tournoi.Joueur;
 import tournoi.Tournoi;
@@ -58,6 +57,7 @@ public class ImporterJoueursControlleur implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Le fichier demandé n'a pas été trouvé", "Erreur", JOptionPane.ERROR_MESSAGE);
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e4) {
                 JOptionPane.showMessageDialog(null, "Fichier erroné", "Erreur", JOptionPane.ERROR_MESSAGE);
+                e4.printStackTrace();
             } catch (ImportExportException e4) {
                 JOptionPane.showMessageDialog(null, "Fichier erroné : " + e4.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e6) {
@@ -76,6 +76,7 @@ public class ImporterJoueursControlleur implements ActionListener {
         BufferedReader br = new BufferedReader(new FileReader(fileDirectory));
 
         ArrayList<String> resultatRead = new ArrayList<>();
+        br.readLine();
         for (String line = br.readLine(); line != null; line = br.readLine()) {
             if (!line.isEmpty())  //On vérifie que la ligne n'est pas vide
                 resultatRead.add(line);
@@ -84,46 +85,63 @@ public class ImporterJoueursControlleur implements ActionListener {
         br.close();
 
         String joueurCourant[];
-        boolean sexe, nouveau, peutJouer;
-        int id, age, niveau;
+        boolean sexe, nouveau;
+        int age = 0;
+        int niveau = 0;
         String nom, prenom;
         for (String ligne : resultatRead) {
             // Ordre d'une ligne du fichier CSV
-            // [0] : id / [1] : nom / [2] : prenom / [3] : age (0 : Indéfini / 1 : -18 jeune / 2 : 18-35 senior / 3 : 35+ veteran)
-            // [4] : sexe (0 : femme / 1 : homme) / [5] : nouveau (0 : ancien / 1 : nouveau)
-            // [6] : niveau  (0 : Indéfini / 1 : débutant / 2 : Intérmédiaire / 3 : confirmé) / [7] : peutJouer
-            joueurCourant = ligne.split(",");
+            // [0] : prenom / [1] : nom / [2] : sexe (0 : femme / 1 : homme)
+            // [3] ancienneté (0 : Ancien/ 1 : Nouveau)
+            // [4] âge (0 : vide /1 : "-18 ans" /2 : "18-35 ans" / 3 : "35+ ans")
+            // [5] : niveau  (0 : vide /1 : "Débutant" / 2 : "Intermédiaire" / 3 : "Confirmé")
+            joueurCourant = ligne.split(",",-1);
 
-            id = Integer.parseInt(joueurCourant[0]);
+            /*if (joueurCourant.length == 5) {
+                System.arraycopy(joueurCourant, 0, joueurCourant, 0, 6);
+                joueurCourant[5] = "";
+            }*/
+
+            prenom = joueurCourant[0];
             nom = joueurCourant[1];
-            prenom = joueurCourant[2];
 
-            age = Integer.parseInt(joueurCourant[3]);
-            //Si ce n'est pas un 0, 1, 2 ou 3
-            if (age < 0 || age > 3)
-                age = 0; //On considère que l'âge est indéfini
-
-            //Si ce n'est pas un 1 ou un 0
-            if (Integer.parseInt(joueurCourant[4]) != 1 && Integer.parseInt(joueurCourant[4]) != 0)
+            //Lecture du sexe
+            if (!joueurCourant[2].equals("Femme") && !joueurCourant[2].equals("Homme")) //Si la troisième valeur n'est ni Homme ni Femme
                 throw new ImportExportException("Problème avec un genre");
-            sexe = Integer.parseInt(joueurCourant[4]) != 0; //Si joueurCourant[4] == 0, alors sexe = false (homme); sinon femmme
+            sexe = (joueurCourant[2].equals("Homme")); // Si la troisième valeur est Homme, sexe = true, sinon sexe = false
 
-            //Si ce n'est pas un 1 ou un 0
-            if (Integer.parseInt(joueurCourant[5]) != 1 && Integer.parseInt(joueurCourant[5]) != 0)
-                throw new ImportExportException("Problème avec une ancienneté");
-            nouveau = Integer.parseInt(joueurCourant[5]) != 0; //Si joueurCourant[5] == 0, alors nouveau = false (ancien); sinon nouveau
+            //Lecture de l'ancienneté
+            if (!joueurCourant[3].equals("Ancien") && !joueurCourant[3].equals("Nouveau")) //Si la quatrième valeur n'est ni Ancien ni Nouveau
+                throw new ImportExportException("Problème avec l'ancienneté");
+            nouveau = (joueurCourant[3].equals("Nouveau")); // Si la quatrième valeur est Nouveau, nouveau = true, sinon nouveau = false
 
-            //Si ce n'est pas un 0, 1, 2 ou 3
-            if (Integer.parseInt(joueurCourant[5]) < 0 && Integer.parseInt(joueurCourant[5]) > 3)
-                niveau = 0; //On considère que le niveau est indéfini
-            else
-                niveau = Integer.parseInt(joueurCourant[6]);
-
-            //Si ce n'est pas un 1 ou un 0
-            if (Integer.parseInt(joueurCourant[7]) != 1 && Integer.parseInt(joueurCourant[7]) != 0)
-                throw new ImportExportException("Problème avec la possibilité de jouer");
-            peutJouer = Integer.parseInt(joueurCourant[7]) != 0;
-            listeRetour.add(new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, peutJouer));
+            //Lecture de l'âge
+            //Si la cinquième valeur n'est ni -18 ni 18-35 ni 35+ ni une chaine vide
+            if (!joueurCourant[4].isEmpty()) {
+                if (!joueurCourant[4].equals("-18 ans") && !joueurCourant[4].equals("18-35 ans") && !joueurCourant[4].equals("35+ ans")) {
+                    throw new ImportExportException("Problème avec l'âge");
+                }
+                if (joueurCourant[4].equals("-18 ans"))
+                     age = 1;
+                else if (joueurCourant[4].equals("18-35 ans"))
+                    age = 2;
+                else if (joueurCourant[4].equals("35+ ans"))
+                    age = 3;
+            }
+            //Lecture du niveau
+            //Si la sixième valeur n'est ni débutant ni confirmé ni intermédiaire ni une chaine vide
+            if (!joueurCourant[5].isEmpty()) {
+                if (!joueurCourant[5].equals("Débutant") && !joueurCourant[5].equals("Confirmé") && !joueurCourant[5].equals("Intermédiaire")) //Si la troisième valeur n'est ni Ancien ni Nouveau
+                    throw new ImportExportException("Problème avec le niveau");
+                if (joueurCourant[5].equals("Débutant"))
+                    niveau = 1;
+                else if (joueurCourant[5].equals("Confirmé"))
+                    niveau = 2;
+                else if (joueurCourant[5].equals("Intermédiaire"))
+                    niveau = 3;
+            }
+            //TODO : TEST PAR RAPPORT AUX CARACTERISTIQUES NON DEFINIES
+            listeRetour.add(new Joueur(Joueur.nbJoueursCrees, nom, prenom, age, sexe, nouveau, niveau, true));
         }
         return listeRetour;
     }
