@@ -61,7 +61,7 @@ public class Menu extends JMenuBar{
 	    		dial.setVisible(true);
 	    		fr.setVisible(false);
 	    		try{
-	    			t.save(dial.getDirectory(),dial.getFile());
+	    			//t.save(dial.getDirectory(),dial.getFile());
 	    		}catch(NullPointerException e1){
 	    			
 	    		}

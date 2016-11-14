@@ -198,10 +198,16 @@ public class Paire {
 
 	/**
 	 *
-	 * @return true si au moins un des joueurs est prioritaire false sinon
+	 * @return un int qui estime la prioritée de la paire
+	 * +1 par membres prio
      */
-	public boolean estPrio(){
-		return (this.joueur1.getPrio() || this.joueur2.getPrio());
+	public int prio(){
+		int prio = 0;
+		if ( this.joueur1.getPrio()) {prio++;}
+		if ( this.joueur2.getPrio()) {prio++;}
+
+
+		return prio;
 	}
 	
 	/** Redéfinition de la méthode equals()

@@ -155,10 +155,10 @@ public class Match {
 
 	/**
 	 *
-	 * @return vrai si une des paires est prio faux sinon
+	 * @return la valeur de prioritée de la paire
      */
-	public boolean estPrio(){
-		return (paire1.estPrio() && paire2.estPrio());
+	public int prio(){
+		return (paire1.prio() + paire2.prio());
 	}
 	
 	public String readyToBeSaved(){
