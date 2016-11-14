@@ -174,7 +174,7 @@ public class Tournoi {
 	 *Tri des nouveau joueurs par scores
 	 */
 	private void trierNouveauxJoueurs() {
-		Collections.sort(this.nouveauxJoueurs,new ComparateurJoueurScore());
+		Collections.sort(this.nouveauxJoueurs, new ComparateurJoueurScore());
 	}
 
 	/**
@@ -443,134 +443,72 @@ public class Tournoi {
 
 	/**
 	 * pour intervertir facilement deux joueurs qui jouent déjà
+	 * On selectionne le premier Joueur et on souhaite le remplacer par le deuxième. On regarde si le deuxième joue ou pas
 	 *
 	 * @param idJ1 l'id du premier joueur
 	 * @param idJ2 l'id du second joueur
 	 * @return true si l'opération est un succès, false sinon
 	 */
-	public boolean changerJoueurs(int idJ1, int idJ2) {
-		Joueur joueurChange2 = null;
-		//On cherche d'abord le joueur qui va prendre la place du premier
-		for (int i = 0; i < anciensJoueurs.size(); i++) {
-			Joueur tmp = anciensJoueurs.get(i);
-			if (tmp.getId() == idJ2) {
-				joueurChange2 = tmp;
-				break;
+	public void changerJoueurs(int idJ1, int idJ2) {
+		//On regarde si le joueur de remplacement est attribué a une paire
+		if(this.getJoueur(idJ2).getDansPaire()){
+			//si le deuxieme joeur est J1 dans sa paire
+			if(this.getPaireContenant(idJ2).getJoueur1()==this.getJoueur(idJ2)){
+				this.getPaireContenant(idJ2).setJoueur1(this.getJoueur(idJ1));
+				//si le premier joueur etqi jouer 1
+				if(this.getPaireContenant(idJ1).getJoueur1()==this.getJoueur(idJ1)){
+					this.getPaireContenant(idJ1).setJoueur1(this.getJoueur(idJ2));
+				}
+				//si le premier joueur etai jouer 2
+				if(this.getPaireContenant(idJ1).getJoueur2()==this.getJoueur(idJ1)){
+					this.getPaireContenant(idJ1).setJoueur2(this.getJoueur(idJ2));
+				}
 			}
-		}
-		if (joueurChange2 == null) {
-			for (int i = 0; i < nouveauxJoueurs.size(); i++) {
-				Joueur tmp = nouveauxJoueurs.get(i);
-				if (tmp.getId() == idJ2) {
-					joueurChange2 = tmp;
-					break;
+			//si  deuxieme joeur est J2 dans sa paire
+			if(this.getPaireContenant(idJ2).getJoueur2()==this.getJoueur(idJ2)){
+				this.getPaireContenant(idJ2).setJoueur2(this.getJoueur(idJ1));
+				//si le premier joueur etai jouer 1
+				if(this.getPaireContenant(idJ1).getJoueur1()==this.getJoueur(idJ1)){
+					this.getPaireContenant(idJ1).setJoueur1(this.getJoueur(idJ2));
+				}
+				//si le premier joueur etai jouer 2
+				if(this.getPaireContenant(idJ1).getJoueur2()==this.getJoueur(idJ1)){
+					this.getPaireContenant(idJ1).setJoueur2(this.getJoueur(idJ2));
 				}
 			}
 		}
-		//Précaution si on ne trouve pas le deuxieme joueur
-		if (joueurChange2 == null)
-			return false;
-
-		//Différents cas si le joueur 2 joue ou non
-
-		//Si le deuxieme jouer ne joue pas c'est simple
-		if (!joueurChange2.getJoue()) {
-			//On cherche où joue le premier joueur
-			for (int i = 0; i < terrains.size(); i++) {
-				Match m = ((Terrain) terrains.get(i)).getMatch();
-				Joueur j1 = m.getPaire1().getJoueur1();
-				Joueur j2 = m.getPaire1().getJoueur2();
-				Joueur j3 = m.getPaire2().getJoueur1();
-				Joueur j4 = m.getPaire2().getJoueur2();
-				if (j1.getId() == idJ1) {
-					//On met le premier joueur sur le banc de touche et le second sur le terrain
-					j1.setJoue(false);
-					m.getPaire1().setJoueur1(joueurChange2);
-					return true;
-				} else if (j2.getId() == idJ1) {
-					j2.setJoue(false);
-					m.getPaire1().setJoueur2(joueurChange2);
-					return true;
-				} else if (j3.getId() == idJ1) {
-					j3.setJoue(false);
-					m.getPaire2().setJoueur1(joueurChange2);
-					return true;
-				} else if (j4.getId() == idJ1) {
-					j4.setJoue(false);
-					m.getPaire2().setJoueur2(joueurChange2);
-					return true;
-				}
+		else{
+			//si le premier joueur etqi jouer 1
+			if(this.getPaireContenant(idJ1).getJoueur1()==this.getJoueur(idJ1)){
+				this.getPaireContenant(idJ1).setJoueur1(this.getJoueur(idJ2));
+				this.getJoueur(idJ2).setDansPaire(true);
+				this.getJoueur(idJ1).setDansPaire(false);
 			}
-			//Si on n'a pas trouvé le joueur1 alors c'est un échec
-			return false;
+			//si le premier joueur etai jouer 2
+			if(this.getPaireContenant(idJ1).getJoueur2()==this.getJoueur(idJ1)){
+				this.getPaireContenant(idJ1).setJoueur2(this.getJoueur(idJ2));
+				this.getJoueur(idJ2).setDansPaire(true);
+				this.getJoueur(idJ1).setDansPaire(false);
+			}
+
 		}
 
-		// Si les deux joueurs jouent, on les inverse dans leures paires
-		else {
-			//On aura besoin de la paire des joueurs et de leur position dans celle ci
-			int posJ1 = 0, posJ2 = 0;
-			Paire paireJ1 = null, paireJ2 = null;
-			// On cherche le joueur 1
-			for (int i = 0; i < terrains.size(); i++) {
-				Match m = ((Terrain) terrains.get(i)).getMatch();
-				Joueur j1 = m.getPaire1().getJoueur1();
-				Joueur j2 = m.getPaire1().getJoueur2();
-				Joueur j3 = m.getPaire2().getJoueur1();
-				Joueur j4 = m.getPaire2().getJoueur2();
-				if (j1.getId() == idJ1) {
-					paireJ1 = m.getPaire1();
-					posJ1 = 1;
-					break;
-				} else if (j2.getId() == idJ1) {
-					paireJ1 = m.getPaire1();
-					posJ1 = 2;
-					break;
-				} else if (j3.getId() == idJ1) {
-					paireJ1 = m.getPaire2();
-					posJ1 = 1;
-					break;
-				} else if (j4.getId() == idJ1) {
-					paireJ1 = m.getPaire2();
-					posJ1 = 2;
-					break;
-				}
-			}
-			//Si on a pas trouvé le joueur 1 rien ne sert de continuer
-			if (posJ1 == 0)
-				return false;
-			// On cherche le joueur 2
-			for (int i = 0; i < terrains.size(); i++) {
-				Match m = ((Terrain) terrains.get(i)).getMatch();
-				Joueur j1 = m.getPaire1().getJoueur1();
-				Joueur j2 = m.getPaire1().getJoueur2();
-				Joueur j3 = m.getPaire2().getJoueur1();
-				Joueur j4 = m.getPaire2().getJoueur2();
-				if (j1.getId() == idJ2) {
-					paireJ2 = m.getPaire1();
-					posJ2 = 1;
-					break;
-				} else if (j2.getId() == idJ2) {
-					paireJ2 = m.getPaire1();
-					posJ2 = 2;
-					break;
-				} else if (j3.getId() == idJ2) {
-					paireJ2 = m.getPaire2();
-					posJ2 = 1;
-					break;
-				} else if (j4.getId() == idJ2) {
-					paireJ2 = m.getPaire2();
-					posJ2 = 2;
-					break;
-				}
-			}
-			//Ce cas est normalement impossible mais on ne sait jamais
-			if (posJ2 == 0)
-				return false;
-			// Une fois les paramètres trouvés on lance la méthode adaptée
-			paireJ1.intervertir(posJ1, paireJ2, posJ2);
-		}
+	}
 
-		return true;
+	/**
+	 * renvoie la paire contenant un joueur donné null sinon
+	 * @param idJ l'id du  joueur
+	 
+	 * @return null si le joueur n'est pas dans une paire la paire sinon
+	 */
+	public Paire getPaireContenant(int idJ){
+		for (int i = 0; i < this.paires.size(); i++) {
+			if (idJ == this.paires.get(i).getJoueur1().getId() || idJ == this.paires.get(i).getJoueur2().getId()) {
+				return this.paires.get(i);
+			}
+		}
+		return null;
+
 	}
 
 	/**
