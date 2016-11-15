@@ -43,12 +43,12 @@ public class FenetreModifierJoueur extends JFrame {
 		//Il faut bien laisser les niveaux dans cet ordre pour correspondre avec l'ajout du joueur
 		// (0 : Indéfini / 1 : Débutant / 2 : Intermédiaire / 3 : Confirmé)
 		niveau = new JComboBox(new String[]{"Indéfini", "Débutant", "Intermédiaire", "Confirmé"});
-		System.out.println(joueur.getNiveau());
 		niveau.setSelectedIndex(joueur.getNiveau());
 
 		//Il faut bien laisser les âges dans cet ordre pour correspondre avec l'ajout du joueur
 		// (0 : Indéfini / 1 : -18 jeune / 2 : 18-35 senior / 3 : 35+ veteran)
 		age = new JComboBox(new String[]{"Indéfini", "-18 ans (Jeune)", "18-35 ans (Senior)", "35 ans et + (Veteran)"});
+		age.setSelectedIndex(joueur.getAge());
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
 		if(joueur.getSexe())
