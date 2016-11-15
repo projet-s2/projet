@@ -12,8 +12,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import java.util.ArrayList;
-
 public class FenetrePrincipale extends JFrame {
 
 	//La fen�tre principale � un tournoi surlequel elle peut agir
@@ -23,6 +25,7 @@ public class FenetrePrincipale extends JFrame {
 	private JTable listeJoueurs;
 	String[] joueurs;
 	private JPanel[] terrains;
+	private BufferedImage image;
 
 	private int verif;
 
@@ -224,7 +227,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//On ajoute tous les onglets
 		onglets.addTab("Joueurs", joueurs);
-		onglets.addTab("Tournois", terrains);
+		onglets.addTab("Tournois", tournois);
 
 		onglets.setOpaque(true);
 
@@ -236,6 +239,7 @@ public class FenetrePrincipale extends JFrame {
 		principal.add(chrono, BorderLayout.EAST);
 		this.setContentPane(principal);
 		this.setVisible(true);
+		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
 	/**
@@ -345,22 +349,35 @@ public class FenetrePrincipale extends JFrame {
 	public JPanel nouveauTerrain(int i){
 		JPanel terrain = new JPanel();
 		terrain.setLayout(new BorderLayout());
-		JLabel numTer = new JLabel("Terrain "+i);
+		int o = i + 1;
+		JLabel numTer = new JLabel("Terrain "+o);
 		terrain.add(numTer,BorderLayout.NORTH);
-		JLabel j1 = new JLabel(this.getTournoi().getTerrain(i).j1());
-		JLabel j2 = new JLabel(this.getTournoi().getTerrain(i).j2());
-		JLabel j3 = new JLabel(this.getTournoi().getTerrain(i).j3());
-		JLabel j4 = new JLabel(this.getTournoi().getTerrain(i).j4());
-		terrain.add(j1,BorderLayout.EAST);
-		terrain.add(j2,BorderLayout.EAST);
-		terrain.add(j3,BorderLayout.WEST);
-		terrain.add(j4,BorderLayout.WEST);
+		JComboBox j1 = new JComboBox(/*this.getTournoi().getTerrain(i).j1()*/);
+		JComboBox j2 = new JComboBox(/*this.getTournoi().getTerrain(i).j2()*/);
+		JComboBox j3 = new JComboBox(/*this.getTournoi().getTerrain(i).j3()*/);
+		JComboBox j4 = new JComboBox(/*this.getTournoi().getTerrain(i).j4()*/);
 		JPanel espace = new JPanel();
+		ImageIcon icon = new ImageIcon(getClass().getResource("/resources/images/terrainS.png"));
+		JLabel labelimg = new JLabel();
+		labelimg.setIcon(icon);
+		espace.add(labelimg);
 		terrain.add(espace,BorderLayout.CENTER);
-		JTextField score = new JTextField();
 		JButton valider = new JButton("Valider");
-		terrain.add(score,BorderLayout.SOUTH);
-		terrain.add(valider,BorderLayout.SOUTH);
+		JPanel panSouth = new JPanel(new GridLayout(3,1));
+		JPanel panSouthUn = new JPanel(new GridLayout(1, 3));
+		panSouthUn.add(j1);
+		panSouthUn.add(j2);
+		JTextField score1 = new JTextField();
+		panSouthUn.add(score1);
+		JPanel panSouthDeux = new JPanel(new GridLayout(1, 3));
+		panSouthDeux.add(j3);
+		panSouthDeux.add(j4);
+		JTextField score2 = new JTextField();
+		panSouthDeux.add(score2);
+		panSouth.add(panSouthUn);
+		panSouth.add(panSouthDeux);
+		panSouth.add(valider);
+		terrain.add(panSouth,BorderLayout.SOUTH);
 
 		return  terrain;}
 }
