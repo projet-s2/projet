@@ -175,8 +175,12 @@ public class FenetrePrincipale extends JFrame {
 		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
 		JButton setPaires = new JButton("Nouveau Tour");
 		//setPaires.addActionListener(//todo generer paires et matches);
-				southpan.add(setPaires);
+		southpan.add(setPaires);
 
+		//Bouton pour voir le classement
+		JButton classement = new JButton("Classement");
+		classement.addActionListener(new VoirClassementControleur(tournoi));
+		southpan.add(classement);
 
 
 
@@ -190,17 +194,14 @@ public class FenetrePrincipale extends JFrame {
 
 		JButton start;
 		JButton restart;
-		//JButton classement;
-		//classement = new JButton("Classement");
+
 		start = new JButton("Lancer");
 		restart = new JButton("Redémarrer");
 		chrono.add(start);
 		chrono.add(restart);
-		//chrono.add(classement);
 
 		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
 		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
-		//classement.addActionListener(new VoirClassementControleur(tournoi));
 
 		////Onglet Tournoi
 		JPanel tournois = new JPanel();
@@ -212,7 +213,7 @@ public class FenetrePrincipale extends JFrame {
 		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
 		//On parcours les terrains pour les afficher
 		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			panTour.add(nouveauTerrain(i));
+//			panTour.add(nouveauTerrain(i));
 		}
 		JScrollPane terrains = new JScrollPane(panTour);
 
