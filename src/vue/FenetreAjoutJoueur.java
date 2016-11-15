@@ -180,7 +180,7 @@ public class FenetreAjoutJoueur extends JFrame {
 		int id = Joueur.nbJoueursCrees;
 		int age = this.age.getSelectedIndex(); // 0 : -18 jeune / 1 : 18-35 senior / 2 : 35+ veteran
 		String nom = this.nom.getText(), prenom = this.prenom.getText();
-		boolean sexe = fem.isSelected();
+		boolean sexe = hom.isSelected();
 		boolean nouveau = nouv.isSelected();
 		int niveau = this.niveau.getSelectedIndex();
 		Joueur j = new Joueur(id, nom, prenom, age, sexe, nouveau, niveau, true);
