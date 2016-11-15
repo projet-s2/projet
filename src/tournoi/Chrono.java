@@ -130,7 +130,13 @@ public class Chrono extends JPanel {
     public void drawCircle(Graphics cg, int xCenter, int yCenter, int r) {
         cg.setColor(Color.white);
         cg.fillOval(xCenter - r, yCenter - r, 2 * r, 2 * r);
-        cg.setColor(couleur);
+        if(tempsRestant>30) {
+            this.couleur = Color.orange;
+            cg.setColor(couleur);
+        } else {
+            this.couleur = Color.red;
+            cg.setColor(couleur);
+        }
         cg.fillArc(xCenter - r, yCenter - r, 2 * r, 2 * r, 90, -(360 - tempsRestant * 360 / temps));
         cg.setColor(Color.black);
         cg.setFont(f);
