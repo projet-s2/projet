@@ -190,18 +190,25 @@ public class FenetrePrincipale extends JFrame {
 		joueurs.add(southpan,BorderLayout.WEST);
 
 		JPanel chrono = new JPanel();
-		chrono.setLayout(new FlowLayout(FlowLayout.CENTER));
+		chrono.setLayout(new GridBagLayout());
+		GridBagConstraints gbchrono = new GridBagConstraints();
 		Chrono chronometre = new Chrono(300);
-		chrono.add(chronometre);
+		gbchrono.gridx = 0;
+		gbchrono.gridy = 0;
+		chrono.add(chronometre, gbchrono);
 		chronometre.stop();
 
 		JButton start;
 		JButton restart;
 
 		start = new JButton("Lancer");
+		start.setPreferredSize(new Dimension(140, 40));
 		restart = new JButton("Redémarrer");
-		chrono.add(start);
-		chrono.add(restart);
+		restart.setPreferredSize(new Dimension(140, 40));
+		gbchrono.gridy = 1;
+		chrono.add(start, gbchrono);
+		gbchrono.gridy = 2;
+		chrono.add(restart, gbchrono);
 
 		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
 		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
@@ -216,11 +223,11 @@ public class FenetrePrincipale extends JFrame {
 		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
 		//On parcours les terrains pour les afficher
 		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-//			panTour.add(nouveauTerrain(i));
+			panTour.add(nouveauTerrain(i));
 		}
 		JScrollPane terrains = new JScrollPane(panTour);
 
-		tournois.add(panTour, BorderLayout.CENTER);
+		tournois.add(terrains, BorderLayout.CENTER);
 
 
 
@@ -347,37 +354,67 @@ public class FenetrePrincipale extends JFrame {
 
 
 	public JPanel nouveauTerrain(int i){
-		JPanel terrain = new JPanel();
-		terrain.setLayout(new BorderLayout());
+		JPanel terrain = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		//Terrain n° X
 		int o = i + 1;
 		JLabel numTer = new JLabel("Terrain "+o);
-		terrain.add(numTer,BorderLayout.NORTH);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		terrain.add(numTer, gbc);
+
+		//Equipe 1 et leur score
 		JComboBox j1 = new JComboBox(/*this.getTournoi().getTerrain(i).j1()*/);
 		JComboBox j2 = new JComboBox(/*this.getTournoi().getTerrain(i).j2()*/);
-		JComboBox j3 = new JComboBox(/*this.getTournoi().getTerrain(i).j3()*/);
-		JComboBox j4 = new JComboBox(/*this.getTournoi().getTerrain(i).j4()*/);
+		JTextField score1 = new JTextField();
+		JPanel equipeUn = new JPanel(new GridBagLayout());
+		j1.setPreferredSize(new Dimension(125, 25));
+		j2.setPreferredSize(new Dimension(125, 25));
+		score1.setPreferredSize(new Dimension(30, 30));
+		GridBagConstraints gbcUn = new GridBagConstraints();
+		gbcUn.gridx = 0;
+		gbcUn.gridy = 0;
+		equipeUn.add(j1, gbcUn);
+		gbcUn.gridx = 1;
+		equipeUn.add(j2, gbcUn);
+		gbcUn.gridx = 2;
+		equipeUn.add(score1, gbcUn);
+		gbc.gridy = 1;
+		terrain.add(equipeUn, gbc);
+
+		//Le terrain
 		JPanel espace = new JPanel();
 		ImageIcon icon = new ImageIcon(getClass().getResource("/resources/images/terrainS.png"));
 		JLabel labelimg = new JLabel();
 		labelimg.setIcon(icon);
 		espace.add(labelimg);
-		terrain.add(espace,BorderLayout.CENTER);
-		JButton valider = new JButton("Valider");
-		JPanel panSouth = new JPanel(new GridLayout(3,1));
-		JPanel panSouthUn = new JPanel(new GridLayout(1, 3));
-		panSouthUn.add(j1);
-		panSouthUn.add(j2);
-		JTextField score1 = new JTextField();
-		panSouthUn.add(score1);
-		JPanel panSouthDeux = new JPanel(new GridLayout(1, 3));
-		panSouthDeux.add(j3);
-		panSouthDeux.add(j4);
+		gbc.gridy = 2;
+		terrain.add(espace, gbc);
+
+		//Equipe 2 et leur score
+		JComboBox j3 = new JComboBox(/*this.getTournoi().getTerrain(i).j3()*/);
+		JComboBox j4 = new JComboBox(/*this.getTournoi().getTerrain(i).j4()*/);
 		JTextField score2 = new JTextField();
-		panSouthDeux.add(score2);
-		panSouth.add(panSouthUn);
-		panSouth.add(panSouthDeux);
-		panSouth.add(valider);
-		terrain.add(panSouth,BorderLayout.SOUTH);
+		JPanel equipeDeux = new JPanel(new GridBagLayout());
+		j3.setPreferredSize(new Dimension(125, 25));
+		j4.setPreferredSize(new Dimension(125, 25));
+		score2.setPreferredSize(new Dimension(30, 30));
+		GridBagConstraints gbcDeux = new GridBagConstraints();
+		gbcDeux.gridx = 0;
+		gbcDeux.gridy = 0;
+		equipeDeux.add(j3);
+		gbcDeux.gridx = 1;
+		equipeDeux.add(j4);
+		gbcDeux.gridx = 2;
+		equipeDeux.add(score2);
+		gbc.gridy = 3;
+		terrain.add(equipeDeux, gbc);
+
+		//Bouton valider
+		JButton valider = new JButton("Valider");
+		gbc.gridy = 4;
+		terrain.add(valider, gbc);
 
 		return  terrain;}
 }
