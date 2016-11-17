@@ -101,6 +101,18 @@ public class Tournoi {
 	}
 
 	/**
+	 * Retourne la liste des anciens joueurs
+	 *
+	 * @return la liste des anciens adhérents joueurs
+	 */
+	public ArrayList<Joueur> getAllJoueurs() {
+		ArrayList<Joueur> allJoueurs = anciensJoueurs;
+		allJoueurs.addAll(this.nouveauxJoueurs);
+		return allJoueurs;
+	}
+
+
+	/**
 	 * Retourne la liste des terrains
 	 *
 	 * @return la liste des terrains

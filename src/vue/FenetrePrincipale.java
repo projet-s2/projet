@@ -26,6 +26,7 @@ public class FenetrePrincipale extends JFrame {
 	String[] joueurs;
 	private JPanel[] terrains;
 	private BufferedImage image;
+	private ArrayList<JComboBox> boxTerrains = new ArrayList<JComboBox>();
 
 	private int verif;
 
@@ -125,10 +126,35 @@ public class FenetrePrincipale extends JFrame {
 
 		joueurs.add(panJoueurs,BorderLayout.CENTER);
 
+		//panel west qui contiens les boutons
+		JPanel westButtonPan = new JPanel(new GridBagLayout());
+		GridBagConstraints gbcWest = new GridBagConstraints();
+		gbcWest.weighty = 1;
+		gbcWest.anchor = GridBagConstraints.NORTH;
 
-		//pannel south qui contiens les boutons
-		JPanel southpan = new JPanel();
-		southpan.setLayout(new GridLayout(25, 1));
+		//Ajout du chronometre
+		Chrono chronometre = new Chrono(300);
+		gbcWest.gridx = 0;
+		gbcWest.gridy = 0;
+		westButtonPan.add(chronometre, gbcWest);
+		chronometre.stop();
+
+		//Ajout du bouton Lancer/Pauser
+		JButton start;
+		start = new JButton("Lancer");
+		start.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 1;
+		westButtonPan.add(start, gbcWest);
+		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
+
+		//Ajout du bouton Redémarrer
+		JButton restart;
+		restart = new JButton("Redémarrer");
+		restart.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 2;
+		westButtonPan.add(restart, gbcWest);
+		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
+
 		//Ajout d'un joueur
 		JButton ajouterJoueur = new JButton("Ajouter un joueur");
 		ajouterJoueur.addActionListener(new ActionListener() {
@@ -137,20 +163,23 @@ public class FenetrePrincipale extends JFrame {
 				fenetreAjout();
 			}
 		});
-		southpan.add(ajouterJoueur);
-
-
+		ajouterJoueur.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 3;
+		westButtonPan.add(ajouterJoueur, gbcWest);
 
 		//Bouton pour importer des joueurs
 		JButton ImporterJoueurs = new JButton("Importer...");
 		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi, this));
-		southpan.add(ImporterJoueurs);
-
+		ImporterJoueurs.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 4;
+		westButtonPan.add(ImporterJoueurs, gbcWest);
 
 		//Bouton pour exporter les joueurs
 		JButton ExporterJoueurs = new JButton("Exporter...");
 		ExporterJoueurs.addActionListener(new ExporterJoueursControlleur(tournoi));
-		southpan.add(ExporterJoueurs);
+		ExporterJoueurs.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 5;
+		westButtonPan.add(ExporterJoueurs, gbcWest);
 
 		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
 		JButton newMatch = new JButton("Nouveau match");
@@ -160,12 +189,16 @@ public class FenetrePrincipale extends JFrame {
 				fenetreAjoutMatch();
 			}
 		});
-		southpan.add(newMatch);
+		newMatch.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 6;
+		westButtonPan.add(newMatch, gbcWest);
 
 		//Bouton reset tout les scores a zero
 		JButton reset = new JButton("reset scores");
 		reset.addActionListener(new ResetControlleur(this));
-		southpan.add(reset);
+		reset.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 7;
+		westButtonPan.add(reset, gbcWest);
 
 		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
 		JButton status = new JButton("Présence/Absence");
@@ -173,45 +206,28 @@ public class FenetrePrincipale extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) { fenetreStatJoeur();
 				}});
-		southpan.add(status);
+		status.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 8;
+		westButtonPan.add(status, gbcWest);
 
 		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
 		JButton setPaires = new JButton("Nouveau Tour");
 		//setPaires.addActionListener(//todo generer paires et matches);
-		southpan.add(setPaires);
+		setPaires.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 9;
+		westButtonPan.add(setPaires, gbcWest);
 
 		//Bouton pour voir le classement
 		JButton classement = new JButton("Classement");
 		classement.addActionListener(new VoirClassementControleur(tournoi));
-		southpan.add(classement);
+		classement.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 10;
+		westButtonPan.add(classement, gbcWest);
+
+		westButtonPan.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.gray));
 
 
 
-		joueurs.add(southpan,BorderLayout.WEST);
-
-		JPanel chrono = new JPanel();
-		chrono.setLayout(new GridBagLayout());
-		GridBagConstraints gbchrono = new GridBagConstraints();
-		Chrono chronometre = new Chrono(300);
-		gbchrono.gridx = 0;
-		gbchrono.gridy = 0;
-		chrono.add(chronometre, gbchrono);
-		chronometre.stop();
-
-		JButton start;
-		JButton restart;
-
-		start = new JButton("Lancer");
-		start.setPreferredSize(new Dimension(140, 40));
-		restart = new JButton("Redémarrer");
-		restart.setPreferredSize(new Dimension(140, 40));
-		gbchrono.gridy = 1;
-		chrono.add(start, gbchrono);
-		gbchrono.gridy = 2;
-		chrono.add(restart, gbchrono);
-
-		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
-		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
 
 		////Onglet Tournoi
 		JPanel tournois = new JPanel();
@@ -243,7 +259,7 @@ public class FenetrePrincipale extends JFrame {
 		JPanel principal = new JPanel();
 		principal.setLayout(new BorderLayout());
 		principal.add(onglets, BorderLayout.CENTER);
-		principal.add(chrono, BorderLayout.EAST);
+		principal.add(westButtonPan,BorderLayout.WEST);
 		this.setContentPane(principal);
 		this.setVisible(true);
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -352,6 +368,7 @@ public class FenetrePrincipale extends JFrame {
 		this.verif = verif;
 	}
 
+	public ArrayList<JComboBox> getBoxTerrains() { return this.boxTerrains; };
 
 	public JPanel nouveauTerrain(int i){
 		JPanel terrain = new JPanel(new GridBagLayout());
@@ -365,8 +382,13 @@ public class FenetrePrincipale extends JFrame {
 		terrain.add(numTer, gbc);
 
 		//Equipe 1 et leur score
-		JComboBox j1 = new JComboBox(/*this.getTournoi().getTerrain(i).j1()*/);
-		JComboBox j2 = new JComboBox(/*this.getTournoi().getTerrain(i).j2()*/);
+		JComboBox j1 = new JComboBox();
+		JComboBox j2 = new JComboBox();
+		if(!this.tournoi.tournoisVide()) {
+			this.actualiserJoueurs();
+			j1 = new JComboBox(tournoi.getAllJoueurs().toArray());
+			j2 = new JComboBox(tournoi.getAllJoueurs().toArray());
+		}
 		JTextField score1 = new JTextField();
 		JPanel equipeUn = new JPanel(new GridBagLayout());
 		j1.setPreferredSize(new Dimension(125, 25));
@@ -393,8 +415,12 @@ public class FenetrePrincipale extends JFrame {
 		terrain.add(espace, gbc);
 
 		//Equipe 2 et leur score
-		JComboBox j3 = new JComboBox(/*this.getTournoi().getTerrain(i).j3()*/);
-		JComboBox j4 = new JComboBox(/*this.getTournoi().getTerrain(i).j4()*/);
+		JComboBox j3 = new JComboBox();
+		JComboBox j4 = new JComboBox();
+		if(!this.tournoi.tournoisVide()) {
+			j3 = new JComboBox(tournoi.getAllJoueurs().toArray());
+			j4 = new JComboBox(tournoi.getAllJoueurs().toArray());
+		}
 		JTextField score2 = new JTextField();
 		JPanel equipeDeux = new JPanel(new GridBagLayout());
 		j3.setPreferredSize(new Dimension(125, 25));
@@ -415,6 +441,12 @@ public class FenetrePrincipale extends JFrame {
 		JButton valider = new JButton("Valider");
 		gbc.gridy = 4;
 		terrain.add(valider, gbc);
+
+		//Ajout des JComboBox au tableau qui les regroupe
+		this.boxTerrains.add(j1);
+		this.boxTerrains.add(j2);
+		this.boxTerrains.add(j3);
+		this.boxTerrains.add(j4);
 
 		return  terrain;}
 }
