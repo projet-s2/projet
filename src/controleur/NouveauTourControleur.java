@@ -23,11 +23,12 @@ public class NouveauTourControleur implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try{
             this.tournoi.nouveauTour();
+            this.vue.actualiserTerrain();
             this.vue.afficherTournoi();
 
         }
         catch(Exception ex){
-            ex.getMessage();//todo fenetre d'erreur
+            JOptionPane.showMessageDialog(null, "Il n'y a pas de joueurs!! " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
     }

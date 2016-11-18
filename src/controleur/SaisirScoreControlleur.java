@@ -11,8 +11,8 @@ import vue.FenetrePrincipale;
 
 public class SaisirScoreControlleur implements ActionListener{
 	
-	private JTextField scoreP1;
-	private JTextField scoreP2;
+	private int scoreP1;
+	private int scoreP2;
 	private Tournoi tournoi;
 	private int numeroTerrain;
 	private FenetrePrincipale vue;
@@ -29,7 +29,7 @@ public class SaisirScoreControlleur implements ActionListener{
      * @param terr le JPanel associé
      */
 	public SaisirScoreControlleur(JTextField jt1, JTextField jt2, FenetrePrincipale v, Tournoi t, int numTer, JPanel terr){
-		scoreP1 = jt1;
+		scoreP1 = jt1.;
 		scoreP2 = jt2;
 		tournoi = t;
 		vue = v;
@@ -45,7 +45,7 @@ public class SaisirScoreControlleur implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		if (verifier())
 			tournoi.setScore(numeroTerrain,Integer.parseInt(scoreP1.getText()),Integer.parseInt(scoreP2.getText()));
-		terrain.setBackground(new Color(63, 14, 126));
+		tournoi.setScore(numeroTerrain,scoreP1.,scoreP2);
 		terrain.setFocusable(false);
 		if (!maj){
 			maj = true;

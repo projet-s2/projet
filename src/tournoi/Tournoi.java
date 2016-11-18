@@ -405,8 +405,8 @@ public class Tournoi {
 	 * @param scoreP2    le score de la seconde paire
 	 */
 	public void setScore(int numTerrain, int scoreP1, int scoreP2) {
-		((Terrain) this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
-		((Terrain) this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
+		(this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
+		( this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
 	}
 
 	/**
