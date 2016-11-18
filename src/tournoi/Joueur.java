@@ -240,28 +240,35 @@ public class Joueur {
 	 */
 	@Override
 	public String toString(){
-		String sx = "une femme";
-		if(this.sexe){
-			sx = "un homme";
-		}
+		String res = "";
+		res += this.id + "/" + this.prenom + "/" + this.nom + "/";
 
-		String prio = "a joué au tour précédent";
-		if(this.prio){
-			prio = "n'a pas joué au tour précédent";
-		}
-		String ageString = "";
-		if (age == 0)
-			ageString = "dont l'âge n'est pas défini";
-		else if (age == 1)
-			ageString = "qui a moins de 18";
-		else if (age == 2)
-			ageString = "qui a entre 18 et 35";
-		else if (age == 3)
-			ageString = "qui a plus de 35";
-		String txt = this.prenom + " " + this.nom +" ("+ sx + " " + ageString + " ans a une perf de "+this.perf+") " +
-						prio + " et a joué "+this.nbMatchJoues+" fois au total";
-		return txt;
+		if (age == 0) res += "âge indéfini/";
+		else if (age == 1) res += "-18/";
+		else if (age == 2) res += "18-35/";
+		else if (age == 3) res += "+35/";
+
+		if(this.sexe) res += "homme/" ;
+		else res += "femme/" ;
+
+		if(this.nouveau) res+= "nouveau/";
+		else res += "ancien/";
+
+		if(this.joue) res += "joue/";
+		else res += "ne joue pas/";
+
+		res += "score:" + this.score + "/" + "perf:" + this.perf + "/";
+
+		if (niveau == 0) res += "niveau indéfini/";
+		else if (niveau == 1) res += "Débutant/";
+		else if (niveau == 2) res += "Intermédiaire/";
+		else if (niveau == 3) res += "Confirmé/";
+
+		if (this.peutJouer) res += "peut joueur";
+		else res += "ne peut pas jouer";
+		return res;
 	}
+	
 	/** Retourne si le joueur peut jouer ou non
 	*
 	* @return actif 0 : le joueur ne peut pas jouer / 1 : le joueur peut jouer

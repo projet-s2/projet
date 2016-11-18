@@ -86,8 +86,9 @@ public class ImporterJoueursControlleur implements ActionListener {
 
         String joueurCourant[];
         boolean sexe, nouveau;
-        int age = 0;
-        int niveau = 0;
+        int age;
+        int niveau;
+
         String nom, prenom;
         for (String ligne : resultatRead) {
             // Ordre d'une ligne du fichier CSV
@@ -95,12 +96,7 @@ public class ImporterJoueursControlleur implements ActionListener {
             // [3] ancienneté (0 : Ancien/ 1 : Nouveau)
             // [4] âge (0 : vide /1 : "-18 ans" /2 : "18-35 ans" / 3 : "35+ ans")
             // [5] : niveau  (0 : vide /1 : "Débutant" / 2 : "Intermédiaire" / 3 : "Confirmé")
-            joueurCourant = ligne.split(",",-1);
-
-            /*if (joueurCourant.length == 5) {
-                System.arraycopy(joueurCourant, 0, joueurCourant, 0, 6);
-                joueurCourant[5] = "";
-            }*/
+            joueurCourant = ligne.split(",",-1); // le "-1" sert à récupérer une chaine même si elle est vide
 
             prenom = joueurCourant[0];
             nom = joueurCourant[1];
@@ -115,6 +111,8 @@ public class ImporterJoueursControlleur implements ActionListener {
                 throw new ImportExportException("Problème avec l'ancienneté");
             nouveau = (joueurCourant[3].equals("Nouveau")); // Si la quatrième valeur est Nouveau, nouveau = true, sinon nouveau = false
 
+            age = 0; //Utilse si l'âge est indéfini
+
             //Lecture de l'âge
             //Si la cinquième valeur n'est ni -18 ni 18-35 ni 35+ ni une chaine vide
             if (!joueurCourant[4].isEmpty()) {
@@ -128,6 +126,9 @@ public class ImporterJoueursControlleur implements ActionListener {
                 else if (joueurCourant[4].equals("35+ ans"))
                     age = 3;
             }
+
+            niveau = 0; // Utile si le niveau est indéfini
+
             //Lecture du niveau
             //Si la sixième valeur n'est ni débutant ni confirmé ni intermédiaire ni une chaine vide
             if (!joueurCourant[5].isEmpty()) {
@@ -140,7 +141,7 @@ public class ImporterJoueursControlleur implements ActionListener {
                 else if (joueurCourant[5].equals("Intermédiaire"))
                     niveau = 3;
             }
-            //TODO : TEST PAR RAPPORT AUX CARACTERISTIQUES NON DEFINIES
+
             listeRetour.add(new Joueur(Joueur.nbJoueursCrees, nom, prenom, age, sexe, nouveau, niveau, true));
         }
         return listeRetour;
