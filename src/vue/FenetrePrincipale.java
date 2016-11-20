@@ -129,8 +129,8 @@ public class FenetrePrincipale extends JFrame {
 		//panel west qui contiens les boutons
 		JPanel westButtonPan = new JPanel(new GridBagLayout());
 		GridBagConstraints gbcWest = new GridBagConstraints();
-		gbcWest.weighty = 1;
-		gbcWest.anchor = GridBagConstraints.NORTH;
+		/*gbcWest.weighty = 1;
+		gbcWest.anchor = GridBagConstraints.NORTH;*/
 
 		//Ajout du chronometre
 		Chrono chronometre = new Chrono(300);
@@ -236,7 +236,7 @@ public class FenetrePrincipale extends JFrame {
 
 
 
-		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
+		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
 		//On parcours les terrains pour les afficher
 		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
 			panTour.add(nouveauTerrain(i));
@@ -449,4 +449,10 @@ public class FenetrePrincipale extends JFrame {
 		this.boxTerrains.add(j4);
 
 		return  terrain;}
+
+	public void actualiserTerrains() {
+		for (int i = 0; i < boxTerrains.size(); i++) {
+			//boxTerrains.set(i, new JComboBox(tournoi.getAllJoueurs().toArray())));
+		}
+	}
 }
