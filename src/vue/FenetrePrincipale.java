@@ -212,7 +212,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
 		JButton setPaires = new JButton("Nouveau Tour");
-		//setPaires.addActionListener(//todo generer paires et matches);
+		setPaires.addActionListener(new NouveauTourControleur(this));
 		setPaires.setPreferredSize(new Dimension(140, 40));
 		gbcWest.gridy = 9;
 		westButtonPan.add(setPaires, gbcWest);
@@ -238,9 +238,9 @@ public class FenetrePrincipale extends JFrame {
 
 		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
 		//On parcours les terrains pour les afficher
-		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			panTour.add(nouveauTerrain(i));
-		}
+//		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
+//			panTour.add(nouveauTerrain(i));
+//		}
 		JScrollPane terrains = new JScrollPane(panTour);
 
 		tournois.add(terrains, BorderLayout.CENTER);
@@ -358,7 +358,7 @@ public class FenetrePrincipale extends JFrame {
 	public void supprimerJoueurTable()
 	{
 		int i = listeJoueursModele.getRowCount();
-		this.listeJoueursModele.removeRow(i-1);
+		this.listeJoueursModele.removeRow(i - 1);
 		this.actualiserJoueurs();
 		this.actualiserNoms();
 	}
@@ -389,7 +389,7 @@ public class FenetrePrincipale extends JFrame {
 			j1 = new JComboBox(tournoi.getAllJoueurs().toArray());
 			j2 = new JComboBox(tournoi.getAllJoueurs().toArray());
 		}
-		JTextField score1 = new JTextField();
+		JSpinner score1 = new JSpinner();
 		JPanel equipeUn = new JPanel(new GridBagLayout());
 		j1.setPreferredSize(new Dimension(125, 25));
 		j2.setPreferredSize(new Dimension(125, 25));
@@ -421,7 +421,7 @@ public class FenetrePrincipale extends JFrame {
 			j3 = new JComboBox(tournoi.getAllJoueurs().toArray());
 			j4 = new JComboBox(tournoi.getAllJoueurs().toArray());
 		}
-		JTextField score2 = new JTextField();
+		JSpinner score2 = new JSpinner();
 		JPanel equipeDeux = new JPanel(new GridBagLayout());
 		j3.setPreferredSize(new Dimension(125, 25));
 		j4.setPreferredSize(new Dimension(125, 25));
@@ -439,6 +439,7 @@ public class FenetrePrincipale extends JFrame {
 
 		//Bouton valider
 		JButton valider = new JButton("Valider");
+		valider.addActionListener(new SaisirScoreControlleur(score1,score2,this,this.tournoi,i));
 		gbc.gridy = 4;
 		terrain.add(valider, gbc);
 
@@ -452,7 +453,9 @@ public class FenetrePrincipale extends JFrame {
 
 	public void actualiserTerrains() {
 		for (int i = 0; i < boxTerrains.size(); i++) {
-			//boxTerrains.set(i, new JComboBox(tournoi.getAllJoueurs().toArray())));
+			this.nouveauTerrain(i);
+
+
 		}
 	}
 }
