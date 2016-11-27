@@ -42,6 +42,10 @@ public class ExporterJoueursControlleur implements ActionListener {
                     // qui va créer un fichier du nom qu'à choisi l'utilisateur et écrire dans celui ci
                     BufferedWriter fichier = new BufferedWriter(new FileWriter(dial.getDirectory().concat(dial.getFile())));
 
+                    //Première ligne (entête)
+                    fichier.write("Prénom,Nom,Sexe,Ancienneté,Âge,Niveau");
+                    fichier.newLine();
+
                     //On parcourt tous les anciensJoueurs de tournoi, on les découpe et on les écrit dans le fichier
                     for (Joueur j : tournoi.getAnciensJoueurs()) {
                         fichier.write(decouperJoueur(j));
@@ -69,17 +73,47 @@ public class ExporterJoueursControlleur implements ActionListener {
      */
     private String decouperJoueur(Joueur joueur) {
         // Ordre d'une ligne du fichier CSV
-        // [0] : id / [1] : nom / [2] : prenom / [3] : age (0 : Indéfini / 1 : -18 jeune / 2 : 18-35 senior / 3 : 35+ veteran)
-        // [4] : sexe (0 : femme / 1 : homme) / [5] : nouveau (0 : ancien / 1 : nouveau)
-        // [6] : niveau  (0 : Indéfini / 1 : débutant / 2 : Intérmédiaire / 3 : confirmé) / [7] : peutJouer
+        // Prénom,Nom,Sexe,Ancienneté,Âge,Niveau
+        // [0] : prenom / [1] : nom / [2] : sexe (0 : "Femme" / 1 : "Homme")
+        // [3] ancienneté (0 : "Ancien"/ 1 : "Nouveau")
+        // [4] âge (0 : "" /1 : "-18 ans" /2 : "18-35 ans" / 3 : "35+ ans")
+        // [5] : niveau  (0 : "" /1 : "Débutant" / 2 : "Intermédiaire" / 3 : "Confirmé")
+        String res = "";
+        res += joueur.getPrenom() + "," + joueur.getNom() + ",";
+        if (joueur.getSexe())
+            res += "Homme,";
+        else
+            res += "Femme,";
 
-        return Integer.toString(joueur.getId()) + "," +
-                joueur.getNom() + "," +
-                joueur.getPrenom() + "," +
-                Integer.toString(joueur.getAge()) + "," +
-                (joueur.getSexe() ? "1," : "0,") +
-                (joueur.getNouveau() ? "1," : "0,") +
-                Integer.toString(joueur.getNiveau()) + "," +
-                (joueur.peutJouer() ? "1" : "0");
+        if (joueur.getNouveau()) {
+            res += "Nouveau,";
+        } else {
+            res += "Ancien,";
+        }
+
+        int age = joueur.getAge();
+        if (age == 0) {
+            res += ",";
+        } else if (age == 1) {
+            res += "-18 ans,";
+        } else if (age == 2) {
+            res += "18-35 ans,";
+        } else {
+            res += "35+ ans,";
+        }
+
+        int niveau = joueur.getNiveau();
+        System.out.println(joueur.getPrenom() + " " + joueur.getNiveau());
+        if (niveau == 0) {
+            res += "";
+        } else if (niveau == 1) {
+            res +="Débutant";
+        } else if (niveau == 2) {
+            res += "Intermédiaire";
+        } else {
+            res += "Confirmé";
+        }
+
+        return res;
     }
 }

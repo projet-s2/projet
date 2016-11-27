@@ -71,7 +71,7 @@ public class ImporterJoueursControlleur implements ActionListener {
      * @return une ArrayList avec tous les joueurs
      */
     private ArrayList<Joueur> csvReader(String fileDirectory) throws java.io.IOException, ImportExportException {
-        ArrayList listeRetour = new ArrayList<Joueur>();
+        ArrayList<Joueur> listeRetour = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new FileReader(fileDirectory));
 
@@ -136,9 +136,9 @@ public class ImporterJoueursControlleur implements ActionListener {
                     throw new ImportExportException("Problème avec le niveau");
                 if (joueurCourant[5].equals("Débutant"))
                     niveau = 1;
-                else if (joueurCourant[5].equals("Confirmé"))
-                    niveau = 2;
                 else if (joueurCourant[5].equals("Intermédiaire"))
+                    niveau = 2;
+                else if (joueurCourant[5].equals("Confirmé"))
                     niveau = 3;
             }
 
