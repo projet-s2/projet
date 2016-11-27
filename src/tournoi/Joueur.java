@@ -1,5 +1,6 @@
 package tournoi;
-import liste.Liste;
+
+import java.util.ArrayList;
 
 /**Joueur est la classe représentant un joueur du tournoi.
  *
@@ -8,7 +9,6 @@ import liste.Liste;
  * @version 0.1
  */
 public class Joueur {
-	
 
 	private int id;
 	private String nom;
@@ -31,7 +31,7 @@ public class Joueur {
 	// 2 : Intermédiaire
 	// 3 : Confirmé
 	private int niveau;
-	private Liste anciensPart;
+	private ArrayList<Joueur> anciensPart;
 	private boolean prio;
 	private int nbMatchJoues;
 	private boolean peutJouer;
@@ -67,7 +67,7 @@ public class Joueur {
 		//on calcule la performance en fonction de l'age, du sexe et du niveau
 		
 		this.prio = true;
-		this.anciensPart = new Liste();
+		this.anciensPart = new ArrayList<>();
 		this.nbMatchJoues = 0;
 		this.peutJouer = peutJouer;
 
@@ -317,7 +317,7 @@ public class Joueur {
 	 *
 	 * @return anciensPart la liste de tous les anciens partenaires d'un joueur
 	 */
-	public Liste getAnciensPart(){
+	public ArrayList<Joueur> getAnciensPart(){
 		return this.anciensPart;
 	}
 
@@ -329,7 +329,7 @@ public class Joueur {
 	private boolean aJoueAvec(Joueur j1){
 		boolean res = false;
 		for (int i=0;i<this.getAnciensPart().size() ; i++) {
-			if(((Joueur) this.getAnciensPart().get(i)).equals(j1)) {
+			if((this.getAnciensPart().get(i)).equals(j1)) {
 				res =true;
 			}
 		}
@@ -343,10 +343,7 @@ public class Joueur {
 	 */
 	public boolean estCompatibleAvec(Joueur joueur){
 		//On vérifie si les joueurs ont déjà joué ensemble
-		if(this.aJoueAvec(joueur)){
-			return false;
-		}
-		return true;
+		return !this.aJoueAvec(joueur);
 	}
 
 	/** Redéfinition de la méthode equals()
