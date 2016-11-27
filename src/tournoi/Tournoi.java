@@ -1,8 +1,6 @@
 package tournoi;
 
 import java.util.ArrayList;
-
-import java.io.*;
 import java.util.Collections;
 import java.util.regex.*;
 
@@ -43,8 +41,8 @@ public class Tournoi {
 		}
 		this.nouveauxJoueurs = new ArrayList<Joueur>();
 		this.anciensJoueurs = new ArrayList<Joueur>();
-		this.terrains = new ArrayList();
-		this.paires = new ArrayList();
+		this.terrains = new ArrayList<>();
+		this.paires = new ArrayList<>();
 		this.nbrTerrains = nbrTerrains;
 		this.nom = leNom;
 		initialiserTerrains();
@@ -182,7 +180,7 @@ public class Tournoi {
 		trierNouveauxJoueurs();
 		this.creerPaires();
 		for (int i = 0; i < this.terrains.size(); i++) {
-			((Terrain) this.terrains.get(i)).setMatch(null);
+			(this.terrains.get(i)).setMatch(null);
 		}
 		this.attribuerMatchs();
 
@@ -223,8 +221,8 @@ public class Tournoi {
 		if (this.nouveauxJoueurs.size() == 0 && this.anciensJoueurs.size() == 0) {
 			throw new TournoiVideException("Il n'y a pas de joueurs dans le tournoi");
 		}
-		ArrayList<Joueur> nouveauxJoueursActifs = new ArrayList();
-		ArrayList<Joueur> anciensJoueursActifs = new ArrayList();
+		ArrayList<Joueur> nouveauxJoueursActifs = new ArrayList<>();
+		ArrayList<Joueur> anciensJoueursActifs = new ArrayList<>();
 		for (int i = 0; i < this.nouveauxJoueurs.size(); i++) {
 			if ((this.nouveauxJoueurs.get(i)).peutJouer()) {
 				nouveauxJoueursActifs.add(this.nouveauxJoueurs.get(i));
@@ -235,7 +233,7 @@ public class Tournoi {
 				anciensJoueursActifs.add(this.anciensJoueurs.get(i));
 			}
 		}
-		this.paires = new ArrayList();
+		this.paires = new ArrayList<>();
 		//en triant les listes en fonction du nombres de match joué en parcourant les liste on prendra en premier des
 		// les joueur avec le moins de matchs a leurs actif
 		Collections.sort(anciensJoueursActifs, new ComparateurjoueurParNbMatches());
@@ -397,7 +395,7 @@ public class Tournoi {
 		ArrayList<Match> matchs = new ArrayList<Match>();
 		//todo prise en compte de qui a deja jouer avec qui
 		for (i = 0; i < ((int) (Math.floor(this.paires.size() / 2))); i += 2) {
-			matchs.add(new Match((Paire) this.paires.get(i), (Paire) this.paires.get(i + 1)));
+			matchs.add(new Match(this.paires.get(i), this.paires.get(i + 1)));
 		}
 		//range les match en untilisant prio comme comparateur
 		Collections.sort(matchs,new ComparateurMatchPrio());
@@ -413,7 +411,7 @@ public class Tournoi {
 		//On affiche les matchs pour voir si tout est en ordre
 		String res = "";
 		for (int i1 = 0; i1 < Math.min(this.terrains.size(), matchs.size()); i1++) {
-			res += ((Terrain) this.terrains.get(i1)).getMatch().toString() + "\n";
+			res += this.terrains.get(i1).getMatch().toString() + "\n";
 		}
 		//On parcourt les anciens joueurs et on rend prioritaires ceux qui ne jouent pas
 		for (int i1 = 0; i1 < this.anciensJoueurs.size(); i1++) {
@@ -440,7 +438,7 @@ public class Tournoi {
 		//On vérifie le score des équipes pour chaque terrain
 		for (int i = 0; i < this.terrains.size(); i++) {
 			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
-			if (((Terrain) this.terrains.get(i)).getMatch() != null) {
+			if (this.terrains.get(i).getMatch() != null) {
 				//On détermine les vainqueurs de chaque match
 				//((Terrain)this.terrains.get(i)).getMatch().modifierScores();
 			}
@@ -517,7 +515,7 @@ public class Tournoi {
 	public String toString() {
 		String res = "";
 		for (int i = 0; i < this.paires.size(); i++) {
-			res += ((Paire) this.paires.get(i)).toString() + "\n";
+			res += this.paires.get(i).toString() + "\n";
 		}
 		return res;
 	}
