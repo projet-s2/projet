@@ -14,10 +14,10 @@ public class ComparateurJoueurScore implements Comparator<Joueur> {
      */
     @Override
     public int compare(Joueur j1, Joueur pj2) {
-        if (j1.getScore() > pj2.getScore()) {
+        if (j1.getScore() < pj2.getScore()) {
             return 1;
         } else {
-            if (j1.getScore() < pj2.getScore()) {
+            if (j1.getScore() > pj2.getScore()) {
                 return -1;
             } else {
                 return 0;
