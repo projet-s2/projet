@@ -241,32 +241,7 @@ public class Joueur {
 	@Override
 	public String toString(){
 		String res = "";
-		res += this.id + "/" + this.prenom + "/" + this.nom + "/";
-
-		if (age == 0) res += "âge indéfini/";
-		else if (age == 1) res += "-18/";
-		else if (age == 2) res += "18-35/";
-		else if (age == 3) res += "+35/";
-
-		if(this.sexe) res += "homme/" ;
-		else res += "femme/" ;
-
-		if(this.nouveau) res+= "nouveau/";
-		else res += "ancien/";
-
-		if(this.joue) res += "joue/";
-		else res += "ne joue pas/";
-
-		res += "score:" + this.score + "/" + "perf:" + this.perf + "/";
-
-		if (niveau == 0) res += "niveau indéfini/";
-		else if (niveau == 1) res += "Débutant/";
-		else if (niveau == 2) res += "Intermédiaire/";
-		else if (niveau == 3) res += "Confirmé/";
-
-		if (this.peutJouer) res += "peut joueur";
-		else res += "ne peut pas jouer";
-		return res;
+		return this.prenom + "  " + this.nom;
 	}
 	
 	/** Retourne si le joueur peut jouer ou non
