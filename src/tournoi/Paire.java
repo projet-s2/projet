@@ -14,6 +14,8 @@ public class Paire {
 	private int tour;
 	private int score;
 	private int perf;
+	private boolean dansMatch;
+
 
 	/** Constructeur de la classe Paire
 		*
@@ -30,6 +32,7 @@ public class Paire {
 		this.tour = tour;
 		this.perf = j1.getPerf()+j2.getPerf();
 		this.joueursJouent(false);
+		this.dansMatch = false;
 	}
 	public Paire(Joueur j1, Joueur j2){
 		this(j1, j2, 0, 0);
@@ -109,6 +112,14 @@ public class Paire {
 		return txt;
 	}
 
+	public boolean isDansMatch() {
+		return dansMatch;
+	}
+
+	public void setDansMatch(boolean dansMatch) {
+		this.dansMatch = dansMatch;
+	}
+
 	/**
 	 * modifie si les joueurs de la paire jouent
 	 * @param j vrai s'ils jouent faux sinon
@@ -116,6 +127,7 @@ public class Paire {
 	public void joueursJouent(boolean j){
 		this.joueur1.setJoue(j);
 		this.joueur2.setJoue(j);
+
 	}
 
 	/**
@@ -224,5 +236,15 @@ public class Paire {
 		else {
 			return false;
 		}
+	}
+
+	/** Retourne si la paire est compatible avec un autre (en paramètre)
+	 *
+	 * @param paire2 la paire a tester
+	 * @return booléen 0 : n'est pas compatible / 1 : est compatible
+	 */
+	public boolean estCompatibleAvec(Paire paire2){
+		//On vérifie si les joueurs ont déjà joué ensemble
+		return !this.joueur1.aJoueAvec(paire2.joueur1);
 	}
 }
