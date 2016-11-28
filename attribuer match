@@ -1,0 +1,47 @@
+private void attribuerMatchs() {
+		trierPaires();
+		//On créer une liste de matchs avec les paires couplées par niveau
+		int i;
+		ArrayList<Match> matchs = new ArrayList<Match>();
+		// prise en compte de qui a deja jouer avec qui
+		for(Paire paire1 : this.paires)
+		{
+		for(Paire paire2 : this.paires)
+        		{
+        		//les paires sont differentes, compatibles et libres
+        		if(paire1!=paire2 && paire1.estCompatible(paire2) && !paire2.isDansMatch())
+                //todo associer les paires et setdans paore true
+
+        		}
+
+
+
+		}
+
+
+
+
+		//range les match en untilisant prio comme comparateur
+		Collections.sort(matchs,new ComparateurMatchPrio());
+
+		//on vide les terrains
+		terrains.clear();
+		//On parcourt les matchs et on leur attribue les terrains restants
+		for( i=0;i<matchs.size()&&i<this.nbrTerrains;i++ ){
+			terrains.add(i, new Terrain(i,matchs.get(i)));
+		}
+
+
+		//On affiche les matchs pour voir si tout est en ordre
+		String res = "";
+		for (int i1 = 0; i1 < Math.min(this.terrains.size(), matchs.size()); i1++) {
+			res += this.terrains.get(i1).getMatch().toString() + "\n";
+		}
+		//On parcourt les anciens joueurs et on rend prioritaires ceux qui ne jouent pas
+		for (int i1 = 0; i1 < this.anciensJoueurs.size(); i1++) {
+			(this.anciensJoueurs.get(i1)).setPrio(!(this.anciensJoueurs.get(i1)).getJoue());
+		}
+		for (int i1 = 0; i1 < this.nouveauxJoueurs.size(); i1++) {
+			(this.nouveauxJoueurs.get(i1)).setPrio(!(this.nouveauxJoueurs.get(i1)).getJoue());
+		}
+	}

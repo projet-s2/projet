@@ -301,7 +301,7 @@ public class Joueur {
 	 * @param j1 le joueur à tester
 	 * @return res 0 : ils n'ont jamais joué ensemble / 1 : ils ont joué ensemble
 	 */
-	private boolean aJoueAvec(Joueur j1){
+	public boolean aJoueAvec(Joueur j1){
 		boolean res = false;
 		for (int i=0;i<this.getAnciensPart().size() ; i++) {
 			if((this.getAnciensPart().get(i)).equals(j1)) {
