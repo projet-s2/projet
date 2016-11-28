@@ -15,10 +15,7 @@ public  class ComboBoxSwapControlleur implements ItemListener {
     private FenetrePrincipale vue;
     private ArrayList<JComboBox> boxTab;
     private JComboBox boxActuel;
-    /**
-     * constructeur de la fenêtre classement
-     * @param vue la fenetre principale
-     */
+
     public ComboBoxSwapControlleur(FenetrePrincipale v, JComboBox b) {
         this.vue = v;
         this.boxTab = vue.getBoxTerrains();
@@ -30,14 +27,14 @@ public  class ComboBoxSwapControlleur implements ItemListener {
          Quand on selectionne un joueur, on parcours le tableau pour chercher si le joueur choisit est selectionné,
          si il l'est on remplace le joueur selectionné par ce JComboBox par notre actuel.
          */
-
+        String previous = "ComboBoxSwapControlleur";
         if(e.getStateChange() == ItemEvent.DESELECTED) {
-            //Joueur previous = boxActuel.getSelectedItem();
+            previous = boxActuel.getSelectedItem().toString();
         }
-        else if(e.getStateChange() == ItemEvent.SELECTED) {
+        if(e.getStateChange() == ItemEvent.SELECTED) {
             for(int i=0;i<boxTab.size();i++) {
                 if (boxTab.get(i).getSelectedItem().equals(boxActuel.getSelectedItem())) {
-                    //boxTab.get(i).setSelectedItem(previous);
+                    boxTab.get(i).setSelectedItem(previous);
                 }
             }
         }

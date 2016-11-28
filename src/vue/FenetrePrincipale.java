@@ -26,7 +26,7 @@ public class FenetrePrincipale extends JFrame {
 	String[] joueurs;
 	private JPanel[] terrains;
 	private BufferedImage image;
-	private ArrayList<JComboBox> boxTerrains = new ArrayList<JComboBox>();
+	private ArrayList<JComboBox> boxTerrains = new ArrayList<>();
 	private JPanel tournois;
 	private JTabbedPane onglets;
 
@@ -230,25 +230,9 @@ public class FenetrePrincipale extends JFrame {
 
 
 
-
 		////Onglet Tournoi
 		tournois = new JPanel();
 		tournois.setLayout(new BorderLayout());
-		/*JPanel panTour = new JPanel();
-
-
-
-		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
-		//On parcours les terrains pour les afficher
-		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			panTour.add(nouveauTerrain(i));
-		}
-		JScrollPane terrains = new JScrollPane(panTour);
-
-		tournois.add(terrains, BorderLayout.CENTER);*/
-
-
-
 
 		//On ajoute tous les onglets
 		onglets.addTab("Joueurs", joueurs);
@@ -376,6 +360,9 @@ public class FenetrePrincipale extends JFrame {
 		JPanel terrain = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 
+		ArrayList<Joueur> joueurDansCombo = tournoi.getAllJoueurs();
+		joueurDansCombo.add(new Joueur(420, "", "", 42, true, true, 0, false));
+
 		//Terrain n° X
 		int o = i + 1;
 		JLabel numTer = new JLabel("Terrain "+o);
@@ -387,12 +374,19 @@ public class FenetrePrincipale extends JFrame {
 		JComboBox j1 = new JComboBox();
 		JComboBox j2 = new JComboBox();
 		if(!this.tournoi.tournoisVide()) {
-			//this.actualiserJoueurs();
-			j1 = new JComboBox(tournoi.getAllJoueurs().toArray());
-			j2 = new JComboBox(tournoi.getAllJoueurs().toArray());
+			j1 = new JComboBox(joueurDansCombo.toArray());
+			j2 = new JComboBox(joueurDansCombo.toArray());
 			try {
-				j1.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur1());
-				j2.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur2());
+				//if((i*2)-1 >= tournoi.getAllJoueurs().size()) {
+					j1.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur1());
+				//} else {
+					j1.setSelectedIndex(tournoi.getAllJoueurs().size()/4);
+				//}
+				//if((i*2) >= tournoi.getAllJoueurs().size()) {
+					j2.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur2());
+				//} else {
+					j2.setSelectedIndex(tournoi.getAllJoueurs().size()/4);
+				//}
 			} catch(Exception e) {
 				System.out.println("moins de joueur que de terrain?");
 			}
@@ -426,8 +420,8 @@ public class FenetrePrincipale extends JFrame {
 		JComboBox j3 = new JComboBox();
 		JComboBox j4 = new JComboBox();
 		if(!this.tournoi.tournoisVide()) {
-			j3 = new JComboBox(tournoi.getAllJoueurs().toArray());
-			j4 = new JComboBox(tournoi.getAllJoueurs().toArray());
+			j3 = new JComboBox(joueurDansCombo.toArray());
+			j4 = new JComboBox(joueurDansCombo.toArray());
 			try {
 				j3.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur1());
 				j4.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur2());
@@ -462,6 +456,10 @@ public class FenetrePrincipale extends JFrame {
 		this.boxTerrains.add(j2);
 		this.boxTerrains.add(j3);
 		this.boxTerrains.add(j4);
+		/*j1.addItemListener(new ComboBoxSwapControlleur(this, j1));
+		j2.addItemListener(new ComboBoxSwapControlleur(this, j2));
+		j3.addItemListener(new ComboBoxSwapControlleur(this, j3));
+		j4.addItemListener(new ComboBoxSwapControlleur(this, j4));*/
 
 		return  terrain;}
 
@@ -469,8 +467,6 @@ public class FenetrePrincipale extends JFrame {
 		tournois = new JPanel();
 		tournois.setLayout(new BorderLayout());
 		JPanel panTour = new JPanel();
-
-
 
 		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
 		//On parcours les terrains pour les afficher
@@ -482,6 +478,7 @@ public class FenetrePrincipale extends JFrame {
 		tournois.add(terrains, BorderLayout.CENTER);
 		onglets.removeTabAt(1);
 		onglets.addTab("Tournois", tournois);
+		onglets.setSelectedIndex(1);
 	}
 
 
