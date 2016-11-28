@@ -491,7 +491,7 @@ public class Tournoi {
 
 
 	public ArrayList getClassementAnciens() {
-		this.trierNouveauxJoueurs();
+		this.trierAnciensJoueurs();
 		return this.anciensJoueurs;
 	}
 
