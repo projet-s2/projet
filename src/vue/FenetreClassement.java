@@ -89,7 +89,11 @@ public class FenetreClassement extends JFrame
 
         if(s.equals("Tous"))
         {
-            ArrayList<Joueur> listeAllJoueurs = tournoi.getNouveauxJoueurs();
+            ArrayList<Joueur> listeAllJoueurs = new ArrayList<Joueur>();
+            ArrayList<Joueur> listeNouveaux = tournoi.getNouveauxJoueurs();
+            ArrayList<Joueur> listeAnciens = tournoi.getAnciensJoueurs();
+            listeAllJoueurs.addAll(listeNouveaux);
+            listeAllJoueurs.addAll(listeAnciens);
             Collections.sort(listeAllJoueurs, new ComparateurJoueurScore());
             for (Joueur j : listeAllJoueurs)
             {
@@ -99,9 +103,8 @@ public class FenetreClassement extends JFrame
 
         if(s.equals("Nouveaux"))
         {
-            ArrayList<Joueur> listeJoueurNouveau = tournoi.getNouveauxJoueurs();
-            Collections.sort(listeJoueurNouveau, new ComparateurJoueurScore());
-            for (Joueur j : listeJoueurNouveau)
+            ArrayList<Joueur> listeJoueurNouveaux = tournoi.getClassementNouveaux();
+            for (Joueur j : listeJoueurNouveaux)
             {
                 ajouterJoueurTable(j);
             }
@@ -109,9 +112,8 @@ public class FenetreClassement extends JFrame
 
         if(s.equals("Anciens"))
         {
-            ArrayList<Joueur> listeJoueurAncien = tournoi.getAnciensJoueurs();
-            Collections.sort(listeJoueurAncien, new ComparateurJoueurScore());
-            for (Joueur j : listeJoueurAncien)
+            ArrayList<Joueur> listeJoueurAnciens = tournoi.getClassementAnciens();
+            for (Joueur j : listeJoueurAnciens)
             {
                 ajouterJoueurTable(j);
             }
