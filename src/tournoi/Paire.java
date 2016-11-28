@@ -239,12 +239,15 @@ public class Paire {
 	}
 
 	/** Retourne si la paire est compatible avec un autre (en paramètre)
-	 *
+	 * On considère qu'elle est compatibles si un des joueurs n'a pas joué avec aucun des deux autres joueru de la paire antagoniste
 	 * @param paire2 la paire a tester
 	 * @return booléen 0 : n'est pas compatible / 1 : est compatible
 	 */
 	public boolean estCompatible(Paire paire2){
 		//On vérifie si les joueurs ont déjà joué ensemble
-		return !this.joueur1.aJoueAvec(paire2.joueur1);
+		return !this.joueur1.aJoueAvec(paire2.joueur1)&&
+				!this.joueur1.aJoueAvec(paire2.joueur2)&&
+				!this.joueur2.aJoueAvec(paire2.joueur1)&&
+				!this.joueur2.aJoueAvec(paire2.joueur2);
 	}
 }
