@@ -243,7 +243,7 @@ public class Paire {
 	 * @param paire2 la paire a tester
 	 * @return booléen 0 : n'est pas compatible / 1 : est compatible
 	 */
-	public boolean estCompatibleAvec(Paire paire2){
+	public boolean estCompatible(Paire paire2){
 		//On vérifie si les joueurs ont déjà joué ensemble
 		return !this.joueur1.aJoueAvec(paire2.joueur1);
 	}

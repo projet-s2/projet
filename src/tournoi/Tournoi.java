@@ -313,9 +313,35 @@ public class Tournoi {
 		//On créer une liste de matchs avec les paires couplées par niveau
 		int i;
 		ArrayList<Match> matchs = new ArrayList<Match>();
-		//todo prise en compte de qui a deja jouer avec qui
-		for (i = 0; i < ((int) (Math.floor(this.paires.size() / 2))); i += 2) {
-			matchs.add(new Match(this.paires.get(i), this.paires.get(i + 1)));
+		// prise en compte de qui a deja jouer avec qui
+		for(Paire paire1 : this.paires)
+		{
+			for(Paire paire2 : this.paires)
+			{
+				//les paires sont differentes, compatibles et libres
+				if(paire1!=paire2 && paire1.estCompatible(paire2) && !paire2.isDansMatch()){
+					matchs.add(new Match(paire1, paire2));
+					paire1.setDansMatch(true);
+					paire2.setDansMatch(true);
+				}
+
+
+			}
+		}
+		//on reparcours pour associer les dernières paires meme si elles ne tsont pas compatibles
+		for(Paire paire1 : this.paires)
+		{
+			for(Paire paire2 : this.paires)
+			{
+				//les paires sont differentes, compatibles et libres
+				if(paire1!=paire2 && !paire2.isDansMatch()){
+					matchs.add(new Match(paire1, paire2));
+					paire1.setDansMatch(true);
+					paire2.setDansMatch(true);
+				}
+
+
+			}
 		}
 		//range les match en untilisant prio comme comparateur
 		Collections.sort(matchs,new ComparateurMatchPrio());
@@ -388,6 +414,11 @@ public class Tournoi {
 	public void setScore(int numTerrain, int scoreP1, int scoreP2) {
 		(this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
 		( this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
+		this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur1().ajouterAnciensPart(this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur2());
+		this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur2().ajouterAnciensPart(this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur1());
+		this.terrains.get(numTerrain).getMatch().getPaire2().getJoueur1().ajouterAnciensPart(this.terrains.get(numTerrain).getMatch().getPaire2().getJoueur2());
+		this.terrains.get(numTerrain).getMatch().getPaire2().getJoueur2().ajouterAnciensPart(this.terrains.get(numTerrain).getMatch().getPaire2().getJoueur1());
+
 	}
 
 	/**
