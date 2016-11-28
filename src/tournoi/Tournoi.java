@@ -103,23 +103,10 @@ public class Tournoi {
 	 *
 	 * @return la liste des anciens adhérents joueurs
 	 */
-	public String[] getAllJoueurs() {
-		ArrayList<Joueur> classA = this.getAnciensJoueurs();
-		ArrayList<Joueur> classN = this.getNouveauxJoueurs();
-		String[] joueurs = new String[classA.size() + classN.size()];// voir combiens de gens le tournois acceuille pour adapter
-		//On rentre les joueurs anciens dans les X premières cases
-		for (int i = 0; i < classA.size(); i++) {
-			Joueur j = classA.get(i);
-			joueurs[i] = "" + j.getNom() + " " + j.getPrenom();
-
-		}
-		//On rentre les joueurs nouveaux dans les cases restantes
-		for (int i = 0; i < classN.size(); i++) {
-			Joueur j = (Joueur) classN.get(i);
-			joueurs[classA.size() + i] = "" + j.getNom() + " " + j.getPrenom();
-
-		}
-		return joueurs;
+	public ArrayList<Joueur> getAllJoueurs() {
+		ArrayList<Joueur> player = this.getNouveauxJoueurs();
+		player.addAll(this.getAnciensJoueurs());
+		return player;
 	}
 
 
