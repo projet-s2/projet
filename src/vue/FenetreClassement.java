@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class FenetreClassement extends JFrame
 {
@@ -87,13 +89,13 @@ public class FenetreClassement extends JFrame
 
         if(s.equals("Tous"))
         {
-            ArrayList<Joueur> listeJoueurNouveau = tournoi.getNouveauxJoueurs();
-            ArrayList<Joueur> listeJoueurAncien = tournoi.getAnciensJoueurs();
-            for (Joueur j : listeJoueurNouveau)
-            {
-                ajouterJoueurTable(j);
-            }
-            for (Joueur j : listeJoueurAncien)
+            ArrayList<Joueur> listeAllJoueurs = new ArrayList<Joueur>();
+            ArrayList<Joueur> listeNouveaux = tournoi.getNouveauxJoueurs();
+            ArrayList<Joueur> listeAnciens = tournoi.getAnciensJoueurs();
+            listeAllJoueurs.addAll(listeNouveaux);
+            listeAllJoueurs.addAll(listeAnciens);
+            Collections.sort(listeAllJoueurs, new ComparateurJoueurScore());
+            for (Joueur j : listeAllJoueurs)
             {
                 ajouterJoueurTable(j);
             }
@@ -101,8 +103,8 @@ public class FenetreClassement extends JFrame
 
         if(s.equals("Nouveaux"))
         {
-            ArrayList<Joueur> listeJoueurNouveau = tournoi.getNouveauxJoueurs();
-            for (Joueur j : listeJoueurNouveau)
+            ArrayList<Joueur> listeJoueurNouveaux = tournoi.getClassementNouveaux();
+            for (Joueur j : listeJoueurNouveaux)
             {
                 ajouterJoueurTable(j);
             }
@@ -110,8 +112,8 @@ public class FenetreClassement extends JFrame
 
         if(s.equals("Anciens"))
         {
-            ArrayList<Joueur> listeJoueurAncien = tournoi.getAnciensJoueurs();
-            for (Joueur j : listeJoueurAncien)
+            ArrayList<Joueur> listeJoueurAnciens = tournoi.getClassementAnciens();
+            for (Joueur j : listeJoueurAnciens)
             {
                 ajouterJoueurTable(j);
             }
