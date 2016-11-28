@@ -302,13 +302,7 @@ public class Joueur {
 	 * @return res 0 : ils n'ont jamais joué ensemble / 1 : ils ont joué ensemble
 	 */
 	public boolean aJoueAvec(Joueur j1){
-		boolean res = false;
-		for (int i=0;i<this.getAnciensPart().size() ; i++) {
-			if((this.getAnciensPart().get(i)).equals(j1)) {
-				res =true;
-			}
-		}
-		return res;
+		return this.getAnciensPart().contains(j1);
 	}
 
 	/** Retourne si le joueur est compatible avec un autre (en paramètre)

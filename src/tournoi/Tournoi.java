@@ -216,159 +216,79 @@ public class Tournoi {
 		this.viderGetDansPaire();
 		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
 		int tailleMin, tailleMax;
-		Joueur joueur;
 		//On récupères les listes des nouveaux joueurs actifs et des anciens joueurs actif
 		if (this.nouveauxJoueurs.size() == 0 && this.anciensJoueurs.size() == 0) {
 			throw new TournoiVideException("Il n'y a pas de joueurs dans le tournoi");
 		}
 		ArrayList<Joueur> nouveauxJoueursActifs = new ArrayList<>();
 		ArrayList<Joueur> anciensJoueursActifs = new ArrayList<>();
-		for (int i = 0; i < this.nouveauxJoueurs.size(); i++) {
-			if ((this.nouveauxJoueurs.get(i)).peutJouer()) {
-				nouveauxJoueursActifs.add(this.nouveauxJoueurs.get(i));
+		for (Joueur nouveauJoueur : this.nouveauxJoueurs) {
+			if (nouveauJoueur.peutJouer()) {
+				nouveauxJoueursActifs.add(nouveauJoueur);
 			}
 		}
-		for (int i = 0; i < this.anciensJoueurs.size(); i++) {
-			if ((this.anciensJoueurs.get(i)).peutJouer()) {
-				anciensJoueursActifs.add(this.anciensJoueurs.get(i));
+		for (Joueur ancienJoueur : this.anciensJoueurs) {
+			if (ancienJoueur.peutJouer()) {
+				anciensJoueursActifs.add(ancienJoueur);
 			}
 		}
 		this.paires = new ArrayList<>();
-		//en triant les listes en fonction du nombres de match joué en parcourant les liste on prendra en premier des
-		// les joueur avec le moins de matchs a leurs actif
+		//en triant les listes en fonction du nombre de match joués en parcourant les listes on prendra en premier
+		//les joueurs avec le moins de matchs à leurs actif
 		Collections.sort(anciensJoueursActifs, new ComparateurjoueurParNbMatches());
 		Collections.sort(nouveauxJoueursActifs, new ComparateurjoueurParNbMatches());
 
+		ArrayList<Joueur> tailleMinList = new ArrayList<>();
+		ArrayList<Joueur> tailleMaxList = new ArrayList<>();
 
-		//On vérifie si le nombre d'anciens est supérieur au nombre de nouveaux
 		if (anciensJoueursActifs.size() >= nouveauxJoueursActifs.size()) {
-			tailleMin = nouveauxJoueursActifs.size();
-			tailleMax = anciensJoueursActifs.size();
+			tailleMinList = nouveauxJoueursActifs;
+			tailleMaxList = anciensJoueursActifs;
+		} else {
+			tailleMinList = anciensJoueursActifs;
+			tailleMaxList = nouveauxJoueursActifs;
+		}
 
-
-			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs qui n'ont pas joué (prios);
-			for (int j = 0; j < tailleMin; j++)
-			// On parcourt les nouveaux joueurs
-			{
-				joueur = nouveauxJoueursActifs.get(j);
-				//On vérifie que le nouveau joueur est prioritaire et qu'il n'a pas deja été attribué a une paire
-				if (joueur.getPrio() && (!joueur.getDansPaire())) {
-					for (int i = 0; i < tailleMax; i++) {
-						//On cherche un ancien joueur compatible qui ne joue pas
-						if (joueur.estCompatibleAvec((anciensJoueursActifs.get(i))) && (!(anciensJoueursActifs.get(i)).getDansPaire())) {
-							//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-							this.paires.add(new Paire(joueur, (anciensJoueursActifs.get(i)), i, i));
-							//todo est ce qu'il ne vaut pas mieux ajouter les joururs dans la liste respesctive des anciens joueur selements a la validation du match
-							joueur.ajouterAnciensPart((anciensJoueursActifs.get(i)));
-							(anciensJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-							joueur.setDansPaire(true);
-							(anciensJoueursActifs.get(i)).setDansPaire(true);
-							//todo au lieu d'associer directement le premier joueur compatible faire une liste de joueur compatibles faire eun comparateur de perf et associer les joueur de manière a ce que la somme de leur perf soit proche de 4.5 (la perf max est 7 et la perf  min est 2)
-						}
-					}
-				}
-			}
-			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs restants qui n'ont encore jamais joués ensembles;
-			for (int j = 0; j < tailleMin; j++)
-			// On parcourt les nouveaux joueurs
-			{
-				joueur = (nouveauxJoueursActifs.get(j));
-				for (int i = 0; i < tailleMax; i++) {
-					//On cherche un ancien joueur compatible qui ne joue pas
-					if (joueur.estCompatibleAvec((anciensJoueursActifs.get(i))) && (!(anciensJoueursActifs.get(i)).getDansPaire()) && !joueur.getDansPaire()) {
-						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-						this.paires.add(new Paire(joueur, (anciensJoueursActifs.get(i)), i, i));
-						joueur.ajouterAnciensPart((anciensJoueursActifs.get(i)));
-						(anciensJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-						joueur.setDansPaire(true);
-						(anciensJoueursActifs.get(i)).setDansPaire(true);
-						break;
-					}
-				}
-			}
-			//On remplis avec des joueurs même si ils ont joués ensembles
-			for (int j = 0; j < tailleMin; j++)
-			// On parcourt les nouveaux joueurs
-			{
-				joueur = (nouveauxJoueursActifs.get(j));
-				for (int i = 0; i < tailleMax; i++) {
-					//On cherche un ancien joueur  qui ne joue pas
-					if ((!(anciensJoueursActifs.get(i)).getDansPaire()) && !joueur.getDansPaire()) {
-						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-						this.paires.add(new Paire(joueur, (anciensJoueursActifs.get(i)), i, i));
-						joueur.ajouterAnciensPart((anciensJoueursActifs.get(i)));
-						(anciensJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-						joueur.setDansPaire(true);
-						(anciensJoueursActifs.get(i)).setDansPaire(true);
+		//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs qui n'ont pas joué (prios);
+		for (Joueur joueur1 : tailleMinList) {
+			if (joueur1.getPrio() && !joueur1.getDansPaire()) {
+				for (Joueur joueur2: tailleMaxList) {
+					if (joueur1.estCompatibleAvec(joueur2) && !joueur2.getDansPaire()) {
+						this.paires.add(new Paire(joueur1, joueur2));
+						// TODO : ajouter les joueurs dans la liste respective des anciens joueur à la validation du match
+						joueur1.setDansPaire(true);
+						joueur2.setDansPaire(true);
 						break;
 					}
 				}
 			}
 		}
-		else{
-			tailleMax = nouveauxJoueursActifs.size();
-			tailleMin = anciensJoueursActifs.size();
-
-			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs qui n'ont pas joué (prios);
-			for (int j = 0; j < tailleMin; j++)
-			// On parcourt les nouveaux joueurs
-			{
-				joueur = anciensJoueursActifs.get(j);
-				//On vérifie que le' ancien joueur est prioritaire et qu'il n'a pas deja été attribué a une paire
-				if (joueur.getPrio() && (!joueur.getDansPaire())) {
-					for (int i = 0; i < tailleMax; i++) {
-						//On cherche un nouveau joueur compatible qui ne joue pas
-						if (joueur.estCompatibleAvec((nouveauxJoueursActifs.get(i))) && (!(nouveauxJoueursActifs.get(i)).getDansPaire())) {
-							//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-							this.paires.add(new Paire(joueur, (nouveauxJoueursActifs.get(i)), i, i));
-							//todo est ce qu'il ne vaut pas mieux ajouter les joururs dans la liste respesctive des anciens joueur selements a la validation du match
-							joueur.ajouterAnciensPart((nouveauxJoueursActifs.get(i)));
-							(nouveauxJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-							joueur.setDansPaire(true);
-							(nouveauxJoueursActifs.get(i)).setDansPaire(true);
-							//todo au lieu d'associer directement le premier joueur compatible faire une liste de joueur compatibles faire eun comparateur de perf et associer les joueur de manière a ce que la somme de leur perf soit proche de 4.5 (la perf max est 7 et la perf  min est 2)
-						}
-					}
-				}
-			}
-			//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs restants qui n'ont encore jamais joués ensembles;
-			for (int j = 0; j < tailleMin; j++)
-			// On parcourt les anciens joueurs
-			{
-				joueur = (anciensJoueursActifs.get(j));
-				for (int i = 0; i < tailleMax; i++) {
-					//On cherche un nouveau joueur compatible qui ne joue pas
-					if (joueur.estCompatibleAvec((nouveauxJoueursActifs.get(i))) && (!(nouveauxJoueursActifs.get(i)).getDansPaire()) && !joueur.getDansPaire()) {
-						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-						this.paires.add(new Paire(joueur, (nouveauxJoueursActifs.get(i)), i, i));
-						joueur.ajouterAnciensPart((nouveauxJoueursActifs.get(i)));
-						(nouveauxJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-						joueur.setDansPaire(true);
-						(nouveauxJoueursActifs.get(i)).setDansPaire(true);
-						break;
-					}
-				}
-			}
-			//On remplis avec des joueurs même si ils ont joués ensembles
-			for (int j = 0; j < tailleMin; j++)
-			// On parcourt les nouveaux joueurs
-			{
-				joueur = (anciensJoueursActifs.get(j));
-				for (int i = 0; i < tailleMax; i++) {
-					//On cherche un ancien joueur  qui ne joue pas
-					if ((!(nouveauxJoueursActifs.get(i)).getDansPaire()) && !joueur.getDansPaire()) {
-						//Si on trouve un partenaire possible, on les met ensemble et on les rend non disponibles
-						this.paires.add(new Paire(joueur, (nouveauxJoueursActifs.get(i)), i, i));
-						joueur.ajouterAnciensPart((nouveauxJoueursActifs.get(i)));
-						(nouveauxJoueursActifs.get(i)).ajouterAnciensPart(joueur);
-						joueur.setDansPaire(true);
-						(nouveauxJoueursActifs.get(i)).setDansPaire(true);
+		//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs restants qui n'ont encore jamais joués ensembles;
+		for (Joueur joueur1 : tailleMinList) {
+			//Cette fois on ne vérifie pas s'il est prio
+			if (!joueur1.getDansPaire()) {
+				for (Joueur joueur2 : tailleMaxList) {
+					if (joueur1.estCompatibleAvec(joueur2) && !joueur2.getDansPaire()) {
+						this.paires.add(new Paire(joueur1, joueur2));
+						// TODO : ajouter les joueurs dans la liste respective des anciens joueur à la validation du match
+						joueur1.setDansPaire(true);
+						joueur2.setDansPaire(true);
 						break;
 					}
 				}
 			}
 		}
-
+		//On remplit avec des joueurs même s'il ont déjà joué ensemble
+		for (Joueur joueur1: tailleMinList) {
+			for (Joueur joueur2 : tailleMaxList) {
+				if (!joueur1.getDansPaire() && !joueur2.getDansPaire()) {
+					this.paires.add(new Paire(joueur1, joueur2));
+					// TODO : ajouter les joueurs dans la liste respective des anciens joueur à la validation du match
+					joueur1.setDansPaire(true);
+					joueur2.setDansPaire(true);
+				}
+			}
+		}
 	}
 
 	/**
@@ -427,7 +347,9 @@ public class Tournoi {
 	 */
 	public void nouveauTour() throws TournoiVideException {
 		this.creerPaires();
-		this.trierPaires();
+		for (Paire paire: paires) {
+			System.out.println(paire);
+		}
 		this.attribuerMatchs();
 
 	}
