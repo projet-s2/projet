@@ -698,6 +698,9 @@ public class Tournoi {
 		}
 	}
 
+	public ArrayList<Paire> getPaires() {
+		return this.paires;
+	}
 
 }
 

@@ -27,6 +27,8 @@ public class FenetrePrincipale extends JFrame {
 	private JPanel[] terrains;
 	private BufferedImage image;
 	private ArrayList<JComboBox> boxTerrains = new ArrayList<JComboBox>();
+	private JPanel tournois;
+	private JTabbedPane onglets;
 
 	private int verif;
 
@@ -89,7 +91,7 @@ public class FenetrePrincipale extends JFrame {
 	 * initialise l'affichage de la fenêtre
 	 */
 	public void afficherTournoi(){
-		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
+		onglets = new JTabbedPane(SwingConstants.TOP);
 		this.joueurs= new String[]{"Pas de joueur"};
 
 		//Notre onglet pour les joueur
@@ -230,20 +232,20 @@ public class FenetrePrincipale extends JFrame {
 
 
 		////Onglet Tournoi
-		JPanel tournois = new JPanel();
+		tournois = new JPanel();
 		tournois.setLayout(new BorderLayout());
-		JPanel panTour = new JPanel();
+		/*JPanel panTour = new JPanel();
 
 
 
 		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
 		//On parcours les terrains pour les afficher
-//		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-//			panTour.add(nouveauTerrain(i));
-//		}
+		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
+			panTour.add(nouveauTerrain(i));
+		}
 		JScrollPane terrains = new JScrollPane(panTour);
 
-		tournois.add(terrains, BorderLayout.CENTER);
+		tournois.add(terrains, BorderLayout.CENTER);*/
 
 
 
@@ -385,15 +387,21 @@ public class FenetrePrincipale extends JFrame {
 		JComboBox j1 = new JComboBox();
 		JComboBox j2 = new JComboBox();
 		if(!this.tournoi.tournoisVide()) {
-			this.actualiserJoueurs();
+			//this.actualiserJoueurs();
 			j1 = new JComboBox(tournoi.getAllJoueurs().toArray());
 			j2 = new JComboBox(tournoi.getAllJoueurs().toArray());
+			try {
+				j1.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur1());
+				j2.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur2());
+			} catch(Exception e) {
+				System.out.println("moins de joueur que de terrain?");
+			}
 		}
 		JSpinner score1 = new JSpinner();
 		JPanel equipeUn = new JPanel(new GridBagLayout());
 		j1.setPreferredSize(new Dimension(125, 25));
 		j2.setPreferredSize(new Dimension(125, 25));
-		score1.setPreferredSize(new Dimension(30, 30));
+		score1.setPreferredSize(new Dimension(50, 30));
 		GridBagConstraints gbcUn = new GridBagConstraints();
 		gbcUn.gridx = 0;
 		gbcUn.gridy = 0;
@@ -420,12 +428,18 @@ public class FenetrePrincipale extends JFrame {
 		if(!this.tournoi.tournoisVide()) {
 			j3 = new JComboBox(tournoi.getAllJoueurs().toArray());
 			j4 = new JComboBox(tournoi.getAllJoueurs().toArray());
+			try {
+				j3.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur1());
+				j4.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur2());
+			} catch(Exception e) {
+				System.out.println("moins de joueur que de terrain?");
+			}
 		}
 		JSpinner score2 = new JSpinner();
 		JPanel equipeDeux = new JPanel(new GridBagLayout());
 		j3.setPreferredSize(new Dimension(125, 25));
 		j4.setPreferredSize(new Dimension(125, 25));
-		score2.setPreferredSize(new Dimension(30, 30));
+		score2.setPreferredSize(new Dimension(50, 30));
 		GridBagConstraints gbcDeux = new GridBagConstraints();
 		gbcDeux.gridx = 0;
 		gbcDeux.gridy = 0;
@@ -452,10 +466,23 @@ public class FenetrePrincipale extends JFrame {
 		return  terrain;}
 
 	public void actualiserTerrains() {
-		for (int i = 0; i < boxTerrains.size(); i++) {
-			this.nouveauTerrain(i);
+		tournois = new JPanel();
+		tournois.setLayout(new BorderLayout());
+		JPanel panTour = new JPanel();
 
 
+
+		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
+		//On parcours les terrains pour les afficher
+		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
+			panTour.add(nouveauTerrain(i));
 		}
+		JScrollPane terrains = new JScrollPane(panTour);
+
+		tournois.add(terrains, BorderLayout.CENTER);
+		onglets.removeTabAt(1);
+		onglets.addTab("Tournois", tournois);
 	}
+
+
 }

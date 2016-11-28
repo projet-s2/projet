@@ -24,7 +24,7 @@ public class NouveauTourControleur implements ActionListener {
         try{
             this.tournoi.nouveauTour();
             this.vue.actualiserTerrains();
-            this.vue.afficherTournoi();
+            //this.vue.afficherTournoi();
 
         }
         catch(Exception ex){
