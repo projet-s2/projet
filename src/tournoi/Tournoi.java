@@ -104,8 +104,9 @@ public class Tournoi {
 	 * @return la liste des anciens adhérents joueurs
 	 */
 	public ArrayList<Joueur> getAllJoueurs() {
-		ArrayList<Joueur> allJoueurs = anciensJoueurs;
+		ArrayList<Joueur> allJoueurs = new ArrayList<Joueur>();
 		allJoueurs.addAll(this.nouveauxJoueurs);
+		allJoueurs.addAll(this.anciensJoueurs);
 		return allJoueurs;
 	}
 
