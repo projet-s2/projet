@@ -17,6 +17,22 @@ public class MethodeTournoi {
      */
 
     public static ArrayList<Paire> creerPaire(ArrayList<Joueur> allJoueurs) {
+        /**
+         *(Prio, Prio + !jouéEnsemble + !ancienneté) Boucle 1
+         *(Prio, Prio + !jouéEnsemble + ancienneté) Boucle 2
+         *(Prio, Prio + jouéEnsemble + !ancienneté) Boucle 3
+         *(Prio, Prio + jouéEnsemble + ancienneté) Boucle 4
+         *
+         *(Prio, !Prio + !jouéEnsemble + !ancienneté) Boucle 5
+         *(Prio, !Prio + !jouéEnsemble + ancienneté) Boucle 6
+         *(Prio, !Prio + jouéEnsemble + !ancienneté) Boucle 7
+         *(Prio, !Prio + jouéEnsemble + ancienneté) Boucle 8
+         *
+         *(!Prio, !Prio + !jouéEnsemble + !ancienneté) Boucle 9
+         *(!Prio, !Prio + !jouéEnsemble + ancienneté) Boucle 10
+         *(!Prio, !Prio + jouéEnsemble + !ancienneté) Boucle 11
+         *(!Prio, !Prio + jouéEnsemble + ancienneté) Boucle 12
+         */
         ArrayList<Paire> res = new ArrayList<>();
 
         double perfMoyenne; //Le score de performance moyen de tous les joueurs du tournoi
