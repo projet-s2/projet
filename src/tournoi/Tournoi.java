@@ -1,12 +1,16 @@
 package tournoi;
 
+import exception.ImportExportException;
+import exception.NbTerrainNeg;
+import exception.NomVideException;
+import exception.TournoiVideException;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.regex.*;
-
-import exception.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**Tournoi est la classe représentant un Tournoi.
@@ -220,80 +224,19 @@ public class Tournoi {
 	private void creerPaires() throws TournoiVideException {
 		//On met tout les joueurs comme n'appartenant pas a une paire
 		this.viderGetDansPaire();
-		//On parcourt les deux listes de joueurs et on crée les paires en conséquence
-		int tailleMin, tailleMax;
-		//On récupères les listes des nouveaux joueurs actifs et des anciens joueurs actif
-		if (this.nouveauxJoueurs.size() == 0 && this.anciensJoueurs.size() == 0) {
+		this.paires.clear(); //Vide la liste des paires
+
+		if (this.getAllJoueurs().size() == 0) {
 			throw new TournoiVideException("Il n'y a pas de joueurs dans le tournoi");
 		}
-		ArrayList<Joueur> nouveauxJoueursActifs = new ArrayList<>();
-		ArrayList<Joueur> anciensJoueursActifs = new ArrayList<>();
-		for (Joueur nouveauJoueur : this.nouveauxJoueurs) {
-			if (nouveauJoueur.peutJouer()) {
-				nouveauxJoueursActifs.add(nouveauJoueur);
-			}
-		}
-		for (Joueur ancienJoueur : this.anciensJoueurs) {
-			if (ancienJoueur.peutJouer()) {
-				anciensJoueursActifs.add(ancienJoueur);
-			}
-		}
-		this.paires = new ArrayList<>();
-		//en triant les listes en fonction du nombre de match joués en parcourant les listes on prendra en premier
-		//les joueurs avec le moins de matchs à leurs actif
-		Collections.sort(anciensJoueursActifs, new ComparateurjoueurParNbMatches());
-		Collections.sort(nouveauxJoueursActifs, new ComparateurjoueurParNbMatches());
 
-		ArrayList<Joueur> tailleMinList = new ArrayList<>();
-		ArrayList<Joueur> tailleMaxList = new ArrayList<>();
+		ArrayList<Paire> pairesCrees = MethodeTournoi.creerPaire(this.getAllJoueurs());
 
-		if (anciensJoueursActifs.size() >= nouveauxJoueursActifs.size()) {
-			tailleMinList = nouveauxJoueursActifs;
-			tailleMaxList = anciensJoueursActifs;
-		} else {
-			tailleMinList = anciensJoueursActifs;
-			tailleMaxList = nouveauxJoueursActifs;
-		}
-
-		//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs qui n'ont pas joué (prios);
-		for (Joueur joueur1 : tailleMinList) {
-			if (joueur1.getPrio() && !joueur1.getDansPaire()) {
-				for (Joueur joueur2: tailleMaxList) {
-					if (joueur1.estCompatibleAvec(joueur2) && !joueur2.getDansPaire()) {
-						this.paires.add(new Paire(joueur1, joueur2));
-						// TODO : ajouter les joueurs dans la liste respective des anciens joueur à la validation du match
-						joueur1.setDansPaire(true);
-						joueur2.setDansPaire(true);
-						break;
-					}
-				}
-			}
-		}
-		//On cherche à créer le maximum de paires ancien/nouveau avec les joueurs restants qui n'ont encore jamais joués ensembles;
-		for (Joueur joueur1 : tailleMinList) {
-			//Cette fois on ne vérifie pas s'il est prio
-			if (!joueur1.getDansPaire()) {
-				for (Joueur joueur2 : tailleMaxList) {
-					if (joueur1.estCompatibleAvec(joueur2) && !joueur2.getDansPaire()) {
-						this.paires.add(new Paire(joueur1, joueur2));
-						// TODO : ajouter les joueurs dans la liste respective des anciens joueur à la validation du match
-						joueur1.setDansPaire(true);
-						joueur2.setDansPaire(true);
-						break;
-					}
-				}
-			}
-		}
-		//On remplit avec des joueurs même s'il ont déjà joué ensemble
-		for (Joueur joueur1: tailleMinList) {
-			for (Joueur joueur2 : tailleMaxList) {
-				if (!joueur1.getDansPaire() && !joueur2.getDansPaire()) {
-					this.paires.add(new Paire(joueur1, joueur2));
-					// TODO : ajouter les joueurs dans la liste respective des anciens joueur à la validation du match
-					joueur1.setDansPaire(true);
-					joueur2.setDansPaire(true);
-				}
-			}
+		for (Paire paire: pairesCrees) {
+			this.paires.add(paire);
+			// TODO : ajouter les joueurs dans la liste respective des anciens joueur à la validation du match
+			paire.getJoueur1().setDansPaire(true);
+			paire.getJoueur2().setDansPaire(true);
 		}
 	}
 
