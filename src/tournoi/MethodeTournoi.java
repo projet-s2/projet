@@ -405,9 +405,4 @@ public class MethodeTournoi {
 
         return res;
     }
-
-    public static void ajoutJoueursPaire(Joueur joueur1, Joueur joueur2) {
-        joueur1.setDansPaire(true);
-        joueur2.setDansPaire(true);
-    }
 }
