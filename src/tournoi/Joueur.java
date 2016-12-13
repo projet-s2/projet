@@ -141,6 +141,10 @@ public class Joueur {
 		this.niveau = niveau;
 	}
 
+	public int compare(Joueur j1, Joueur j2) {
+		return 1;
+	}
+
 	/**
 	 * pour ajouter un joueur dans les partenaires
 	 * @param j le joueur à ajouter dans les partenaires

@@ -16,6 +16,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class FenetrePrincipale extends JFrame {
 
 	//La fen�tre principale � un tournoi surlequel elle peut agir
@@ -362,6 +366,12 @@ public class FenetrePrincipale extends JFrame {
 
 		ArrayList<Joueur> joueurDansCombo = tournoi.getAllJoueurs();
 		joueurDansCombo.add(new Joueur(420, "", "", 42, true, true, 0, false));
+		Collections.sort(joueurDansCombo, new Comparator<Joueur>() {
+			@Override
+			public int compare(Joueur j1, Joueur j2) {
+				return j1.toString().compareToIgnoreCase(j2.toString());
+			}
+		});
 
 		//Terrain n° X
 		int o = i + 1;
@@ -377,16 +387,16 @@ public class FenetrePrincipale extends JFrame {
 			j1 = new JComboBox(joueurDansCombo.toArray());
 			j2 = new JComboBox(joueurDansCombo.toArray());
 			try {
-				//if((i*2)-1 >= tournoi.getAllJoueurs().size()) {
+				if((i*2) <= tournoi.getAllJoueurs().size()) {
 					j1.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur1());
-				//} else {
-					j1.setSelectedIndex(tournoi.getAllJoueurs().size()/4);
-				//}
-				//if((i*2) >= tournoi.getAllJoueurs().size()) {
+				} else {
+					j1.setSelectedIndex(0);
+				}
+				if((i*2)+1 <= tournoi.getAllJoueurs().size()) {
 					j2.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur2());
-				//} else {
-					j2.setSelectedIndex(tournoi.getAllJoueurs().size()/4);
-				//}
+				} else {
+					j2.setSelectedIndex(0);
+				}
 			} catch(Exception e) {
 				System.out.println("moins de joueur que de terrain?");
 			}
@@ -423,8 +433,16 @@ public class FenetrePrincipale extends JFrame {
 			j3 = new JComboBox(joueurDansCombo.toArray());
 			j4 = new JComboBox(joueurDansCombo.toArray());
 			try {
-				j3.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur1());
-				j4.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur2());
+				if((i*2)+2 <= tournoi.getAllJoueurs().size()) {
+					j3.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur1());
+				} else {
+					j3.setSelectedIndex(0);
+				}
+				if((i*2)+3 <= tournoi.getAllJoueurs().size()) {
+					j4.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur2());
+				} else {
+					j4.setSelectedIndex(0);
+				}
 			} catch(Exception e) {
 				System.out.println("moins de joueur que de terrain?");
 			}
