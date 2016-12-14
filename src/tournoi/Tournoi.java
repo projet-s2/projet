@@ -337,8 +337,8 @@ public class Tournoi {
 			//Il faut vérifier qu'un match a bien eu lieu dur le terrain
 			if (this.terrains.get(i).getMatch() != null) {
 
-				this.enregisterTour();
 			}
+			this.enregisterTour();
 		}
 		//On remet tous les joueurs en attente d'une paire
 		for (int i = 0; i < this.anciensJoueurs.size(); i++) {
@@ -360,8 +360,10 @@ public class Tournoi {
 	 * @param scoreP2    le score de la seconde paire
 	 */
 	public void setScore(int numTerrain, int scoreP1, int scoreP2) {
-		(this.terrains.get(numTerrain)).getMatch().getPaire1().setScore(scoreP1);
-		( this.terrains.get(numTerrain)).getMatch().getPaire2().setScore(scoreP2);
+		System.out.println(numTerrain+"  "+ scoreP1	+"  "+ scoreP2);
+		this.terrains.get(numTerrain).getMatch().getPaire1().setScore(scoreP1);
+		this.terrains.get(numTerrain).getMatch().getPaire2().setScore(scoreP2);
+		//enregistrement des anciens partenaires
 		this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur1().ajouterAnciensPart(this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur2());
 		this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur2().ajouterAnciensPart(this.terrains.get(numTerrain).getMatch().getPaire1().getJoueur1());
 		this.terrains.get(numTerrain).getMatch().getPaire2().getJoueur1().ajouterAnciensPart(this.terrains.get(numTerrain).getMatch().getPaire2().getJoueur2());
@@ -395,7 +397,12 @@ public class Tournoi {
 	public ArrayList getClassementAnciens() {
 		this.trierAnciensJoueurs();
 		return this.anciensJoueurs;
-	}
+	}/**
+	 *Test si il y a des jouerurs sur le terrain
+	 *@return true si Le terrain est associé a un match (si il y a des joueurs dedans  faux sinon
+	 */
+	public boolean terrainVide(int i)
+	{ return this.terrains.get(i).getMatch() != null;}
 
 
 	/**
@@ -604,6 +611,8 @@ public class Tournoi {
 		return this.paires;
 	}
 
+	/** Enregistre la liste des terrains actuel dans la liste des tours passés
+	 */
 	public void enregisterTour() {
 		this.tour.add(new Tour(this.terrains));
 	}
@@ -725,7 +734,7 @@ public class Tournoi {
 		}
 
 		int niveau = joueur.getNiveau();
-		System.out.println(joueur.getPrenom() + " " + joueur.getNiveau());
+		//System.out.println(joueur.getPrenom() + " " + joueur.getNiveau());
 		if (niveau == 0) {
 			res += "";
 		} else if (niveau == 1) {
