@@ -54,6 +54,9 @@ public class SaisirScoreControlleur implements ActionListener{
 
 
 		}
+		vue.actualiserJoueurs();
+		//fermeture de la fenètre
+
 		if (!maj){
 			maj = true;
 			vue.rentrerVerif();
