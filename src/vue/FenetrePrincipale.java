@@ -388,17 +388,17 @@ public class FenetrePrincipale extends JFrame {
 			j2 = new JComboBox(joueurDansCombo.toArray());
 			try {
 				if((i*2) <= tournoi.getAllJoueurs().size()) {
-					j1.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur1());
+					j1.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire1().getJoueur1());//depuis terrain je recupere match qui donne les paires qui donne les joueurs
 				} else {
 					j1.setSelectedIndex(0);
 				}
 				if((i*2)+1 <= tournoi.getAllJoueurs().size()) {
-					j2.setSelectedItem(tournoi.getPaires().get(i * 2).getJoueur2());
+					j2.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire1().getJoueur2());
 				} else {
 					j2.setSelectedIndex(0);
 				}
 			} catch(Exception e) {
-				System.out.println("moins de joueur que de terrain?");
+				//System.out.println("moins de joueur que de terrain?");
 			}
 		}
 		JSpinner score1 = new JSpinner();
@@ -434,17 +434,17 @@ public class FenetrePrincipale extends JFrame {
 			j4 = new JComboBox(joueurDansCombo.toArray());
 			try {
 				if((i*2)+2 <= tournoi.getAllJoueurs().size()) {
-					j3.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur1());
+					j3.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire2().getJoueur1());
 				} else {
 					j3.setSelectedIndex(0);
 				}
 				if((i*2)+3 <= tournoi.getAllJoueurs().size()) {
-					j4.setSelectedItem(tournoi.getPaires().get((i * 2) + 1).getJoueur2());
+					j4.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire2().getJoueur2());
 				} else {
 					j4.setSelectedIndex(0);
 				}
 			} catch(Exception e) {
-				System.out.println("moins de joueur que de terrain?");
+				//System.out.println("moins de joueur que de terrain?");
 			}
 		}
 		JSpinner score2 = new JSpinner();
@@ -488,9 +488,26 @@ public class FenetrePrincipale extends JFrame {
 
 		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
 		//On parcours les terrains pour les afficher
-		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			panTour.add(nouveauTerrain(i));
+
+		ArrayList<Joueur> joueursActifs = new ArrayList<>();
+
+		//ArrayList des nouveaux joueurs actifs
+		for (Joueur joueur : tournoi.getAllJoueurs()) {
+			if (joueur.peutJouer()) {
+				joueursActifs.add(joueur);
+			}
 		}
+
+		if(this.tournoi.getNbrTerrains() > joueursActifs.size()/4) {
+			for (int i = 0; i < joueursActifs.size()/4; i++) {
+				panTour.add(nouveauTerrain(i));
+			}
+		} else {
+			for (int i = 0; i < this.tournoi.getNbrTerrains(); i++) {
+				panTour.add(nouveauTerrain(i));
+			}
+		}
+
 		JScrollPane terrains = new JScrollPane(panTour);
 
 		tournois.add(terrains, BorderLayout.CENTER);
