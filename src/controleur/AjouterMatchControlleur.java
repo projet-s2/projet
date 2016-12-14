@@ -50,8 +50,8 @@ public class AjouterMatchControlleur implements ActionListener {
             String j4 = ((String) vue.getJoueur4().getSelectedItem());
 
             Joueur j11 = tournoi.getJoueur(tournoi.chercherJoueur(j1));
-            Joueur j12 = tournoi.getJoueur(tournoi.chercherJoueur(j2));
-            Joueur j21 = tournoi.getJoueur(tournoi.chercherJoueur(j3));
+            Joueur j21 = tournoi.getJoueur(tournoi.chercherJoueur(j2));
+            Joueur j12 = tournoi.getJoueur(tournoi.chercherJoueur(j3));
             Joueur j22 = tournoi.getJoueur(tournoi.chercherJoueur(j4));
 
             //creation des paires

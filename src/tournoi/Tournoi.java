@@ -323,7 +323,7 @@ public class Tournoi {
 	public void nouveauTour() throws TournoiVideException {
 		this.creerPaires();
 		for (Paire paire: paires) {
-			System.out.println(paire);
+
 		}
 		this.attribuerMatchs();
 	}
@@ -402,7 +402,7 @@ public class Tournoi {
 	 *@return true si Le terrain est associé a un match (si il y a des joueurs dedans  faux sinon
 	 */
 	public boolean terrainVide(int i)
-	{ return this.terrains.get(i).getMatch() != null;}
+	{ return this.terrains.get(i).getMatch() == null;}
 
 
 	/**
@@ -734,7 +734,7 @@ public class Tournoi {
 		}
 
 		int niveau = joueur.getNiveau();
-		//System.out.println(joueur.getPrenom() + " " + joueur.getNiveau());
+
 		if (niveau == 0) {
 			res += "";
 		} else if (niveau == 1) {
