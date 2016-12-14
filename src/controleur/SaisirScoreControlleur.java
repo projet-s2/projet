@@ -31,7 +31,7 @@ public class SaisirScoreControlleur implements ActionListener{
      *
      */
 	public SaisirScoreControlleur(JSpinner jt1, JSpinner jt2, FenetrePrincipale v, Tournoi t, int numTer){
-		scoreP1 = jt1;	//passer en int directement
+		scoreP1 = jt1;
 		scoreP2 = jt2;
 		tournoi = t;
 		vue = v;
@@ -44,12 +44,15 @@ public class SaisirScoreControlleur implements ActionListener{
 	 * @param e un clic sur le bouton valider scores
      */
 	public void actionPerformed(ActionEvent e){
+
 		 this.score1 =(int) scoreP1.getValue();
-		 this.score2 =(int) scoreP1.getValue();
+		 this.score2 =(int) scoreP2.getValue();
+
 
 		if (verifier()) {
-			tournoi.setScore(numeroTerrain, score1,score2);
-			terrain.setFocusable(false);
+			tournoi.setScore(numeroTerrain, score1, score2);
+			System.out.println(this.score1 + "  " + this.score2+"   "+this.numeroTerrain);
+
 		}
 		if (!maj){
 			maj = true;
@@ -62,6 +65,13 @@ public class SaisirScoreControlleur implements ActionListener{
 	 * @return true si les scores sont valables false sinon
      */
 	private boolean verifier(){
+		if(this.tournoi.terrainVide(this.numeroTerrain)){
+			JOptionPane.showMessageDialog(vue, "Il manque un joueur");
+			return false;
+		}
+
+
+
 		try {
 			int test = score1;
 			if(test<0){
@@ -80,7 +90,7 @@ public class SaisirScoreControlleur implements ActionListener{
 				JOptionPane.showMessageDialog(vue, "Vous devez entrer un entier positif.");
 				return false;
 			}
-				
+
 		}
 		catch (NumberFormatException e){
 			JOptionPane.showMessageDialog(vue, "Vous devez entrer un entier positif.");
@@ -89,4 +99,5 @@ public class SaisirScoreControlleur implements ActionListener{
 		
 		return true;
 	}
+
 }
