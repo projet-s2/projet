@@ -51,7 +51,7 @@ public class SaisirScoreControlleur implements ActionListener{
 
 		if (verifier()) {
 			tournoi.setScore(numeroTerrain, score1, score2);
-			System.out.println(this.score1 + "  " + this.score2+"   "+this.numeroTerrain);
+
 
 		}
 		if (!maj){
