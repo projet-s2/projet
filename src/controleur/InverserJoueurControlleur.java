@@ -38,7 +38,7 @@ public class InverserJoueurControlleur implements ActionListener{
         int idJ1 = tournoi.chercherJoueur(joueurCourant);
         System.out.println("j1 :\t"+joueurCourant +"\t"+idJ1);
         System.out.println("j2 :\t"+joueur2 +"\t"+idJ2);
-        if(!tournoi.changerJoueurs(idJ1, idJ2))
+       // if(!tournoi.changerJoueurs(idJ1, idJ2))
             JOptionPane.showMessageDialog(vue,"Erreur");
         vue.setVerif(0);
         vue.actualiserJoueurs();

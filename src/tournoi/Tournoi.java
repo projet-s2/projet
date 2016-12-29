@@ -439,20 +439,22 @@ public class Tournoi {
 	 * pour intervertir facilement deux joueurs qui jouent déjà
 	 * On selectionne le premier Joueur et on souhaite le remplacer par le deuxième. On regarde si le deuxième joue ou pas
 	 *
-	 * @param idJ1 l'id du premier joueur
-	 * @param idJ2 l'id du second joueur
+	 * @param j1 le nom du premier joueur
+	 * @param j2 le no du deuxieme joueeur
 	 * @return true si l'opération est un succès, false sinon
 	 */
-	public Boolean changerJoueurs(int idJ1, int idJ2) {
-		if(idJ1==idJ2){
+	public Boolean changerJoueurs(Joueur j1, Joueur j2) {
+		if(j1.equals(j2)){
 			return false;
 		}
+		int idJ2 = j2.getId();
+		int idJ1 = j1.getId();
 		//On regarde si le joueur de remplacement est attribué a une paire
 		if(this.getJoueur(idJ2).getDansPaire()){
 			//si le deuxieme joeur est J1 dans sa paire
 			if(this.getPaireContenant(idJ2).getJoueur1()==this.getJoueur(idJ2)){
 				this.getPaireContenant(idJ2).setJoueur1(this.getJoueur(idJ1));
-				//si le premier joueur etqi jouer 1
+				//si le premier joueur etai jouer 1
 				if(this.getPaireContenant(idJ1).getJoueur1()==this.getJoueur(idJ1)){
 					this.getPaireContenant(idJ1).setJoueur1(this.getJoueur(idJ2));
 				}
@@ -475,7 +477,7 @@ public class Tournoi {
 			}
 		}
 		else{
-			//si le premier joueur etqi jouer 1
+			//si le premier joueur etai j1
 			if(this.getPaireContenant(idJ1).getJoueur1()==this.getJoueur(idJ1)){
 				this.getPaireContenant(idJ1).setJoueur1(this.getJoueur(idJ2));
 				this.getJoueur(idJ2).setDansPaire(true);
@@ -492,6 +494,16 @@ public class Tournoi {
 		return true;
 
 	}
+	/**
+	 * Change un joueur
+	 * @param idJ l'id du  joueur
+
+	 * @return null si le joueur n'est pas dans une paire la paire sinon
+	 */
+	public void setJoueurDansPaire(int idJ) {
+
+	}
+
 
 	/**
 	 * renvoie la paire contenant un joueur donné null sinon
@@ -553,6 +565,15 @@ public class Tournoi {
 		Joueur j = null;
 		j = this.getJoueur(id);
 		j.modifierJoueur(nom, prenom, age, sexe, nouveau, niveau);
+	}
+
+	public boolean paireValide(int nuterrain){
+		return !this.terrains.get(nuterrain).getMatch().getPaire1().getJoueur1().equals(this.terrains.get(nuterrain).getMatch().getPaire1().getJoueur2())
+				& !this.terrains.get(nuterrain).getMatch().getPaire1().getJoueur1().equals(this.terrains.get(nuterrain).getMatch().getPaire2().getJoueur1())
+				& !this.terrains.get(nuterrain).getMatch().getPaire1().getJoueur1().equals(this.terrains.get(nuterrain).getMatch().getPaire2().getJoueur2())
+				& !this.terrains.get(nuterrain).getMatch().getPaire1().getJoueur2().equals(this.terrains.get(nuterrain).getMatch().getPaire2().getJoueur1())
+				& !this.terrains.get(nuterrain).getMatch().getPaire1().getJoueur2().equals(this.terrains.get(nuterrain).getMatch().getPaire2().getJoueur2())
+				& !this.terrains.get(nuterrain).getMatch().getPaire2().getJoueur1().equals(this.terrains.get(nuterrain).getMatch().getPaire2().getJoueur2());
 	}
 
 	/**

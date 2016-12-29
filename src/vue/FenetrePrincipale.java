@@ -365,7 +365,7 @@ public class FenetrePrincipale extends JFrame {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		ArrayList<Joueur> joueurDansCombo = tournoi.getAllJoueurs();
-		joueurDansCombo.add(new Joueur(420, "", "", 42, true, true, 0, false));
+		//joueurDansCombo.add(new Joueur(420, "", "", 42, true, true, 0, false));
 		Collections.sort(joueurDansCombo, new Comparator<Joueur>() {
 			@Override
 			public int compare(Joueur j1, Joueur j2) {
@@ -447,6 +447,11 @@ public class FenetrePrincipale extends JFrame {
 				//System.out.println("moins de joueur que de terrain?");
 			}
 		}
+		//controlleurs de l'échange de joueur
+		j1.addItemListener( new SelectonAutreJoueurMatch(j1, this,1,i));
+		j2.addItemListener( new SelectonAutreJoueurMatch(j2, this,2,i));
+		j3.addItemListener( new SelectonAutreJoueurMatch(j3, this,3,i));
+		j4.addItemListener( new SelectonAutreJoueurMatch(j4, this,4,i));
 		JSpinner score2 = new JSpinner();
 		JPanel equipeDeux = new JPanel(new GridBagLayout());
 		j3.setPreferredSize(new Dimension(125, 25));
