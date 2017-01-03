@@ -75,8 +75,19 @@ public class Terrain{
 	  }
 	  return s;
   }
-  
-  public String readyToBeSaved(){
-	  return "\n<terrain>\n	<numero>"+this.numero+"</numero>\n</terrain>";
+
+  public String j1(){
+    return this.match.getPaire1().getJoueur1().getNom() + this.match.getPaire1().getJoueur1().getNom();
   }
+  public String j2(){
+    return this.match.getPaire1().getJoueur1().getNom() + this.match.getPaire1().getJoueur1().getNom();
+  }
+  public String j3(){
+    return this.match.getPaire1().getJoueur1().getNom() + this.match.getPaire1().getJoueur1().getNom();
+  }
+  public String j4(){
+    return this.match.getPaire1().getJoueur1().getNom() + this.match.getPaire1().getJoueur1().getNom();
+  }
+  
+
 }

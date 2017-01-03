@@ -1,24 +1,24 @@
 package vue;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import controleur.InverserJoueurControlleur;
-import liste.Liste;
+import controleur.*;
+import exception.TournoiVideException;
+import tournoi.Joueur;
+import tournoi.Terrain;
+import tournoi.Tournoi;
+import tournoi.Chrono;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
-import controleur.ModifierJoueurControlleur;
-import controleur.SaisirScoreControlleur;
-import exception.TournoiVideException;
-import tournoi.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class FenetrePrincipale extends JFrame {
 
@@ -27,43 +27,46 @@ public class FenetrePrincipale extends JFrame {
 	private JScrollPane panJoueurs;
 	private DefaultTableModel listeJoueursModele;
 	private JTable listeJoueurs;
-	private JPanel listeTerrains;
-	private JPanel[] terrains;
-	private JButton boutonFinir;
 	String[] joueurs;
-	public static Color couleurOK = Color.GRAY;
-	public static Color couleurPasOK = Color.ORANGE;
+	private JPanel[] terrains;
+	private BufferedImage image;
+	private ArrayList<JComboBox> boxTerrains = new ArrayList<>();
+	private JPanel tournois;
+	private JTabbedPane onglets;
+
 	private int verif;
 
 	/**
 	 *
 	 * @param titre le titre que l'on souhaite donner à la fenêtre
-     */
+	 */
 	public FenetrePrincipale(String titre) {
 		super(titre);
 
 		//On charge le look and feel du syst�me de l'utilisateur (� la place de GTK) auquel il est habitu�
-	    try {
-	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } catch (ClassNotFoundException e) {
-	        e.printStackTrace();
-	    } catch (InstantiationException e) {
-	        e.printStackTrace();
-	    } catch (IllegalAccessException e) {
-	        e.printStackTrace();
-	    } catch (UnsupportedLookAndFeelException e) {
-	        e.printStackTrace();
-	    }
+		try {
+			UIManager. setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			SwingUtilities. updateComponentTreeUI(this);
+			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 
-	    //On assigne le menu � la fenetres
-	    this.setJMenuBar(new Menu(tournoi, this));
+		//On assigne le menu � la fenetres
+		this.setJMenuBar(new Menu(tournoi, this));
 
 		//Les declarations de base
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
 		this.setTitle(titre);
-		this.setLocation(0,0);
+		this.setLocation(0, 0);
 		this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 		this.setVisible(true);
 	}
@@ -71,19 +74,19 @@ public class FenetrePrincipale extends JFrame {
 	/**
 	 *
 	 * @param t le tournoi avec lequel la fenêtre va interagir
-     */
+	 */
 	public void setTournoi(Tournoi t){
 		this.tournoi=t;
-		this.setTitle("Match Point - "+t.getNom());
+		this.setTitle("Match Point - " + t.getNom());
 		((Menu) this.getJMenuBar()).enableSave();
 		this.afficherTournoi();
 	}
-	
+
 	/**
 	 *
 	 * @return le tournoi
-    */
-	
+	 */
+
 	public Tournoi getTournoi(){
 		return this.tournoi;
 	}
@@ -92,20 +95,72 @@ public class FenetrePrincipale extends JFrame {
 	 * initialise l'affichage de la fenêtre
 	 */
 	public void afficherTournoi(){
-		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
+		onglets = new JTabbedPane(SwingConstants.TOP);
 		this.joueurs= new String[]{"Pas de joueur"};
 
 		//Notre onglet pour les joueur
 		JPanel joueurs = new JPanel();
-	    String  title[] = {"ID","Nom", "Prénom", "Score","Ancienneté","Disponible"};
-	    listeJoueursModele = new DefaultTableModel(title,0);
-	    listeJoueurs = new JTable(listeJoueursModele);
-	    listeJoueurs.addMouseListener(new ModifierJoueurControlleur(this,listeJoueursModele,listeJoueurs));
-	    //Nous ajoutons notre tableau à notre contentPane dans un scroll
-	    //Sinon les titres des colonnes ne s'afficheront pas !
-	    listeJoueurs.setAutoCreateRowSorter(true);
+		joueurs.setLayout(new BorderLayout());
+		String  title[] = {"ID","Nom", "Prénom", "Score","Present"};
+		listeJoueursModele = new DefaultTableModel(title,0){
+			@Override
+			//bien redefinir les types des colones pour que l'autosort marche
+			public Class getColumnClass(int column) {
+				switch (column) {
+					case 0:
+						return Integer.class;
+					case 1:
+						return String.class;
+					case 2:
+						return String.class;
+					case 3:
+						return Integer.class;
+					case 4:
+						return String.class;
+					default:
+						return String.class;
+				}
+			}
+		};
+		listeJoueurs = new JTable(listeJoueursModele);
+		//modif d'un joueur en cliquant sur le joueur
+			listeJoueurs.addMouseListener(new ModifierJoueurControlleur(this,listeJoueursModele,listeJoueurs));
+		//Nous ajoutons notre tableau à notre contentPane dans un scroll
+		//Sinon les titres des colonnes ne s'afficheront pas !
+		listeJoueurs.setAutoCreateRowSorter(true);
 		panJoueurs = new JScrollPane(listeJoueurs);
-		joueurs.add(panJoueurs);
+
+		joueurs.add(panJoueurs,BorderLayout.CENTER);
+
+		//panel west qui contiens les boutons
+		JPanel westButtonPan = new JPanel(new GridBagLayout());
+		GridBagConstraints gbcWest = new GridBagConstraints();
+		/*gbcWest.weighty = 1;
+		gbcWest.anchor = GridBagConstraints.NORTH;*/
+
+		//Ajout du chronometre
+		Chrono chronometre = new Chrono(300);
+		gbcWest.gridx = 0;
+		gbcWest.gridy = 0;
+		westButtonPan.add(chronometre, gbcWest);
+		chronometre.stop();
+
+		//Ajout du bouton Lancer/Pauser
+		JButton start;
+		start = new JButton("Lancer");
+		start.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 1;
+		westButtonPan.add(start, gbcWest);
+		start.addActionListener(new ChronometreStartControlleur(chronometre, start));
+
+		//Ajout du bouton Redémarrer
+		JButton restart;
+		restart = new JButton("Redémarrer");
+		restart.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 2;
+		westButtonPan.add(restart, gbcWest);
+		restart.addActionListener(new ChronometreRestartControlleur(chronometre, start));
+
 		//Ajout d'un joueur
 		JButton ajouterJoueur = new JButton("Ajouter un joueur");
 		ajouterJoueur.addActionListener(new ActionListener() {
@@ -114,39 +169,90 @@ public class FenetrePrincipale extends JFrame {
 				fenetreAjout();
 			}
 		});
-		joueurs.add(ajouterJoueur);
+		ajouterJoueur.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 3;
+		westButtonPan.add(ajouterJoueur, gbcWest);
 
-		//On veut afficher les terrains et les paires qui jouent dessus
-		this.listeTerrains = new JPanel();
-		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
-		//On parcours les terrains pour les afficher
-		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			listeTerrains.add(nouvelAffichageTerrain(i));
-		}
-		JScrollPane terrains = new JScrollPane(listeTerrains);
-		boutonFinir = new JButton("Finir tour");
-		boutonFinir.setEnabled(false);
-		boutonFinir.addActionListener(new ActionListener() {
+		//Bouton pour importer des joueurs
+		JButton ImporterJoueurs = new JButton("Importer...");
+		ImporterJoueurs.addActionListener(new ImporterJoueursControlleur(tournoi, this));
+		ImporterJoueurs.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 4;
+		westButtonPan.add(ImporterJoueurs, gbcWest);
+
+		//Bouton pour exporter les joueurs
+		JButton ExporterJoueurs = new JButton("Exporter...");
+		ExporterJoueurs.addActionListener(new ExporterJoueursControlleur(tournoi));
+		ExporterJoueurs.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 5;
+		westButtonPan.add(ExporterJoueurs, gbcWest);
+
+		//Bouton Ajout match (ajout manuel d'un score entre deux joueurs :
+		JButton newMatch = new JButton("Nouveau match");
+		newMatch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				finirTour();
+				fenetreAjoutMatch();
 			}
 		});
-		listeTerrains.add(boutonFinir);
+		newMatch.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 6;
+		westButtonPan.add(newMatch, gbcWest);
 
+		//Bouton reset tout les scores a zero
+		JButton reset = new JButton("reset scores");
+		reset.addActionListener(new ResetControlleur(this));
+		reset.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 7;
+		westButtonPan.add(reset, gbcWest);
+
+		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
+		JButton status = new JButton("Présence/Absence");
+		status.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { fenetreStatJoeur();
+				}});
+		status.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 8;
+		westButtonPan.add(status, gbcWest);
+
+		//Bouton pour faire sortir/entrer les jouers du tournoi sans les supprimer
+		JButton setPaires = new JButton("Nouveau Tour");
+		setPaires.addActionListener(new NouveauTourControleur(this));
+		setPaires.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 9;
+		westButtonPan.add(setPaires, gbcWest);
+
+		//Bouton pour voir le classement
+		JButton classement = new JButton("Classement");
+		classement.addActionListener(new VoirClassementControleur(tournoi));
+		classement.setPreferredSize(new Dimension(140, 40));
+		gbcWest.gridy = 10;
+		westButtonPan.add(classement, gbcWest);
+
+		westButtonPan.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.gray));
+
+
+
+		////Onglet Tournoi
+		tournois = new JPanel();
+		tournois.setLayout(new BorderLayout());
 
 		//On ajoute tous les onglets
-		onglets.addTab("Terrains", terrains);
 		onglets.addTab("Joueurs", joueurs);
+		onglets.addTab("Tournois", tournois);
 
 		onglets.setOpaque(true);
+
 
 
 		JPanel principal = new JPanel();
 		principal.setLayout(new BorderLayout());
 		principal.add(onglets, BorderLayout.CENTER);
+		principal.add(westButtonPan,BorderLayout.WEST);
 		this.setContentPane(principal);
 		this.setVisible(true);
+		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
 	/**
@@ -162,35 +268,30 @@ public class FenetrePrincipale extends JFrame {
 	public void fenetreAjout(){
 		new FenetreAjoutJoueur("Ajouter un joueur",tournoi,this);
 	}
-	
-	/**
-	 * pour générer les paires et démarrer un tour
-	 * @throws TournoiVideException s'il n'y a pas de joueurs
-     */
-	public void genererPaires() throws TournoiVideException{
-		verif = 0;
-		tournoi.demarrerTour();
-		this.actualiserTerrains();
-		boutonFinir.setEnabled(true);
-
+	public void fenetreAjoutMatch(){
+		new FenetreAjoutMatch("Entrer nouveau Match",tournoi,this);
 	}
+	public void fenetreStatJoeur(){ new FenetreStatJoueur("Modifier diponibiliter Joueur",this);}
+
+
+
 
 	/**
 	 * pour actualiser l'affichage de sjoueurs dans l'onglet joueur
 	 */
 
 	public void actualiserJoueurs(){
-		Liste classA = tournoi.getAnciensJoueurs();
-		Liste classN = tournoi.getNouveauxJoueurs();
+		ArrayList<Joueur> classA = tournoi.getAnciensJoueurs();
+		ArrayList<Joueur> classN = tournoi.getNouveauxJoueurs();
 		//On rentre les joueurs anciens dans les X premières cases
 		for(int i =0; i < classA.size(); i++){
-			Joueur j = (Joueur)classA.get(i);
+			Joueur j = classA.get(i);
 			listeJoueurs.setValueAt(j.getId(),i,0);
 			listeJoueurs.setValueAt(j.getNom(),i,1);
 			listeJoueurs.setValueAt(j.getPrenom(),i,2);
 			listeJoueurs.setValueAt(""+j.getScore(),i,3);
-			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i,4);
-			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i,5);
+			listeJoueurs.setValueAt(""+j.statut(),i,4);
+
 		}
 		//On rentre les joueurs nouveaux dans les cases restantes
 		for(int i = 0; i < classN.size(); i++){
@@ -199,129 +300,17 @@ public class FenetrePrincipale extends JFrame {
 			listeJoueurs.setValueAt(j.getNom(),i+classA.size(),1);
 			listeJoueurs.setValueAt(j.getPrenom(),i+classA.size(),2);
 			listeJoueurs.setValueAt(""+j.getScore(),i+classA.size(),3);
-			listeJoueurs.setValueAt(j.getNouveau() ? "Nouveau" : "Ancien",i+classA.size(),4);
-			listeJoueurs.setValueAt(j.peutJouer() ? "Oui" : "Non",i+classA.size(),5);
+			listeJoueurs.setValueAt(""+j.statut(),i+classA.size(),4);
+
 		}
 	}
 
-	/**
-	 * pour créer un JPanel à partir d'un numéro de terrain
-	 * @param i le numéro de terrain
-	 * @return un JPanel indiquant des informations relatives au terrain
-     */
-	public JPanel nouvelAffichageTerrain(int i){
-		JPanel terr = new JPanel();
 
-		//On crée les différentes parties du JPanel
-
-		JPanel paire1 = new JPanel();
-		paire1.setLayout(new GridLayout(2,2));
-
-		JComboBox p1j1 = new JComboBox(joueurs);
-		JComboBox p1j2 = new JComboBox(joueurs);
-
-
-		JTextField scoreP1 = new JTextField();
-		scoreP1.setColumns(3);
-		paire1.add(p1j1);
-		paire1.add(p1j2);
-		paire1.add(scoreP1);
-
-		JComboBox p2j1 = new JComboBox(joueurs);
-		JComboBox p2j2 = new JComboBox(joueurs);
-
-		JPanel paire2 = new JPanel();
-		paire2.setLayout(new GridLayout(2,2));
-
-		JTextField scoreP2 = new JTextField();
-		scoreP2.setColumns(3);
-		paire2.add(p2j1);
-		paire2.add(p2j2);
-		paire2.add(scoreP2);
-
-		//Le bouton pour valider les score
-		JButton scoreBouton = new JButton("Valider Scores");
-		scoreBouton.addActionListener(new SaisirScoreControlleur(scoreP1,scoreP2,this,this.tournoi,i,terr));
-
-		try{
-			//S'il ya un match sur le terrain, on indique les 4 joueurs
-			Joueur j1 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur1();
-			p1j1.setSelectedItem(j1.getNom()+" "+j1.getPrenom());
-			p1j1.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			Joueur j2 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire1().getJoueur2();
-			p1j2.setSelectedItem(j2.getNom()+" "+j2.getPrenom());
-			p1j2.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			Joueur j3 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur1();
-			p2j1.setSelectedItem(j3.getNom()+" "+j3.getPrenom());
-			p2j1.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			Joueur j4 = ((Terrain)tournoi.getTerrains().get(i)).getMatch().getPaire2().getJoueur2();
-			p2j2.setSelectedItem(j4.getNom()+" "+j4.getPrenom());
-			p2j2.addActionListener(new InverserJoueurControlleur(tournoi,this,(String)p1j1.getSelectedItem()));
-			terr.setBackground(couleurPasOK);
-			//Il faudra entrer les scores dans un terrain d eplus
-			verif++;
-		}catch(NullPointerException e){
-			//Sinon, on indique que le terrain est libre
-			p1j1.setSelectedIndex(joueurs.length-1);
-			p1j1.setEnabled(false);
-			p1j2.setSelectedIndex(joueurs.length-1);
-			p1j2.setEnabled(false);
-			p2j1.setSelectedIndex(joueurs.length-1);
-			p2j1.setEnabled(false);
-			p2j2.setSelectedIndex(joueurs.length-1);
-			p2j2.setEnabled(false);
-			scoreBouton.setEnabled(false);
-			terr.setBackground(couleurOK);
-
-		}
-		terr.setLayout(new BorderLayout());
-		terr.add(paire1, BorderLayout.NORTH);
-		terr.add(paire2, BorderLayout.SOUTH);
-		terr.add(scoreBouton, BorderLayout.EAST);
-		terr.setPreferredSize(new Dimension(200,300));
-
-		JPanel terrain = new JPanel();
-		terrain.add(terr);
-
-		return terrain;
-	}
-
-	/**
-	 * pour mettre à jour l'affichage des terrains
-	 */
-	public void actualiserTerrains(){
-		//On vide la liste des terrains
-		this.listeTerrains.removeAll();
-		this.listeTerrains.revalidate();
-		this.listeTerrains.repaint();
-		listeTerrains.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/400))), (int) Math.floor(this.getBounds().width/400), 10, 10));
-		//On parcours les terrains pour les afficher
-		terrains = new JPanel[tournoi.getNbrTerrains()];
-		for(int i = 0; i<this.tournoi.getNbrTerrains();i++){
-			terrains[i] = nouvelAffichageTerrain(i);
-			listeTerrains.add(terrains[i]);
-		}
-		listeTerrains.add(boutonFinir);
-	}
-
-	/**
-	 * pour terminer un tour et valider les scores
-	 */
-	public void finirTour(){
-		if (verifFinir()){
-			tournoi.finirTour();
-			boutonFinir.setEnabled(false);
-			actualiserJoueurs();
-		}
-		else{
-			JOptionPane.showMessageDialog(this,"Vous devez valider tous les terrains avant de finir le tour.");
-		}
-	}
 
 	/**
 	 * on vérirife que tous les terrains on eu leurs scores rentrés
 	 * @return vrai si on peut finir le tour faux sinon
-     */
+	 */
 	public boolean verifFinir(){
 		return verif==0;
 	}
@@ -346,13 +335,191 @@ public class FenetrePrincipale extends JFrame {
 	 * pour insérer un joueur dans la liste des joueurs (onglet joueurs)
 	 */
 	public void ajouterJoueurTable(){
-		Object[]tJ = {"","","","","",""};
+		Object[]tJ = {"","",""};
 		this.listeJoueursModele.addRow(tJ);
 		this.actualiserJoueurs();
 		this.actualiserNoms();
 	}
 
+
+	/**
+	 * pour supprimer un joueur dans la liste des joueurs (onglet joueurs)
+	 */
+	public void supprimerJoueurTable()
+	{
+		int i = listeJoueursModele.getRowCount();
+		this.listeJoueursModele.removeRow(i - 1);
+		this.actualiserJoueurs();
+		this.actualiserNoms();
+	}
+
+
 	public void setVerif(int verif) {
 		this.verif = verif;
 	}
+
+	public ArrayList<JComboBox> getBoxTerrains() { return this.boxTerrains; };
+
+	public JPanel nouveauTerrain(int i){
+		JPanel terrain = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		ArrayList<Joueur> joueurDansCombo = tournoi.getAllJoueurs();
+		//joueurDansCombo.add(new Joueur(420, "", "", 42, true, true, 0, false));
+		Collections.sort(joueurDansCombo, new Comparator<Joueur>() {
+			@Override
+			public int compare(Joueur j1, Joueur j2) {
+				return j1.toString().compareToIgnoreCase(j2.toString());
+			}
+		});
+
+		//Terrain n° X
+		int o = i + 1;
+		JLabel numTer = new JLabel("Terrain "+o);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		terrain.add(numTer, gbc);
+
+		//Equipe 1 et leur score
+		JComboBox j1 = new JComboBox();
+		JComboBox j2 = new JComboBox();
+		if(!this.tournoi.tournoisVide()) {
+			j1 = new JComboBox(joueurDansCombo.toArray());
+			j2 = new JComboBox(joueurDansCombo.toArray());
+			try {
+				if((i*2) <= tournoi.getAllJoueurs().size()) {
+					j1.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire1().getJoueur1());//depuis terrain je recupere match qui donne les paires qui donne les joueurs
+				} else {
+					j1.setSelectedIndex(0);
+				}
+				if((i*2)+1 <= tournoi.getAllJoueurs().size()) {
+					j2.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire1().getJoueur2());
+				} else {
+					j2.setSelectedIndex(0);
+				}
+			} catch(Exception e) {
+				//System.out.println("moins de joueur que de terrain?");
+			}
+		}
+		JSpinner score1 = new JSpinner();
+		JPanel equipeUn = new JPanel(new GridBagLayout());
+		j1.setPreferredSize(new Dimension(125, 25));
+		j2.setPreferredSize(new Dimension(125, 25));
+		score1.setPreferredSize(new Dimension(50, 30));
+		GridBagConstraints gbcUn = new GridBagConstraints();
+		gbcUn.gridx = 0;
+		gbcUn.gridy = 0;
+		equipeUn.add(j1, gbcUn);
+		gbcUn.gridx = 1;
+		equipeUn.add(j2, gbcUn);
+		gbcUn.gridx = 2;
+		equipeUn.add(score1, gbcUn);
+		gbc.gridy = 1;
+		terrain.add(equipeUn, gbc);
+
+		//Le terrain
+		JPanel espace = new JPanel();
+		ImageIcon icon = new ImageIcon(getClass().getResource("/resources/images/terrainS.png"));
+		JLabel labelimg = new JLabel();
+		labelimg.setIcon(icon);
+		espace.add(labelimg);
+		gbc.gridy = 2;
+		terrain.add(espace, gbc);
+
+		//Equipe 2 et leur score
+		JComboBox j3 = new JComboBox();
+		JComboBox j4 = new JComboBox();
+		if(!this.tournoi.tournoisVide()) {
+			j3 = new JComboBox(joueurDansCombo.toArray());
+			j4 = new JComboBox(joueurDansCombo.toArray());
+			try {
+				if((i*2)+2 <= tournoi.getAllJoueurs().size()) {
+					j3.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire2().getJoueur1());
+				} else {
+					j3.setSelectedIndex(0);
+				}
+				if((i*2)+3 <= tournoi.getAllJoueurs().size()) {
+					j4.setSelectedItem(tournoi.getTerrain(i).getMatch().getPaire2().getJoueur2());
+				} else {
+					j4.setSelectedIndex(0);
+				}
+			} catch(Exception e) {
+				//System.out.println("moins de joueur que de terrain?");
+			}
+		}
+		//controlleurs de l'échange de joueur
+		j1.addItemListener( new SelectonAutreJoueurMatch(j1, this,1,i));
+		j2.addItemListener( new SelectonAutreJoueurMatch(j2, this,2,i));
+		j3.addItemListener( new SelectonAutreJoueurMatch(j3, this,3,i));
+		j4.addItemListener( new SelectonAutreJoueurMatch(j4, this,4,i));
+		JSpinner score2 = new JSpinner();
+		JPanel equipeDeux = new JPanel(new GridBagLayout());
+		j3.setPreferredSize(new Dimension(125, 25));
+		j4.setPreferredSize(new Dimension(125, 25));
+		score2.setPreferredSize(new Dimension(50, 30));
+		GridBagConstraints gbcDeux = new GridBagConstraints();
+		gbcDeux.gridx = 0;
+		gbcDeux.gridy = 0;
+		equipeDeux.add(j3);
+		gbcDeux.gridx = 1;
+		equipeDeux.add(j4);
+		gbcDeux.gridx = 2;
+		equipeDeux.add(score2);
+		gbc.gridy = 3;
+		terrain.add(equipeDeux, gbc);
+
+		//Bouton valider
+		JButton valider = new JButton("Valider");
+		valider.addActionListener(new SaisirScoreControlleur(score1,score2,this,this.tournoi,i));
+		gbc.gridy = 4;
+		terrain.add(valider, gbc);
+
+		//Ajout des JComboBox au tableau qui les regroupe
+		this.boxTerrains.add(j1);
+		this.boxTerrains.add(j2);
+		this.boxTerrains.add(j3);
+		this.boxTerrains.add(j4);
+		/*j1.addItemListener(new ComboBoxSwapControlleur(this, j1));
+		j2.addItemListener(new ComboBoxSwapControlleur(this, j2));
+		j3.addItemListener(new ComboBoxSwapControlleur(this, j3));
+		j4.addItemListener(new ComboBoxSwapControlleur(this, j4));*/
+
+		return  terrain;}
+
+	public void actualiserTerrains() {
+		tournois = new JPanel();
+		tournois.setLayout(new BorderLayout());
+		JPanel panTour = new JPanel();
+
+		panTour.setLayout(new GridLayout((int)Math.floor(this.tournoi.getNbrTerrains()/((int) Math.floor(this.getBounds().width/450))), (int) Math.floor(this.getBounds().width/450), 10, 10));
+		//On parcours les terrains pour les afficher
+
+		ArrayList<Joueur> joueursActifs = new ArrayList<>();
+
+		//ArrayList des nouveaux joueurs actifs
+		for (Joueur joueur : tournoi.getAllJoueurs()) {
+			if (joueur.peutJouer()) {
+				joueursActifs.add(joueur);
+			}
+		}
+
+		if(this.tournoi.getNbrTerrains() > joueursActifs.size()/4) {
+			for (int i = 0; i < joueursActifs.size()/4; i++) {
+				panTour.add(nouveauTerrain(i));
+			}
+		} else {
+			for (int i = 0; i < this.tournoi.getNbrTerrains(); i++) {
+				panTour.add(nouveauTerrain(i));
+			}
+		}
+
+		JScrollPane terrains = new JScrollPane(panTour);
+
+		tournois.add(terrains, BorderLayout.CENTER);
+		onglets.removeTabAt(1);
+		onglets.addTab("Tournois", tournois);
+		onglets.setSelectedIndex(1);
+	}
+
+
 }

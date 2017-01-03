@@ -1,0 +1,9 @@
+Prénom,Nom,Sexe,Ancienneté,Âge,Niveau
+Antoine,Drouard,Homme,Ancien,18-35 ans,Intermédiaire
+Prénom1,Nom1,Homme,Ancien,18-35 ans,Confirmé
+Lea,Je sais comment ça s'écrit,Femme,Nouveau,18-35 ans,Confirmé
+PetitTest,Test,Femme,Ancien,-18 ans,Débutant
+Paul,Poulpe,Homme,Nouveau,35+ ans,Débutant
+SansAge,Test,Homme,Ancien,,Débutant
+SansNiveau,Test,Femme,Nouveau,18-35 ans,
+SansRien,aaa,Homme,Ancien,,

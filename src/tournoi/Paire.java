@@ -14,6 +14,8 @@ public class Paire {
 	private int tour;
 	private int score;
 	private int perf;
+	private boolean dansMatch;
+
 
 	/** Constructeur de la classe Paire
 		*
@@ -30,6 +32,7 @@ public class Paire {
 		this.tour = tour;
 		this.perf = j1.getPerf()+j2.getPerf();
 		this.joueursJouent(false);
+		this.dansMatch = false;
 	}
 	public Paire(Joueur j1, Joueur j2){
 		this(j1, j2, 0, 0);
@@ -109,6 +112,14 @@ public class Paire {
 		return txt;
 	}
 
+	public boolean isDansMatch() {
+		return dansMatch;
+	}
+
+	public void setDansMatch(boolean dansMatch) {
+		this.dansMatch = dansMatch;
+	}
+
 	/**
 	 * modifie si les joueurs de la paire jouent
 	 * @param j vrai s'ils jouent faux sinon
@@ -116,6 +127,7 @@ public class Paire {
 	public void joueursJouent(boolean j){
 		this.joueur1.setJoue(j);
 		this.joueur2.setJoue(j);
+
 	}
 
 	/**
@@ -185,20 +197,29 @@ public class Paire {
 	}
 
 	/** Redéfinition de l'attribut "score"
-		*
+		* et mise a jour des scores des jouerus de la paire
 		* @param score le score de la paire
 		*/
 	public void setScore(int score) {
 		this.score = score;
+		//on incrémente le score a partir du score que le joueur avais deja a la base
+		this.joueur1.setScore(score+this.joueur1.getScore());
+		this.joueur2.setScore(score+this.joueur2.getScore());
 	}
 
 
 	/**
 	 *
-	 * @return true si au moins un des joueurs est prioritaire false sinon
+	 * @return un int qui estime la prioritée de la paire
+	 * +1 par membres prio
      */
-	public boolean estPrio(){
-		return (this.joueur1.getPrio() || this.joueur2.getPrio());
+	public int prio(){
+		int prio = 0;
+		if ( this.joueur1.getPrio()) {prio++;}
+		if ( this.joueur2.getPrio()) {prio++;}
+
+
+		return prio;
 	}
 	
 	/** Redéfinition de la méthode equals()
@@ -215,5 +236,18 @@ public class Paire {
 		else {
 			return false;
 		}
+	}
+
+	/** Retourne si la paire est compatible avec un autre (en paramètre)
+	 * On considère qu'elle est compatibles si un des joueurs n'a pas joué avec aucun des deux autres joueru de la paire antagoniste
+	 * @param paire2 la paire a tester
+	 * @return booléen 0 : n'est pas compatible / 1 : est compatible
+	 */
+	public boolean estCompatible(Paire paire2){
+		//On vérifie si les joueurs ont déjà joué ensemble
+		return !this.joueur1.aJoueAvec(paire2.joueur1)&&
+				!this.joueur1.aJoueAvec(paire2.joueur2)&&
+				!this.joueur2.aJoueAvec(paire2.joueur1)&&
+				!this.joueur2.aJoueAvec(paire2.joueur2);
 	}
 }

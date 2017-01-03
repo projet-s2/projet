@@ -1,7 +1,5 @@
 package controleur;
 
-import java.awt.event.ActionEvent; 
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -30,7 +28,7 @@ public class ModifierJoueurControlleur implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		int row = jt.getSelectedRow();
 		this.id = (int) jt.getValueAt(row, 0);
-		new FenetreModifierJoueur("Modifier Joueur",fp.getTournoi(),fp,id);
+		new FenetreModifierJoueur("Modifier Joueur",this.fp.getTournoi(),this.fp,this.id);
 		
 	}
 

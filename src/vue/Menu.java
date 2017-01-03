@@ -1,18 +1,15 @@
 package vue;
-import java.awt.FileDialog;
-import java.awt.Frame;
+
+import exception.TournoiVideException;
+import tournoi.Tournoi;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import tournoi.*;
-import javax.swing.*;
-
-import controleur.AjouterJoueurControlleur;
-import exception.TournoiVideException;
-
-import java.awt.Toolkit;
 public class Menu extends JMenuBar{
 	//Il n'est pas possible de proceder à certaines actions tant que le tournoi n'a pas été crée ou affiché
 	private ArrayList<JMenuItem> aAutoriser;
@@ -64,7 +61,7 @@ public class Menu extends JMenuBar{
 	    		dial.setVisible(true);
 	    		fr.setVisible(false);
 	    		try{
-	    			t.save(dial.getDirectory(),dial.getFile());
+	    			//t.save(dial.getDirectory(),dial.getFile());
 	    		}catch(NullPointerException e1){
 	    			
 	    		}
@@ -82,22 +79,8 @@ public class Menu extends JMenuBar{
 	    this.aAutoriser.add(exporter);
 	    
 	   //Dans le menu édition
-	    JMenuItem creerPaires = new JMenuItem("Générer les paires");
-	    creerPaires.setAccelerator(KeyStroke.getKeyStroke('G', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
-	    creerPaires.addActionListener(new ActionListener(){
-	    	@Override
-	    	public void actionPerformed(ActionEvent e){
-	    		try {
-					fen.genererPaires();
-				} catch (TournoiVideException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-	    	}
-	    });
-	    creerPaires.setEnabled(false);
-	    menuEdition.add(creerPaires);
-	    this.aAutoriser.add(creerPaires);
+
+
 	    
 	    JMenuItem ajouterJoueur = new JMenuItem("Nouveau joueur");
 	    ajouterJoueur.setAccelerator(KeyStroke.getKeyStroke('J', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));

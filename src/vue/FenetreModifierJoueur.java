@@ -1,23 +1,12 @@
 package vue;
 
-import java.awt.BorderLayout; 
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import tournoi.Joueur;
+import tournoi.Tournoi;
+import controleur.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-
-import controleur.AjouterJoueurControlleur;
-
-import tournoi.*;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class FenetreModifierJoueur extends JFrame {
 
@@ -28,7 +17,7 @@ public class FenetreModifierJoueur extends JFrame {
 	private JTextField nom;
 	private JTextField prenom;
 	private JComboBox niveau;
-	private JSpinner age;
+	private JComboBox age;
 	private JRadioButton fem;
 	private JRadioButton hom;
 	private JCheckBox nouv;
@@ -43,23 +32,53 @@ public class FenetreModifierJoueur extends JFrame {
 
 		this.tournoi = tournoi;
 		this.vue = vue;
+		this.id = id;
 
 		//Les différents champs de saisie
-		nom = new JTextField();
-		prenom = new JTextField();
-		niveau = new JComboBox(new String[]{"Debutant","Intermediaire", "Confirme"});
-		age = new JSpinner();
+		Joueur joueur = this.tournoi.getJoueur(id);
+
+		nom = new JTextField(joueur.getNom());
+		prenom = new JTextField(joueur.getPrenom());
+
+		//Il faut bien laisser les niveaux dans cet ordre pour correspondre avec l'ajout du joueur
+		// (0 : Indéfini / 1 : Débutant / 2 : Intermédiaire / 3 : Confirmé)
+		niveau = new JComboBox(new String[]{"Indéfini", "Débutant", "Intermédiaire", "Confirmé"});
+		niveau.setSelectedIndex(joueur.getNiveau());
+
+		//Il faut bien laisser les âges dans cet ordre pour correspondre avec l'ajout du joueur
+		// (0 : Indéfini / 1 : -18 jeune / 2 : 18-35 senior / 3 : 35+ veteran)
+		age = new JComboBox(new String[]{"Indéfini", "-18 ans (Jeune)", "18-35 ans (Senior)", "35 ans et + (Veteran)"});
+		age.setSelectedIndex(joueur.getAge());
 		fem = new JRadioButton("Femme");
 		hom = new JRadioButton("Homme");
-		hom.setSelected(true);
+		if(joueur.getSexe())
+		{
+			hom.setSelected(false);
+			fem.setSelected(true);
+		}
+		else
+		{
+			hom.setSelected(true);
+			fem.setSelected(false);
+		}
+
 		ButtonGroup grSexe = new ButtonGroup();
 		grSexe.add(hom);
 		grSexe.add(fem);
 		nouv = new JCheckBox("Nouveau");
-		nouv.setSelected(true);
+		if(joueur.getNouveau())
+		{
+			nouv.setSelected(true);
+		}
+		else
+		{
+			nouv.setSelected(false);
+		}
 		
 		JButton modifier = new JButton("Modifier le joueur");
-		modifier.addActionListener(new ModifierJoueurBoutonControlleur(this));
+		modifier.addActionListener(new ModifierJoueurBoutonControlleur(this, id));
+		JButton supprimer = new JButton("Supprimer le joueur");
+		supprimer.addActionListener(new SupprimerJoueurBoutonControlleur(this, id));
 		
 		JPanel corePanel = new JPanel();
 		corePanel.setLayout(new BorderLayout());
@@ -100,8 +119,13 @@ public class FenetreModifierJoueur extends JFrame {
 		droite.add(age);
 		
 		corePanel.add(droite,BorderLayout.EAST);
-		
-		corePanel.add(modifier,BorderLayout.SOUTH);
+
+		JPanel panelBouton = new JPanel();
+		panelBouton.setLayout(new GridLayout(2,1));
+		panelBouton.add(modifier);
+		panelBouton.add(supprimer);
+
+		corePanel.add(panelBouton,BorderLayout.SOUTH);
 		
 		this.setContentPane(corePanel);
 		this.pack();
@@ -153,7 +177,7 @@ public class FenetreModifierJoueur extends JFrame {
 	 *
 	 * @return l'outil de séléction de l'âge
      */
-	public JSpinner getAge() {
+	public JComboBox getAge() {
 		return age;
 	}
 
@@ -161,7 +185,7 @@ public class FenetreModifierJoueur extends JFrame {
 	 * réinitialise l'age
 	 */
 	public void setAge(){
-		this.age.setValue(0);
+		this.age.setSelectedIndex(0);
 	}
 
 	public JRadioButton getFem() {
@@ -184,15 +208,66 @@ public class FenetreModifierJoueur extends JFrame {
 	/**
 	 * pour ajouter un joueur dans le tournoi et dans la liste de la fenetre principale
 	 */
-	public void modifierJoueur(){
-		int id = Joueur.nbJoueursCrees;
-		int age = ((int)this.age.getValue());
+	public void modifierJoueur(int id)
+	{
+		int age = this.age.getSelectedIndex(); // 0 : -18 jeune / 1 : 18-35 senior / 2 : 35+ veteran
 		String nom = this.nom.getText(), prenom = this.prenom.getText();
 		boolean sexe = fem.isSelected();
 		boolean nouve = nouv.isSelected();
 		int niveau = this.niveau.getSelectedIndex();
 		this.tournoi.modifierJoueur(id, nom, prenom, age, sexe, nouve, niveau);
 		this.vue.actualiserJoueurs();
+		dispose();
+	}
+
+	public void supprimerJoueur(int id)
+	{
+		Joueur jou = this.tournoi.getJoueur(id);
+		boolean trouve = false;
+		int i = 0;
+		Joueur aSupprimer = new Joueur(id, true, true);
+
+		if(jou.getNouveau())
+		{
+			ArrayList nouveauxJoueurs = this.tournoi.getNouveauxJoueurs();
+			int tailleNouveauxJoueurs = nouveauxJoueurs.size();
+
+			while(!trouve && i < tailleNouveauxJoueurs)
+			{
+				Joueur j = (Joueur) nouveauxJoueurs.get(i);
+				int a = j.getId();
+				if (a == id)
+				{
+					aSupprimer = j;
+					trouve = true;
+				}
+				i++;
+			}
+		}
+
+		else
+		{
+			ArrayList anciensJoueurs = this.tournoi.getAnciensJoueurs();
+			int tailleAnciensJoueurs = anciensJoueurs.size();
+
+			while(!trouve && i < tailleAnciensJoueurs)
+			{
+				Joueur j = (Joueur) anciensJoueurs.get(i);
+				int a = j.getId();
+				if (a == id)
+				{
+					aSupprimer = j;
+					trouve = true;
+				}
+				i++;
+			}
+		}
+
+		this.tournoi.supprimerJoueur(aSupprimer);
+		this.vue.supprimerJoueurTable();
+		this.vue.actualiserJoueurs();
+		this.vue.actualiserNoms();
+		dispose();
 
 	}
 

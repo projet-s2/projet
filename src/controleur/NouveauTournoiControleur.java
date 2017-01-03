@@ -29,6 +29,7 @@ public class NouveauTournoiControleur implements ActionListener {
 		this.nom = leNom;
 		this.nouveauTournoiFen = nt;
 		this.fenetre = f;
+
 	}
 
 	/**
